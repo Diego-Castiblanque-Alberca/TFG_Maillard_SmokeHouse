@@ -1,0 +1,51 @@
+.imagenes-carta-reservar{
+    font-family: 'Antara', fallback, sans-serif;
+}
+.imagenes-carta-reservar, .imagen-carta, .imagen-reservar,.contenedor-imagen-carta{
+    width: 100%;
+    color: var(--color-5);
+}
+.imagen-carta, .imagen-reservar{
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding-top: calc((286 / 425) * 100%);
+    position: relative;
+    /* z-index: 1; */
+}
+.imagen-carta{
+    background-image: url("../../imgs/bbq-4373644_1280.png");
+}
+.contenedor-imagen-carta, .imagenes-carta-reservar{
+    display: flex;
+    flex-direction: column;
+}
+.contenedor-imagen-carta{
+    align-items: center;
+    justify-content: center;
+    gap: 100px;
+}
+.contenedor-imagen-carta > a{
+    display: flex;
+    align-items: center;
+    font-size: 50px;
+}
+.contenedor-imagen-carta, .imagen-reservar > a{
+    position: absolute;
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+}
+.imagen-reservar{
+    background-image: url("../../imgs/bar.jpg");
+    font-size: 70px;   
+}
+@media screen and (min-width: 768px){
+    .imagenes-carta-reservar{
+        flex-direction: row;
+    }
+    .imagen-carta, .imagen-reservar{
+        padding-top: calc((286 / 425) * 50%);
+        flex: 0 0 50%;
+    }
+}

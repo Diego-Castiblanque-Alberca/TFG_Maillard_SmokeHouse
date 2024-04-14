@@ -1,0 +1,9 @@
+.button-submit{
+    font-family: 'Lora', serif;
+    font-size: 18px;
+    margin: 0 auto;
+    padding: 10px 50px;
+    width: fit-content;
+    background-color: var(--color-3);
+    color: var(--color-5);
+}

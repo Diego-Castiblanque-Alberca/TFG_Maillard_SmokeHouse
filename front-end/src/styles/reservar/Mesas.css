@@ -1,0 +1,28 @@
+
+/* son estilos provisionales */
+.mesas{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    background-color: #5c3a22;
+}
+[class^="mesa-"] {
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* estilos que entran */
+button{
+    color: var(--color-1);
+}
+.disponible{
+    background-color: var(--color-3);
+}
+[class^="mesa-"]:disabled{
+    background-color: var(--color-4)
+}
+
+.seleccionada{
+    outline: 2px solid var(--color-5);
+    color: var(--color-5);
+}

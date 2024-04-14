@@ -1,0 +1,33 @@
+.titulo-reserva{
+    text-align: center;
+    font-size: 25px;
+    color: var(--color-5);
+}
+
+.boton-volver{
+    color: var(--color-4);
+    width: 100%;
+    text-align: left;
+    background-color: transparent;
+    text-decoration: underline;
+}
+
+.form-reservar{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+
+@media screen and (min-width: 768px){
+
+    .titulo-reserva{font-size: 30px;}
+
+}
+
+@media screen and (min-width: 1024px){
+    
+    .titulo-reserva{font-size: 40px;}
+
+}

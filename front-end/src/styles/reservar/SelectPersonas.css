@@ -1,0 +1,18 @@
+.select-comensales {
+    border-radius: 5px;
+    border: 1px solid var(--color-5);
+    padding: 18px 23px;
+    font-size: 12px;
+    color: var(--color-5);
+    background-color: transparent;
+    width: 200px;
+}
+
+.select-comensales:focus {border: 2px solid var(--color-5);}
+
+.option-comensales{
+    padding: 8px 20px;
+    font-size: 16px;
+    background-color: var(--color-4);
+    color: var(--color-1);
+}

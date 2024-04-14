@@ -1,0 +1,49 @@
+.cardOpcionCarta{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--color-1);
+    gap: 15px;
+    padding-bottom: 15px;
+}
+
+.in-bebidas{width: 200px;}
+
+.in-bebidas > .cardOpcionCarta-container{height: 346.25px;}
+
+.in-platos{width: 360px;}
+
+.in-platos > .cardOpcionCarta-container{height: 230px;}
+
+.cardOpcionCarta-container{
+    width: 100%;
+    overflow: hidden;
+}
+
+.cardOpcionCarta-img{
+    height: 100%;
+    width: 100%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    transition: scale 0.3s ease;
+}
+
+.cardOpcionCarta-container:hover > .cardOpcionCarta-img{
+    scale: 1.1;
+}
+
+.cardOpcionCarta h2{
+    font-size: 18px;
+    color: var(--color-3);
+    text-align: center;
+}
+
+.cardOpcionCarta p{
+    font-size: 16px;
+    color: var(--color-5);
+    text-align: center;
+}
+.cardOpcionCarta-descripcion{
+    padding-inline: 10px;
+}

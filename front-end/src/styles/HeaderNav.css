@@ -1,0 +1,45 @@
+.header-nav, .header__container{
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.nav-open{
+    background-color: var(--color-1)!important;
+}
+.header-nav{
+    position: fixed;
+    top: 0;
+    background-color: var(--color-1);
+    transition: background-color 0.5s ease;
+    z-index: 100;
+}
+.in-index, .burguer{
+    background-color: transparent;
+    /* reglas del nav cuando este en el index */
+}
+.header-nav.in-index.scrolled {
+    background-color: var(--color-1);
+}
+.header__container{
+    padding: 5px 15px;
+    justify-content: space-between;
+}
+
+.traducir__EN, .traducir__ES{
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 16px;
+}
+.traducir__ES{
+    border-right: 1px solid var(--color-5);
+    color: var(--color-3);
+}
+.traducir__EN{
+    color: var(--color-5);
+}
+@media screen and (min-width: 768px){
+    .header__container{
+        flex: 1 1 auto;
+    }
+}
+

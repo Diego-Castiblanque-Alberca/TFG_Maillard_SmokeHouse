@@ -1,0 +1,41 @@
+.botones-horarios{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+}
+.botones-horarios-comida,.botones-horarios-cena{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 312px;
+    gap: 20px;
+}
+.botones-horarios-comida p,.botones-horarios-cena p{
+    flex: 0 0 100%;
+    font-size: 20px;
+    color: var(--color-4);
+    text-decoration: underline;
+}
+.boton-horario{
+    color: var(--color-5);
+    background-color: var(--color-3);
+    font-weight: bold;
+    border-radius: 4px;
+    font-size: 18px;
+    width: 84px;
+    padding: 8.5px 0;
+    vertical-align: middle;
+}
+
+.no-disponible{
+    background-color: var(--color-4);
+    cursor: default;
+}
+
+@media screen and (min-width: 768px){
+    .botones-horarios{
+        flex-direction: row;
+    }
+}

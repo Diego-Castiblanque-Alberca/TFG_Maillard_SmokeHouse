@@ -1,0 +1,17 @@
+.datos-reserva{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 15px;
+}
+.dato-reserva{
+    color: var(--color-3);
+    display: flex;
+    gap: 8px;
+    font-size: 15px;
+    align-items: center;
+}
+.dato-reserva img{
+    width: 24px;
+    height: 24px;
+}

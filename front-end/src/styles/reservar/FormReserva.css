@@ -1,0 +1,74 @@
+.form-reservar1{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap:40px;
+}
+.label-input,.label-telefono,.label-prefijo{
+    display: flex;
+    flex-direction: column;
+    color: var(--color-4);
+    gap: 10px;
+    font-size: 15px;
+}
+.label-input > input ,.label-telefono > input,.label-prefijo > select{
+    padding: 12px 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: none;
+}
+
+.label-input,.contenedor-telefono{
+    width: 90%;
+    max-width: 300px;
+}
+
+.contenedor-telefono{
+    display: flex;
+    gap: 4%;
+}
+/* no funciona como quiero */
+.label-telefono{
+    flex: 1 1 58%;
+}
+.label-prefijo{
+    flex: 0 0 38%;
+}
+/**/
+.label-telefono > input,.label-telefono > select, .contenedor-checkbox{
+    width: 100%;
+}
+.contenedor-checkbox{
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 500px;
+}
+.checkbox-politicas,.checkbox-comunicaciones{
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 14px;
+}
+.checkbox-politicas> input,.checkbox-comunicaciones>input{
+    height: 15px;
+    flex: 0 0 15px;
+}
+.checkbox-politicas{
+    color: var(--color-3);
+}
+.checkbox-comunicaciones{
+    color: var(--color-4);
+}
+.form-boton-reservar{
+    background-color: var(--color-3);
+    color: var(--color-5);
+    width: 280px;
+    height: 44px;
+    font-size: 20px;
+}
+.input-error {
+    outline: 2px solid red;
+}

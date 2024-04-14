@@ -1,0 +1,26 @@
+.container-checkbox{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.input-checkbox{
+    width: 15px;
+    height: 15px;
+    border-radius: 5px;
+    background-color: var(--color-5);
+    cursor: pointer;
+}
+
+.label-checkbox{
+    color: var(--color-4);
+    font-size: 12px;
+    font-weight: 400;
+    cursor: pointer;
+}
+.label-checkbox-required{
+    color:var(--color-3);
+    font-size: 12px;
+    font-weight: 400;
+    cursor: pointer;
+}

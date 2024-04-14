@@ -1,0 +1,25 @@
+.leyenda,.leyenda-disponible,.leyenda-noDisponible,.leyenda-seleccionado{
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    font-size: 10px;
+}
+
+.leyenda-disponible,.leyenda-noDisponible,.leyenda-seleccionado{gap: 10px;}
+
+.leyenda figure{
+    width: 20px;
+    height: 10px;
+}
+
+.leyenda-disponible{color: var(--color-4);}
+
+.leyenda-disponible figure{background-color: var(--color-4);}
+
+.leyenda-noDisponible,.leyenda-seleccionado{color: var(--color-3);}
+
+.leyenda-noDisponible figure,.leyenda-seleccionado figure{background-color: var(--color-3);}
+
+.leyenda-seleccionado figure{
+    outline: var(--color-5) solid 2px;
+}
