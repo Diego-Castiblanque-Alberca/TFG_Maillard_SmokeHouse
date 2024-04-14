@@ -5,6 +5,11 @@ yarn-error.log*
 
 # Directorio de construcción
 /build
+node_modules
+dist
+dist-ssr
+*.local
+
 
 # Archivos de configuración del entorno
 .env
