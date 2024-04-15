@@ -28,3 +28,39 @@ dist-ssr
 *.sw?
 
 /front-end/node_modules
+# Front-end
+/front-end/node_modules
+/front-end/build
+/front-end/dist
+/front-end/dist-ssr
+/front-end/*.local
+
+# Back-end
+/back-end/vendor
+/back-end/node_modules
+/back-end/public/hot
+/back-end/public/storage
+/back-end/storage/*.key
+/back-end/.env
+/back-end/.env.backup
+/back-end/.env.dusk.local
+/back-end/.env.testing
+/back-end/.phpunit.result.cache
+/back-end/.php_cs.cache
+/back-end/.phpunit.result.cache
+/back-end/Homestead.json
+/back-end/Homestead.yaml
+
+# Archivos de registro
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos de configuración de IDEs y editores
+.vscode
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
