@@ -4,7 +4,7 @@
     left:0;
     display: flex;
     width: 100%;
-    font-weight: bold;
+    font-weight: 500;
 }
 
 .boton-reservar,.boton-ver-carta{
@@ -39,5 +39,8 @@
     }
     .boton-reservar,.boton-ver-carta{
         outline: none;
+    }
+    .boton-reservar:hover,.boton-ver-carta:hover{
+        background-color: #9D8B7A
     }
 }

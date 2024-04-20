@@ -35,6 +35,7 @@
 
 .cardOpcionCarta h2{
     font-size: 18px;
+    font-weight: bold;
     color: var(--color-3);
     text-align: center;
 }

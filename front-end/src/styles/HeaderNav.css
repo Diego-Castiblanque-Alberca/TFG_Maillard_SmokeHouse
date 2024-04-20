@@ -21,7 +21,7 @@
     background-color: var(--color-1);
 }
 .header__container{
-    padding: 5px 15px;
+    padding: 5px 25px;
     justify-content: space-between;
 }
 

@@ -68,6 +68,11 @@
     width: 280px;
     height: 44px;
     font-size: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.form-boton-reservar:hover{
+    background-color: #9d8b7a;
 }
 .input-error {
     outline: 2px solid red;

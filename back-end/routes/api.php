@@ -20,3 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/admin/login', [AdminAuthController::class, 'login']);
 Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::get('/admin/user', [AdminAuthController::class, 'user'])->middleware('auth:sanctum');
+
+Route::get('/carta', 'App\Http\Controllers\CartaController@index');

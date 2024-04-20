@@ -22,7 +22,7 @@ export default function ReservaPaso2({siguientePaso, datos}) {
         <>
             <img src={paso} alt=""/>
             <h2 style={{color: "var(--color-3)", fontSize: "25px"}}>Elige tu mesa</h2>
-            <Leyenda texto1="Mesas no disponibles" texto2="Mesas disponibles" texto3="Mesas seleccionadas"/>
+            <Leyenda texto1="No disponible" texto2="Disponible" texto3="Seleccionada"/>
             <Mesas mesas={CONSTANTS.MESAS} datos={datos} siguientePaso={siguientePaso} />
         </>
     )
