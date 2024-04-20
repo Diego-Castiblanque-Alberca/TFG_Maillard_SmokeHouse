@@ -374,6 +374,6 @@ export const CONTACTO = [
     },
     {
         titulo: "Horarios",
-        descripcion: "L-D 12:00 - 15:30h | 20:00 - 00:30h"
+        descripcion: "L-D 12:00 - 15:30h | 20:00 - 00:00h"
     }
 ]
