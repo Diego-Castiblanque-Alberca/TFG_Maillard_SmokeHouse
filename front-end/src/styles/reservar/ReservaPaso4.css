@@ -4,13 +4,22 @@
     gap: 30px;
     align-items: flex-start;
     width: 80%;
-    border: 1px solid var(--color-4);
+    max-width: 635px;
 }
 
-/* h3{
+.reserva-confirmada{
+    display: flex;
+    gap: 30px;
+    color: var(--color-5);
+    font-size: 25px;
+    align-items: center;
+}
+
+ .nombre-reserva{
     color: var(--color-3);
     font-size: 18px;
-} */
+} 
+
 span{
     color: var(--color-5);
     font-size: 20px;
