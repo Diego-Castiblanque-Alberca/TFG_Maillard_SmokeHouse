@@ -14,9 +14,7 @@ use App\Http\Controllers\AdminAuthController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Rutas para autenticación de Admin y gestión de tokens
 Route::post('/admin/login', [AdminAuthController::class, 'login']);
 Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::get('/admin/user', [AdminAuthController::class, 'user'])->middleware('auth:sanctum');
