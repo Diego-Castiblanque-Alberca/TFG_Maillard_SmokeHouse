@@ -18,7 +18,7 @@ export function CardCarta({ title, backgroundImage, to }) {
         >
             <div 
                 className="cardCarta-img"
-                style={{ backgroundImage: `url(${backgroundImage})` }}    
+                style={{ backgroundImage: `url(/${backgroundImage})` }}    
             ></div>
             <div className="cardCarta-title">
                 <h2>{title}</h2>

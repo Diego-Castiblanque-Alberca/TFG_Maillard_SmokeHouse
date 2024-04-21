@@ -14,7 +14,7 @@ export function CardOpcionCarta({ title, descripcion, precio, backgroundImage })
             >
                 <div
                     className="cardOpcionCarta-img"
-                    style={{ backgroundImage: `url(${backgroundImage})` }}
+                    style={{ backgroundImage: `url/(${backgroundImage})` }}
                 ></div>
             </div>
             <h2>{title}</h2>
