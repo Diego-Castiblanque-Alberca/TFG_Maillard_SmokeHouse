@@ -1,8 +1,9 @@
 .leyenda,.leyenda-disponible,.leyenda-noDisponible,.leyenda-seleccionado{
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 30px;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .leyenda-disponible,.leyenda-noDisponible,.leyenda-seleccionado{gap: 10px;}

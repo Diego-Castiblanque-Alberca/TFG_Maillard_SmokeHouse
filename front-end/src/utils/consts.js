@@ -81,7 +81,7 @@ export const CONSTANTS = {
     MESAS:{
         //una mesa 1 capacidad 4
         "mesa-1": {
-            capacidad: 6,
+            capacidad: 2,
             disponibilidad: true
         },
         "mesa-2": {
@@ -93,15 +93,15 @@ export const CONSTANTS = {
             disponibilidad: true
         },
         "mesa-4": {
-            capacidad: 2,
+            capacidad: 6,
             disponibilidad: false
         },
         "mesa-5": {
-            capacidad: 2,
+            capacidad: 8,
             disponibilidad: true
         },
         "mesa-6": {
-            capacidad: 8,
+            capacidad: 4,
             disponibilidad: true
         },
         "mesa-7": {
@@ -109,6 +109,10 @@ export const CONSTANTS = {
             disponibilidad: true
         },
         "mesa-8": {
+            capacidad: 2,
+            disponibilidad: true
+        },
+        "mesa-9": {
             capacidad: 2,
             disponibilidad: true
         }

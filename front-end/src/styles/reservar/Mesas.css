@@ -1,28 +1,25 @@
-
-/* son estilos provisionales */
 .mesas{
     display: flex;
     flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 380px;
+    height: 315px;
+    padding: 20px 10px;
     gap: 20px;
-    background-color: #5c3a22;
 }
+
 [class^="mesa-"] {
-    padding: 10px;
-    box-sizing: border-box;
+    background-color: transparent;
+    cursor: pointer;
 }
 
-/* estilos que entran */
-button{
-    color: var(--color-1);
-}
-.disponible{
+.boton-confirmar{
     background-color: var(--color-3);
-}
-[class^="mesa-"]:disabled{
-    background-color: var(--color-4)
-}
-
-.seleccionada{
-    outline: 2px solid var(--color-5);
     color: var(--color-5);
+    width: 280px;
+    height: 44px;
+    font-size: 20px;
+    border-radius: 5px;
+    cursor: pointer;
 }
