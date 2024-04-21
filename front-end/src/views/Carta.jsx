@@ -7,6 +7,11 @@ import { TituloCarta } from "../components/carta/TituloCarta.jsx";
 import { SUBTITULO } from "../utils/consts.js";
 
 export default function Carta() {
+    fetch('http://127.0.0.1:8000/api/carta')
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
+        
     return (
         <>
             <Header />
