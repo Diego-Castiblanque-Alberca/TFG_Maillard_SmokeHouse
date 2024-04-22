@@ -41,6 +41,19 @@
     font-size: 70px;   
 }
 
+.imagen-reservar > a > h3:hover{
+    font-size: 80px;
+}
+
+.contenedor-imagen-carta > a> h3:hover{
+    font-size: 60px;
+
+}
+
+.imagen-reservar > a > h3, .contenedor-imagen-carta > a> h3{
+    transition: font-size 0.5s;
+}
+
 /* hover subir 10px el tamaño de la letra de los h3 */
 @media screen and (min-width: 768px){
     .imagenes-carta-reservar{

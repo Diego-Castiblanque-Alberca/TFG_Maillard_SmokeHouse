@@ -7,8 +7,8 @@
 
 .rdp-caption, .rdp-day,.rdp-head_row{color: var(--color-5);}
 
-.rdp-button:hover:not([disabled]):not(.rdp-day_selected) {
-    background-color: var(--color-4);
+.rdp-button:hover:not([disabled]):not(.rdp-day_selected),.rdp-day_selected:hover {
+    background-color: var(--color-hover);
 }
 .rdp-day_selected, .rdp-day_selected:focus-visible, .rdp-day_selected:hover {
     color: var(--color-5);

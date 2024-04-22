@@ -9,9 +9,12 @@
     gap: 20px;
 }
 
-[class^="mesa-"] {
-    background-color: transparent;
-    cursor: pointer;
+[class^="mesa-"] { background-color: transparent; }
+
+[class^="mesa-"]:not([disabled]){ cursor: pointer; }
+
+[class^="mesa-"]:not([disabled]):hover{
+    transform: scale(1.1);
 }
 
 .boton-confirmar{

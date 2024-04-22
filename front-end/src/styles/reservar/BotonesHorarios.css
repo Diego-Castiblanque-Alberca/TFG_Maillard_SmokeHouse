@@ -34,6 +34,10 @@
     cursor: default;
 }
 
+.boton-horario:not([disabled]):hover{
+    background-color: var(--color-hover);
+}
+
 @media screen and (min-width: 768px){
     .botones-horarios{
         flex-direction: row;
