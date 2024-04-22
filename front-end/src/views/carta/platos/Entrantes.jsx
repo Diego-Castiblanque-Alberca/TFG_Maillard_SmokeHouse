@@ -1,26 +1,36 @@
-import React from "react";
+import React , {useEffect, useState} from "react";
 import {Header} from "../../../components/HeaderNav.jsx";
 import {Footer} from "../../../components/Footer.jsx";
 import { Container } from "../../../components/Container.jsx";
 import { CardOpcionCarta } from "../../../components/carta/CardOpcionCarta.jsx";
-import { ENTRANTES, SUBTITULO } from "../../../utils/consts.js";
+import { SUBTITULO } from "../../../utils/consts.js";
 import { TituloCarta } from "../../../components/carta/TituloCarta.jsx";
 
 export default function Entrantes() {
+    let [entrantes, setEntrantes] = useState([]);
+    
+    useEffect(() => {
+        fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/carta/platos/entrantes`)
+            .then(response => response.json())
+            .then(entrantes => setEntrantes(entrantes))
+            .catch(error => console.error('Error:', error));
+    }, []);
+
+
     return(
         <>
             <Header/>
             <Container className={"container"}>
                 <TituloCarta texto={SUBTITULO.ENTRANTES}/>
                 <Container className={"container-carta"}>
-                {ENTRANTES.map((Entrante, index) => {
+                {entrantes.map((entrante, index) => {
                             return (
                                 <CardOpcionCarta 
                                     key={index} 
-                                    title={Entrante.title}
-                                    backgroundImage={Entrante.backgroundImage}
-                                    precio={Entrante.precio}
-                                    descripcion={Entrante.descripcion}
+                                    title={entrante.titulo}
+                                    backgroundImage={entrante.imagen}
+                                    precio={entrante.precio}
+                                    descripcion={entrante.descripcion}
                                 />
                             )
                         })}

@@ -9,7 +9,7 @@ import { SUBTITULO } from "../utils/consts.js";
 export default function Carta() {
 
     const [carta, setCarta] = useState([]);
-
+    
     useEffect(() => {
         fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/carta`)
             .then(response => response.json())

@@ -49,17 +49,19 @@ class CartaController extends Controller
     {
         
         // Buscar la categoría por su redirige
-        $categoria = CategoriaCarta::where('redirige', $categoriaRuta)->first();
+        
+        $categoria = CategoriaCarta::where('redirige', '/carta/' . $categoriaRuta)->first();
 
         // Si la categoría no existe, devolver un error
         if (!$categoria) {
-            return response()->json(['error' => 'Categoría wdsadsadsad no encontrada'], 404);
+            return response()->json(['error' => 'Categoría no encontrada'], 404);
         }
 
         // Buscar la subcategoría por su redirige y que pertenezca a la categoría encontrada
-        $subcategoria = SubcategoriaCarta::where('redirige', $subcategoriaRuta)
-                                            ->where('categoriaId', $categoria->id)
-                                            ->first();
+        $subcategoria = SubcategoriaCarta::where('redirige', '/carta/' . $categoriaRuta . '/' . $subcategoriaRuta)
+            ->where('categoriaId', $categoria->id)
+            ->first();
+        
 
         // Si la subcategoría no existe, devolver un error
         if (!$subcategoria) {
@@ -67,9 +69,9 @@ class CartaController extends Controller
         }
 
         // Obtener los productos de la subcategoría
-        $productos = $subcategoria->productos;
+        $productos = ProductoCarta::where('subcategoriaId', $subcategoria->id)->get();
 
-        // Devolver los productos en formato JSON
+        // Devolver los productos como respuesta JSON
         return response()->json($productos);
     }
     
