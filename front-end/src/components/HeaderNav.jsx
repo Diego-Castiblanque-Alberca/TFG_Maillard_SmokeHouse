@@ -29,12 +29,14 @@ export function Header() {
     return (
         <nav className={`${className} ${scrolledClass} ${isOpen ? 'nav-open' : ''}`}>
             <div className='header__container'>
-                <button className="burguer" onClick={() => setIsOpen(!isOpen)}>
-                    {isOpen ? <img src={closeIcon} alt="Close menu" /> : <img src={burgerIcon} alt="Open menu" />}
-                </button>
-                <Link to="/">
-                    <img src={homeIcon} alt="Home" />
-                </Link>
+                <div>
+                    <button className="burguer" onClick={() => setIsOpen(!isOpen)}>
+                        {isOpen ? <img src={closeIcon} alt="Close menu" /> : <img src={burgerIcon} alt="Open menu" />}
+                    </button>
+                    <Link to="/">
+                        <img src={homeIcon} alt="Home" />
+                    </Link>
+                </div>
                 <ul className='traducir'>
                     <li className='traducir__ES'>
                         <Link to="/en" >ES</Link>

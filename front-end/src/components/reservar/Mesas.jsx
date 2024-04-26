@@ -28,16 +28,21 @@ const images = {
     capacidad8disabled
 };
 
+
+// Leyenda para informar de que se pueden juntar mesas
 export default function Mesas({ mesas, datos, siguientePaso }) {
     const [mesasSeleccionadas, setMesasSeleccionadas] = useState([]);
 
+
     const seleccionarMesa = (nombreMesa) => {
         setMesasSeleccionadas(prevMesas => {
+            console.log("a");
             if (prevMesas.includes(nombreMesa)) {
                 // Si la mesa ya está seleccionada, la deseleccionamos
                 return prevMesas.filter(mesa => mesa !== nombreMesa);
             } else {
                 // Si la mesa no está seleccionada, la seleccionamos
+                console.log(`comensales:${comensales}, capacidadTotalSeleccionada ${capacidadTotalSeleccionada} ` )
                 return [...prevMesas, nombreMesa];
             }
         });
@@ -51,22 +56,37 @@ export default function Mesas({ mesas, datos, siguientePaso }) {
     const puedeConfirmarReserva = () => {
         const porSentar = comensales - capacidadTotalSeleccionada;
         // hay que mejorar esta lógica, ya que cuando porSentar es negativo, no se puede confirmar la reserva
-        return porSentar === 0;
+        if(porSentar <= 0) return true;
+
     }
 
-    const isDisabled = (nombreMesa, detallesMesa) => {
-        if(!detallesMesa.disponibilidad) return true;
-    
+    const isDisabled = (nombreMesa, detallesMesa, indice) => {
+        // Si la mesa está reservada, la deshabilitamos, a evaluar lo seguido del OR
+        if(!detallesMesa.disponibilidad || (mesasSeleccionadas.length==2 && !mesasSeleccionadas.includes(nombreMesa))) return true;
+
+        // evaluar si la capacidad de esta mesa en cuestion mas la de las continuas son suficientes para los comensales
+
+        // Si la mesa no está seleccionada, se sigue evaluando
         if(!mesasSeleccionadas.includes(nombreMesa)) {
+
             const porSentar = comensales - capacidadTotalSeleccionada;
+
+            // si no quedan comensales por sentar y la mesa no está seleccionada, la deshabilitamos
+            if(porSentar === 0) return true;
+
+            // si la mesa no tiene capacidad suficiente para los comensales que quedan por sentar, la deshabilitamos
+            // solo se podrán dejar dos asientos libres
             if(detallesMesa.capacidad - porSentar > 2) return true;
     
-            const ultimaMesaSeleccionada = mesasSeleccionadas[mesasSeleccionadas.length - 1];
+            const mesaSeleccionada = mesasSeleccionadas[0];
             const numeroMesa = parseInt(nombreMesa.replace('mesa', ''));
-            const numeroUltimaMesaSeleccionada = parseInt(ultimaMesaSeleccionada?.replace('mesa', ''));
+            const numeroMesaSeleccionada = parseInt(mesaSeleccionada?.replace('mesa', ''));
     
-            if (ultimaMesaSeleccionada && numeroMesa !== numeroUltimaMesaSeleccionada + 1 && numeroMesa !== numeroUltimaMesaSeleccionada - 1) return true;
+            // si la mesa no es la siguiente o la anterior a la última mesa seleccionada, la deshabilitamos
+            if (mesaSeleccionada && numeroMesa !== numeroMesaSeleccionada + 1 && numeroMesa !== numeroMesaSeleccionada - 1) return true;
         }
+        // si la mesa está seleccionada, no la deshabilitamos
+        return false;
     };
 
     const comensales = datos.comensalesSeleccionado;
@@ -79,7 +99,7 @@ export default function Mesas({ mesas, datos, siguientePaso }) {
                     <button
                         key={nombreMesa}
                         className={`${nombreMesa} ${mesasSeleccionadas.includes(nombreMesa) ? "seleccionada" : ""} ${detallesMesa.disponibilidad ? "disponible" : "no-disponible"}`}
-                        disabled={isDisabled(nombreMesa, detallesMesa)}
+                        disabled={isDisabled(nombreMesa, detallesMesa, indice)}
                         onClick={(e) => {
                             e.preventDefault();
                             seleccionarMesa(nombreMesa)

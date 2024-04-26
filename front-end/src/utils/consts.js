@@ -105,7 +105,7 @@ export const CONSTANTS = {
             disponibilidad: true
         },
         "mesa-7": {
-            capacidad: 2,
+            capacidad: 4,
             disponibilidad: true
         },
         "mesa-8": {

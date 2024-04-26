@@ -13,6 +13,10 @@
     transition: background-color 0.5s ease;
     z-index: 100;
 }
+.burguer{
+    cursor: pointer;
+    flex: 1;
+}
 .in-index, .burguer{
     background-color: transparent;
     /* reglas del nav cuando este en el index */
@@ -21,8 +25,14 @@
     background-color: var(--color-1);
 }
 .header__container{
-    padding: 5px 25px;
+    padding: 5px 25px 5px 20px;
     justify-content: space-between;
+}
+.header__container > div{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 150px;
 }
 
 .traducir__EN, .traducir__ES{

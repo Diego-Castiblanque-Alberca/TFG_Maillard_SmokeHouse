@@ -34,12 +34,14 @@ export function GestionadorReserva() {
     return (
         <>
             <h1 className="titulo-reserva">Haz tu Reserva</h1>
-            <button 
-                onClick={resetToPaso1}
-                className="boton-volver"
-            >
-                Volver
-            </button>
+            {paso > 1 && paso < 4 && (
+                <button 
+                    onClick={resetToPaso1}
+                    className="boton-volver"
+                >
+                    Volver
+                </button>
+            )}
             <div
             className="form-reservar">
                 {pasoARenderizar()}

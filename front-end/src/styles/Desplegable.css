@@ -1,5 +1,6 @@
 .desplegable{
-    position: fixed;
+    position: absolute;
+    z-index: -1;
     top: -100vh;
     left: 0;
     width: 100%;
