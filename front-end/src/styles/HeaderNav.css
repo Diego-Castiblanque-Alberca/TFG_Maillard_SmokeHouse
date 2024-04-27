@@ -47,6 +47,12 @@
 .traducir__EN{
     color: var(--color-5);
 }
+
+.in-reservar,.in-carta{
+    color: var(--color-5);
+    border: 0.5px var(--color-5) solid;
+}
+
 @media screen and (min-width: 768px){
     .header__container{
         flex: 1 1 auto;

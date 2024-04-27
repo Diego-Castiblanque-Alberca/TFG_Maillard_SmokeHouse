@@ -28,6 +28,18 @@ const images = {
     capacidad8disabled
 };
 
+const mesasContiguas = {
+    1: [4],
+    2: [1, 5],
+    3: [2, 6],
+    4: [1, 7],
+    5: [2, 4, 8],
+    6: [3, 5, 9],
+    7: [4, 8],
+    8: [5, 7, 9],
+    9: [6, 8]
+};
+
 
 // Leyenda para informar de que se pueden juntar mesas
 export default function Mesas({ mesas, datos, siguientePaso }) {
@@ -79,11 +91,11 @@ export default function Mesas({ mesas, datos, siguientePaso }) {
             if(detallesMesa.capacidad - porSentar > 2) return true;
     
             const mesaSeleccionada = mesasSeleccionadas[0];
-            const numeroMesa = parseInt(nombreMesa.replace('mesa', ''));
-            const numeroMesaSeleccionada = parseInt(mesaSeleccionada?.replace('mesa', ''));
+            const numeroMesa = parseInt(nombreMesa.replace('mesa-', ''));
+            const numeroMesaSeleccionada = parseInt(mesaSeleccionada?.replace('mesa-', ''));
     
             // si la mesa no es la siguiente o la anterior a la última mesa seleccionada, la deshabilitamos
-            if (mesaSeleccionada && numeroMesa !== numeroMesaSeleccionada + 1 && numeroMesa !== numeroMesaSeleccionada - 1) return true;
+            if (mesaSeleccionada && !mesasContiguas[numeroMesaSeleccionada].includes(numeroMesa)) return true;
         }
         // si la mesa está seleccionada, no la deshabilitamos
         return false;

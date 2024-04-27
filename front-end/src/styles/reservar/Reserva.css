@@ -10,6 +10,7 @@
     text-align: left;
     background-color: transparent;
     text-decoration: underline;
+    cursor: pointer;
 }
 
 .form-reservar{

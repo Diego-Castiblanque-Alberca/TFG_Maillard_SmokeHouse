@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import '../../styles/reservar/Reserva.css';
 import ReservaPaso1 from './ReservaPaso1';
@@ -18,6 +18,15 @@ export function GestionadorReserva() {
         setDatos({});
         setPaso(1);
     };
+
+    useEffect(() => {
+        const resetHandler = () => resetToPaso1();
+        window.addEventListener('resetToPaso1', resetHandler);
+
+        return () => {
+            window.removeEventListener('resetToPaso1', resetHandler);
+        };
+    }, []);
 
     const pasoARenderizar = () => {
         switch (paso) {
