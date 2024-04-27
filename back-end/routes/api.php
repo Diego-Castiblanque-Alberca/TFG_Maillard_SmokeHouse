@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\CartaController;
+use App\Http\Controllers\ReservaController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -35,3 +36,9 @@ Route::get('/carta/{categoriaRuta}/{subcategoriaRuta}', [CartaController::class,
 // La ruta '/carta' llama al método 'categorias' del controlador 'CartaController' cuando se recibe una solicitud GET.
 // La ruta '/carta/{categoria}' llama al método 'subcategorias' del mismo controlador cuando se recibe una solicitud GET. Esta ruta tiene un parámetro de ruta '{categoria}' que puedes usar en tu controlador para obtener las subcategorías de la categoría especificada.
 // La ruta '/carta/{categoria/{subcategoria}' llama al método 'productos' del mismo controlador cuando se recibe una solicitud GET. Esta ruta tiene dos parámetros de ruta '{categoria}' y '{subcategoria}' que puedes usar en tu controlador para obtener los productos de la subcategoría especificada.
+
+
+Route::post('/reserva', [ReservaController::class,'horariosDisponibles']);
+
+
+
