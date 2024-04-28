@@ -20,9 +20,7 @@ export default function ReservaPaso2({siguientePaso, datos}) {
         })
             .then(response => response.json())
             .then(mesas => setMesas(mesas));
-        setTimeout(() => {
-            setMesas(CONSTANTS.MESAS)
-        }, 1000);
+ 
     }, [datos]);
 
     return (
@@ -31,7 +29,7 @@ export default function ReservaPaso2({siguientePaso, datos}) {
             <h2 style={{color: "var(--color-3)", fontSize: "25px"}}>Elige tu mesa</h2>
             <h3 style={{color:"var(--color-4)", fontSize:"20px"}}>Puedes juntar hasta 2 mesas</h3>
             <Leyenda texto1="No disponible" texto2="Disponible" texto3="Seleccionada"/>
-            <Mesas mesas={CONSTANTS.MESAS} datos={datos} siguientePaso={siguientePaso} />
+            <Mesas mesas={mesas} datos={datos} siguientePaso={siguientePaso} />
         </>
     )
 }
