@@ -11,18 +11,23 @@ export default function ReservaPaso1({siguientePaso}) {
     hoy.setHours(0, 0, 0, 0);
     const [fechaSeleccionada, setFechaSeleccionada] = useState(hoy);
     const [comensalesSeleccionado, setComensalesSeleccionado] = useState(2);
-
-    const obtenerHorariosDisponibles = (fechaSeleccionada, comensalesSeleccionado) => {
-        //se simula la obtención de los horarios disponibles de la api
-        return CONSTANTS.HORARIOS_DISPONIBLES;
-    };
-
-    const [horariosDisponibles, setHorariosDisponibles] = useState(obtenerHorariosDisponibles(fechaSeleccionada, comensalesSeleccionado));
+    const [horariosDisponibles, setHorariosDisponibles] = useState([]);
 
     useEffect(() => {
-        setHorariosDisponibles(obtenerHorariosDisponibles(fechaSeleccionada, comensalesSeleccionado));
-    }, [fechaSeleccionada,comensalesSeleccionado]);
-    
+        fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/reserva`,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                fecha: formatearFecha(fechaSeleccionada), 
+            }),
+        })
+            .then(response => response.json())
+            .then(horarios => setHorariosDisponibles(horarios))
+            .catch(error => console.error('Error:', error));
+    }, [fechaSeleccionada]);
+
     const formatearFecha = (date) => {
         const year = date.getFullYear();
         const month = date.getMonth() + 1; 

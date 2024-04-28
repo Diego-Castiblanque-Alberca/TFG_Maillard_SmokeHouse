@@ -39,10 +39,10 @@ export function Header() {
                 </div>
                 <ul className='traducir'>
                     <li className='traducir__ES'>
-                        <Link to="/en" >ES</Link>
+                        ES
                     </li>
                     <li className='traducir__EN'>
-                        <Link to="/es">EN</Link>
+                        EN
                     </li>
                 </ul>
             </div>

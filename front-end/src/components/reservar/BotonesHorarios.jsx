@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import '../../styles/reservar/BotonesHorarios.css';
 
 //por implementar, se podria usar la fecha actual para comprobrobar si el horario ya paso, por ejemplo si ya se esta
@@ -9,30 +8,34 @@ export function BotonesHorarios({horariosDisponibles, siguientePaso , comensales
         siguientePaso({ horario , comensalesSeleccionado, fechaSeleccionada});
     };
 
-    const botones = (horario) => {
-        return Object.entries(horario).map(([horario, disponible], index) => {
+    const horariosComida = horariosDisponibles.slice(0,9);
+    const horariosCena = horariosDisponibles.slice(9);
+
+    const botones = (horarios) => {
+        return horarios.map((horario, index) => {
             return (
-                <Link 
-                    onClick={() => disponible && handleClick(horario)} 
+                <button 
+                    onClick={() => horario.disponible && handleClick(horario.horario)} 
                     key={index} 
-                    className={disponible ? 'boton-horario disponible' : 'boton-horario no-disponible'}
-                    disabled={!disponible}
+                    className={horario.disponible ? 'boton-horario disponible' : 'boton-horario no-disponible'}
+                    disabled={!horario.disponible}
                 >
-                    {horario}
-                </Link>
+                    {horario.horario}
+                </button>
             );
         });
     }
+
 
     return (
         <div className="botones-horarios">
             <div className="botones-horarios-comida">
                 <p>Comida</p>
-                {botones(horariosDisponibles.comida)}
+                {botones(horariosComida)}
             </div>
             <div className="botones-horarios-comida">
                 <p>Cena</p>
-                {botones(horariosDisponibles.cena)}
+                {botones(horariosCena)}
             </div>
         </div>
     )
