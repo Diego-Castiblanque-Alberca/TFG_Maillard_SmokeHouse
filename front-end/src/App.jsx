@@ -13,8 +13,8 @@ import Acompanantes from './views/carta/platos/Acompanantes.jsx';
 import Entrantes from './views/carta/platos/Entrantes.jsx';
 import Principales from './views/carta/platos/Principales.jsx';
 import Postres from './views/carta/platos/Postres.jsx';
-import LoginBackOffice from './views/LoginBackOffice';
-
+import LoginBackOffice from './views/BackOffice/LoginBackOffice.jsx';
+import BackOffice from './views/BackOffice/BackOffice.jsx';
 
 const routes = [
   { path: '/', element: <Home />, index: true },
@@ -32,6 +32,7 @@ const routes = [
   { path: 'carta/platos/principales', element: <Principales /> },
   { path: 'carta/platos/postres', element: <Postres /> },
   { path: 'login/backOffice', element: <LoginBackOffice /> },
+  { path: 'backOffice', element: <BackOffice /> }
 ]; 
 
 export function App() {

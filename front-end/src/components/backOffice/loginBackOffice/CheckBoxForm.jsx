@@ -1,4 +1,4 @@
-import '../../styles/loginbackOffice/CheckBoxForm.css';
+import '../../../styles/loginbackOffice/CheckBoxForm.css';
 
 export const CheckBoxForm = ({label, name, value, onBlur, required}) => {
     

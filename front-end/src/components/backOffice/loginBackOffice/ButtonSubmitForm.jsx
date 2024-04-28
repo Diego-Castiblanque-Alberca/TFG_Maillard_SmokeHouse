@@ -1,4 +1,4 @@
-import '../../styles/loginbackOffice/ButtonSubmit.css';
+import '../../../styles/loginbackOffice/ButtonSubmit.css';
 
 export const ButtonSubmit = ({label="Enviar", onClick}) => {
     return (
