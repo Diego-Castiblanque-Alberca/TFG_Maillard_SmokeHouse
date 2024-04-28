@@ -21,11 +21,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::post('login',[UserController::class,'loginUser']);
+Route::post('/login',[UserController::class,'loginUser']);
+Route::get('/validateToken',[UserController::class,'validateToken']);
 
 Route::group(['middleware' => 'auth:sanctum'],function(){
-    Route::get('user',[UserController::class,'userDetails']);
-    Route::get('logout',[UserController::class,'logout']);
+    Route::get('/user',[UserController::class,'userDetails']);
+    Route::get('/logout',[UserController::class,'logout']);
 });
 
 

@@ -1,4 +1,4 @@
-import '../../styles/loginbackOffice/InputForm.css'
+import '../../../styles/loginbackOffice/InputForm.css'
 import { useState } from 'react';
 
 export const InputForm = ({label, type, name, id, value, placeholder, required, pattern, autoComplete, mensajeError}) => {
