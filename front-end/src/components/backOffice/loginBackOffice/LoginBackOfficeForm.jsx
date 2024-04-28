@@ -12,7 +12,7 @@ export const LoginBackOfficeForm = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const token = localStorage.getItem('authToken');
+        const token = (localStorage.getItem('authToken') || sessionStorage.getItem('authToken'));
 
         if (token) {
             fetch('http://localhost:8000/api/validateToken', {
