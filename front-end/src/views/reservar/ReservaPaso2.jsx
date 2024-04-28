@@ -8,11 +8,13 @@ export default function ReservaPaso2({siguientePaso, datos}) {
     const [mesas, setMesas] = useState({});
 
     useEffect(() => {
-        // Reemplaza 'url_de_tu_api' con la URL de tu API
-        // fetch('url_de_tu_api')
-        //     .then(response => response.json())
-        //     .then(data => setMesas(data.MESAS))
-        //     .catch(error => console.error('Error:', error));
+        fetch("/reserva/mesas",{
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        }).then(response => response.json())
+            .then(data => setMesas(data));
         setTimeout(() => {
             setMesas(CONSTANTS.MESAS)
         }, 1000);

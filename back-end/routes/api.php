@@ -40,5 +40,6 @@ Route::get('/carta/{categoriaRuta}/{subcategoriaRuta}', [CartaController::class,
 
 Route::post('/reserva', [ReservaController::class,'horariosDisponibles']);
 
+Route::post('/reserva/mesas', [ReservaController::class,'mesasDisponibles']);
 
 

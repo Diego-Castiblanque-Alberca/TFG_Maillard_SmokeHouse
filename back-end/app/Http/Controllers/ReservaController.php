@@ -16,6 +16,7 @@ class ReservaController extends Controller
         $mesas = Mesa::all();
         $reservas = Reserva::where('fecha_reserva', $fecha)->get();
         $horariosDisponibles = [];
+        
         foreach ($horarios as $horario) {
             $mesasDisponibles = [];
             foreach ($mesas as $mesa) {
@@ -38,5 +39,28 @@ class ReservaController extends Controller
             }
         }
         return response()->json($horariosDisponibles);
+    }
+
+    public function mesasDisponibles(Request $request)
+    {
+        $fecha = $request->input('fecha');
+        $horario = $request->input('horario');
+        $mesas = Mesa::all();
+        $reservas = Reserva::where('fecha_reserva', $fecha)->get();
+        
+        $mesasDisponibles = [];
+        foreach ($mesas as $mesa) {
+            $mesaDisponible = true;
+            foreach ($reservas as $reserva) {
+                $horarioInicio = Horario::find($reserva->horario_inicio);
+                $horarioFin = Horario::find($reserva->horario_fin);
+                if (($horarioInicio->hora == $horario || $horarioFin->hora == $horario ) && ($reserva->mesa1_id == $mesa->id || $reserva->mesa2_id == $mesa->id)) {
+                    $mesaDisponible = false;
+                    break;
+                }
+            }
+            $mesasDisponibles["mesa-" . $mesa->id] = ["capacidad" => $mesa->capacidad,"disponibilidad"=>$mesaDisponible];
+        }
+        return response()->json($mesasDisponibles);
     }
 }
