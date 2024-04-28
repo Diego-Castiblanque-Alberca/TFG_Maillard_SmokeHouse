@@ -4,6 +4,8 @@ import { es } from 'date-fns/locale';
 import 'react-day-picker/dist/style.css';
 import '../../styles/reservar/Calendario.css';
 
+// BUGG CUANDO SE CLICKA POR SEGUNDA VEZ EN UNA FECHA SELECCIONADA
+
 export function Calendario({ fechaSeleccionada,setFechaSeleccionada}) {
     const hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
@@ -13,7 +15,6 @@ export function Calendario({ fechaSeleccionada,setFechaSeleccionada}) {
     const diasAnteriores={color: "var(--color-5)",backgroundColor: "transparent"}
 
     const manejarSelected = (date) => {
-        console.log(date);
         setSelected(date);
         setFechaSeleccionada(date);
     };

@@ -8,13 +8,18 @@ export default function ReservaPaso2({siguientePaso, datos}) {
     const [mesas, setMesas] = useState({});
 
     useEffect(() => {
-        fetch("/reserva/mesas",{
-            method: "GET",
+        fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/reserva/mesas`,{
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json",
-            }
-        }).then(response => response.json())
-            .then(data => setMesas(data));
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                fecha: datos.fechaSeleccionada,
+                horario: datos.horario,
+            }),
+        })
+            .then(response => response.json())
+            .then(mesas => setMesas(mesas));
         setTimeout(() => {
             setMesas(CONSTANTS.MESAS)
         }, 1000);

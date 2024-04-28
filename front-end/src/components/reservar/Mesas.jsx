@@ -48,13 +48,11 @@ export default function Mesas({ mesas, datos, siguientePaso }) {
 
     const seleccionarMesa = (nombreMesa) => {
         setMesasSeleccionadas(prevMesas => {
-            console.log("a");
             if (prevMesas.includes(nombreMesa)) {
                 // Si la mesa ya está seleccionada, la deseleccionamos
                 return prevMesas.filter(mesa => mesa !== nombreMesa);
             } else {
                 // Si la mesa no está seleccionada, la seleccionamos
-                console.log(`comensales:${comensales}, capacidadTotalSeleccionada ${capacidadTotalSeleccionada} ` )
                 return [...prevMesas, nombreMesa];
             }
         });
