@@ -15,6 +15,7 @@ export function Calendario({ fechaSeleccionada,setFechaSeleccionada}) {
     const diasAnteriores={color: "var(--color-5)",backgroundColor: "transparent"}
 
     const manejarSelected = (date) => {
+        if(date == undefined) return;
         setSelected(date);
         setFechaSeleccionada(date);
     };

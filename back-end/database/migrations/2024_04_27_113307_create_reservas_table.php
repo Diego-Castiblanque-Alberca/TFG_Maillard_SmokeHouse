@@ -19,7 +19,7 @@ return new class extends Migration
             $table->date('fecha_reserva');
             $table->primary(['cliente_correo', 'fecha_reserva']);
             $table->foreignId('horario_inicio')->constrained('horarios');
-            $table->foreignId('horario_fin')->constrained('horarios');
+            $table->foreignId('horario_fin')->nullable()->constrained('horarios');
             $table->integer('num_comensales');
             $table->timestamps();
         });

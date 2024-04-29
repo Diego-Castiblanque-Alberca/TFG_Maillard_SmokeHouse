@@ -56,4 +56,6 @@ Route::post('/reserva', [ReservaController::class,'horariosDisponibles']);
 
 Route::post('/reserva/mesas', [ReservaController::class,'mesasDisponibles']);
 
+Route::post('/reserva/reservar', [ReservaController::class,'guardarReserva']);
+
 

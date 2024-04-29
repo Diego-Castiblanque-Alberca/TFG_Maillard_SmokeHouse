@@ -37,7 +37,7 @@ export function GestionadorReserva() {
             case 3:
                 return <ReservaPaso3 siguientePaso={siguientePaso} datos={datos} />;
             case 4:
-                return <ReservaPaso4 resetToPaso1={resetToPaso1} datos={datos} />;
+                return <ReservaPaso4 datos={datos} />;
         }
     }
     return (
