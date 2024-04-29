@@ -75,19 +75,32 @@ export default function FormReserva({ siguientePaso, datos }) {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (esFormularioValido()) {
+            
             datos = {
                 ...datos,
                 nombre: formState.nombre.value,
                 apellidos: formState.apellidos.value,
                 email: formState.email.value,
-                prefijoTelefono: formState.prefijoTelefono,
-                telefono: formState.telefono.value,
-                politicas: formState.politicas,
+                telefono: formState.prefijoTelefono + formState.telefono.value,
+                politicas: formState.politicas.value,
                 comunicaciones: formState.comunicaciones
             };
-            // Here you can handle the form submission, e.g. send the data to a server
-            siguientePaso(datos);
+            console.log(datos);
+            fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/reserva/reservar`,{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(datos),
+            })
+                .then(response => response.json())
+                .then(() =>{
+                    siguientePaso(datos)
+                })
+                .catch(error => console.error('Error:', error));
+            
         }else{
+            //aqui puede haber un popup de error
             alert('El formulario contiene errores');
         }
     };
