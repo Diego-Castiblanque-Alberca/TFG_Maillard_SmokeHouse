@@ -1,43 +1,24 @@
 import '../../../styles/loginbackOffice/LoginBackOfficeForm.css';
 
-import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { ButtonSubmit } from './ButtonSubmitForm';
 import { InputForm } from './InputForm';
 import { CheckBoxForm } from './CheckBoxForm';
-
+import { useAuth } from '../../../hooks/useAuth';
 
 export const LoginBackOfficeForm = () => {
-    const navigate = useNavigate();
+    const navigate = useNavigate(); // Usa useAuth para obtener la información del usuario
+    const user = useAuth();
 
     useEffect(() => {
-        const token = (localStorage.getItem('authToken') || sessionStorage.getItem('authToken'));
-
-        if (token) {
-            fetch('http://localhost:8000/api/validateToken', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-                .then(response => {
-                    if (response.status !== 200) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.valid) {
-                        navigate('/backOffice');
-                    }
-                })
-                .catch(error => {
-                    console.error('There was an error!', error);
-                });
+        console.log('0');
+        if (user){
+            console.log('1');
+            navigate('/backOffice');
         }
-    }, [navigate]);
+          }, [navigate, user]);
+        
 
     //Función que se ejecuta cuando se envía el formulario
     const handleSubmit = (e) => {

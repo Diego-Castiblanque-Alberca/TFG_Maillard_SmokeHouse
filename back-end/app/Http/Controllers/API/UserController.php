@@ -74,34 +74,13 @@ class UserController extends Controller
 
     public function validateToken(Request $request)
     {
-        // Puedes usar el método $request->bearerToken() para obtener el token del encabezado de autorización.
-        $token = $request->bearerToken();
+      // Check if the user is authenticated and return the user data
+      if (Auth::check()) {
 
-        // Luego, valida el token y devuelve una respuesta.
-        // Este es solo un ejemplo y necesitarás implementar la lógica de validación del token según tus necesidades.
-        if ($token) {
-            // Busca el token en la base de datos
-            $tokenRecord = DB::table('personal_access_tokens')
-                ->where('token', hash('sha256', $token))
-                ->first();
+        $user = Auth::user();
+        return Response(['data' => $user], 200);
+    }
 
-           /*  // Si el token no existe, devuelve una respuesta con un estado 401
-            if (!$tokenRecord) {
-                return response()->json(['valid' => false], 401);
-            }
-            
-Error en esta parte del código
-
-            // Si el token existe pero ha caducado, devuelve una respuesta con un estado 401
-            if ($tokenRecord->expires_at !== null && Carbon::parse($tokenRecord->expires_at)->isPast()) {
-                return response()->json(['valid' => false], 401);
-            } */
-
-            // Si el token existe y no ha caducado, devuelve una respuesta con un estado 200
-            return response()->json(['valid' => true, 'token'=>$tokenRecord], 200);
-
-        } else {
-            return response()->json(['valid' => false], 401);
-        }
+    return Response(['error' => 'Unauthorized'], 401);
     }
 }
