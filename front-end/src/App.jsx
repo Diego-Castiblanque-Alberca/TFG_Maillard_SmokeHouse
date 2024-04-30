@@ -15,7 +15,7 @@ import Principales from './views/carta/platos/Principales.jsx';
 import Postres from './views/carta/platos/Postres.jsx';
 import LoginBackOffice from './views/BackOffice/LoginBackOffice.jsx';
 import BackOffice from './views/BackOffice/BackOffice.jsx';
-import Privateroute from './components/backOffice/backOffice/PrivateRoute.jsx';
+import PrivateRoute from './components/backOffice/backOffice/PrivateRoute.jsx';
 
 const routes = [
   { path: '/', element: <Home />, index: true },
@@ -33,7 +33,7 @@ const routes = [
   { path: 'carta/platos/principales', element: <Principales /> },
   { path: 'carta/platos/postres', element: <Postres /> },
   { path: 'login/backOffice', element: <LoginBackOffice /> },
-  { path: 'backOffice', element: <Privateroute><BackOffice /></Privateroute> }
+  { path: 'backOffice', element: <BackOffice />, isPrivate: true }
 ]; 
 
 export function App() {
@@ -44,7 +44,7 @@ export function App() {
           <Route 
             key={index}
             path={route.path}
-            element={route.element}
+            element={route.isPrivate ? <PrivateRoute>{route.element}</PrivateRoute> : route.element}
           />
         ))}
       </Routes>

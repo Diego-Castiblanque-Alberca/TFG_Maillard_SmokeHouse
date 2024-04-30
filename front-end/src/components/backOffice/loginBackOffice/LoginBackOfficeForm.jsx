@@ -1,25 +1,13 @@
 import '../../../styles/loginbackOffice/LoginBackOfficeForm.css';
 
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
 import { ButtonSubmit } from './ButtonSubmitForm';
 import { InputForm } from './InputForm';
 import { CheckBoxForm } from './CheckBoxForm';
-import { useAuth } from '../../../hooks/useAuth';
+
 
 export const LoginBackOfficeForm = () => {
-    const navigate = useNavigate(); // Usa useAuth para obtener la información del usuario
-    const user = useAuth();
-
-    useEffect(() => {
-        console.log('0');
-        if (user){
-            console.log('1');
-            navigate('/backOffice');
-        }
-          }, [navigate, user]);
-        
-
+    const navigate = useNavigate();
     //Función que se ejecuta cuando se envía el formulario
     const handleSubmit = (e) => {
         const form = e.target;
@@ -55,10 +43,10 @@ export const LoginBackOfficeForm = () => {
                 .then(data => {
                     if (data.token && remember) {
                         localStorage.setItem('authToken', data.token);
-                        navigate('/backOffice');
+                        navigate('/backOffice',{ state: { from: location.pathname } });
                     } else {
                         sessionStorage.setItem('authToken', data.token);
-                        navigate('/backOffice');
+                        navigate('/backOffice',{ state: { from: location.pathname } });
                     }
                 })
                 .catch(error => {
