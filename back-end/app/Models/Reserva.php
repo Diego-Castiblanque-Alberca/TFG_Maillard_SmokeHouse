@@ -11,7 +11,7 @@ use App\Models\Fecha;
 class Reserva extends Model
 {
     protected $table = 'reservas';
-    protected $primaryKey = ['mesa1_id', 'mesa2_id', 'cliente_correo', 'fecha'];
+    protected $primaryKey = ['cliente_id', 'fecha'];
 
     public $incrementing = false;
     
@@ -27,7 +27,7 @@ class Reserva extends Model
 
     public function cliente()
     {
-        return $this->belongsTo(Cliente::class, 'cliente_correo');
+        return $this->belongsTo(Cliente::class, 'cliente_id');
     }
 
     public function horarioInicio()

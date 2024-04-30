@@ -14,14 +14,13 @@ return new class extends Migration
         Schema::create('reservas', function (Blueprint $table) {
             $table->foreignId('mesa1_id')->constrained('mesas');
             $table->foreignId('mesa2_id')->nullable()->constrained('mesas');
-            $table->string('cliente_correo');
-            $table->foreign('cliente_correo')->references('correo')->on('clientes');
+            $table->foreignId('cliente_id')->constrained('clientes');
             $table->date('fecha_reserva');
-            $table->primary(['cliente_correo', 'fecha_reserva']);
             $table->foreignId('horario_inicio')->constrained('horarios');
             $table->foreignId('horario_fin')->nullable()->constrained('horarios');
             $table->integer('num_comensales');
             $table->timestamps();
+            $table->primary(['cliente_id', 'fecha_reserva']);
         });
     }
 
