@@ -78,7 +78,10 @@ class UserController extends Controller
       if (Auth::check()) {
 
         $user = Auth::user();
-        return Response(['data' => $user], 200);
+        return Response([
+            'data' => [
+                'name' => $user->name]
+            ], 200);
     }
 
     return Response(['error' => 'Unauthorized'], 401);
