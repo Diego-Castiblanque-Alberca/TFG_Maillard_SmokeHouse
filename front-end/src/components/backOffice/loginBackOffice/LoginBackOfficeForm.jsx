@@ -1,8 +1,6 @@
 import '../../../styles/loginbackOffice/LoginBackOfficeForm.css';
 
-import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
 import { ButtonSubmit } from './ButtonSubmitForm';
 import { InputForm } from './InputForm';
 import { CheckBoxForm } from './CheckBoxForm';
@@ -10,35 +8,6 @@ import { CheckBoxForm } from './CheckBoxForm';
 
 export const LoginBackOfficeForm = () => {
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const token = (localStorage.getItem('authToken') || sessionStorage.getItem('authToken'));
-
-        if (token) {
-            fetch('http://localhost:8000/api/validateToken', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-                .then(response => {
-                    if (response.status !== 200) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.valid) {
-                        navigate('/backOffice');
-                    }
-                })
-                .catch(error => {
-                    console.error('There was an error!', error);
-                });
-        }
-    }, [navigate]);
-
     //Función que se ejecuta cuando se envía el formulario
     const handleSubmit = (e) => {
         const form = e.target;
@@ -74,10 +43,10 @@ export const LoginBackOfficeForm = () => {
                 .then(data => {
                     if (data.token && remember) {
                         localStorage.setItem('authToken', data.token);
-                        navigate('/backOffice');
+                        navigate('/backOffice',{ state: { from: location.pathname } });
                     } else {
                         sessionStorage.setItem('authToken', data.token);
-                        navigate('/backOffice');
+                        navigate('/backOffice',{ state: { from: location.pathname } });
                     }
                 })
                 .catch(error => {

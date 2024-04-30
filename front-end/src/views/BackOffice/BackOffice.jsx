@@ -4,7 +4,7 @@ import MainBackOffice from "../../components/backOffice/backOffice/MainBackOffic
 
 
 
-export default function Contacto() {
+export default function BackOffice() {
 
     
     return (
