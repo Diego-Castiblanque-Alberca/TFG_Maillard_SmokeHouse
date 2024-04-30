@@ -7,11 +7,11 @@ use App\Models\Reserva;
 class Cliente extends Model
 {
     protected $table = 'clientes';
-    protected $primaryKey = 'correo';
+    protected $primaryKey = 'id';
 
     public function reservas()
     {
-        return $this->hasMany(Reserva::class, 'cliente_correo');
+        return $this->hasMany(Reserva::class, 'cliente_id');
     }
 }
 ?>

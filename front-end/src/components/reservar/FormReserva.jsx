@@ -85,7 +85,6 @@ export default function FormReserva({ siguientePaso, datos }) {
                 politicas: formState.politicas.value,
                 comunicaciones: formState.comunicaciones
             };
-            console.log(datos);
             fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/reserva/reservar`,{
                 method: 'POST',
                 headers: {
@@ -94,11 +93,8 @@ export default function FormReserva({ siguientePaso, datos }) {
                 body: JSON.stringify(datos),
             })
                 .then(response => response.json())
-                .then(() =>{
-                    siguientePaso(datos)
-                })
+                .then(data => siguientePaso(datos))
                 .catch(error => console.error('Error:', error));
-            
         }else{
             //aqui puede haber un popup de error
             alert('El formulario contiene errores');

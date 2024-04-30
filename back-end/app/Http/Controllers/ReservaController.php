@@ -6,9 +6,15 @@ use App\Models\Horario;
 use App\Models\Mesa;
 use App\Models\Reserva;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
 
 class ReservaController extends Controller
 {
+    const ULTIMO_HORARIO_CENA = "23:00";
+    const ULTIMO_HORARIO_COMIDA = "16:00";
+
     public function horariosDisponibles(Request $request)
     {
         $fecha = $request->input('fecha');
@@ -66,46 +72,79 @@ class ReservaController extends Controller
 
     public function guardarReserva(Request $request)
     {
-      if($request->input('politicas')){
-        $fecha = $request->input('fechaSeleccionada');
-        $horario = $request->input('horario');
-        $mesas = $request->input('mesasSeleccionadas');
-        $mesa1 = $mesas[0];
-        if(count($mesas)>1){
-            $mesa2 = $mesas[1];
-        }
-        $cliente = Cliente::find($request->input('email'));
         
-        if(!$cliente){
-            $cliente = new Cliente();
-            $cliente->nombre = $request->input('nombre');
-            $cliente->correo = $request->input('email');
-            $cliente->apellido = $request->input('apellidos');
-            $cliente->telefono = $request->input('telefono');
-            $cliente->consiente = $request->input('comunicaciones');
-            $cliente->save();
+        // Validación de la entrada
+
+        $datosValidados = $request->validate([
+            'politicas' => 'required|boolean',
+            'fechaSeleccionada' => 'required|date',
+            'horario' => 'required|string|in:12:00,12:30,13:00,13:30,14:00,14:30,15:00,15:30,16:00,20:00,21:00,22:00,23:00',
+            'mesasSeleccionadas' => 'required|array|min:1|max:2',
+            'nombre' => 'required|string|max:255',
+            'apellidos' => 'required|string|max:255',
+            'telefono' => 'required|string|min:12|max:12',
+            'email' => 'required|email|max:255',
+            'comunicaciones' => 'required|boolean',
+            'comensalesSeleccionado' => 'required|integer|min:1|max:8',
+        ]);
+        if($datosValidados['politicas']){
+            DB::beginTransaction();
+            try {
+                $cliente = Cliente::firstWhere('correo', $datosValidados['email']);
+                
+                if(!$cliente){
+                    $cliente = new Cliente();
+                } 
+                
+                $cliente->nombre = $datosValidados['nombre'];
+                $cliente->correo = $datosValidados['email'];
+                $cliente->apellido = $datosValidados['apellidos'];
+                $cliente->telefono = $datosValidados['telefono'];
+                $cliente->consiente = $datosValidados['comunicaciones'];
+                $cliente->save();
+
+                $reserva = new Reserva();
+                $reserva->fecha_reserva = $datosValidados['fechaSeleccionada'];
+                $reserva->horario_inicio = Horario::where('hora', $datosValidados['horario'])->first()->id;
+                if($datosValidados['horario'] == self::ULTIMO_HORARIO_CENA || $datosValidados['horario'] == self::ULTIMO_HORARIO_COMIDA){
+                    $reserva->horario_fin = null;
+                }else{
+                    $reserva->horario_fin = Horario::where('hora', $datosValidados['horario'])->first()->id + 1;
+                }
+                $reserva->mesa1_id = Mesa::where('id', explode("-", $datosValidados['mesasSeleccionadas'][0])[1])->first()->id;
+                $reserva->num_comensales = $datosValidados['comensalesSeleccionado'];
+                $reserva->mesa2_id = count($datosValidados['mesasSeleccionadas'])>1 ? Mesa::where('id', explode("-", $datosValidados['mesasSeleccionadas'][1])[1])->first()->id : null;
+                $reserva->cliente_id = $cliente->id; 
+
+                $reservaExistente = Reserva::where('cliente_id', $cliente->id)
+                           ->where('fecha_reserva', $datosValidados['fechaSeleccionada'])
+                           ->first();
+                if ($reservaExistente) {
+                    // La reserva ya existe
+                    return response()->json('Ya existe una reserva para este cliente en la fecha seleccionada. Por favor, seleccione una fecha diferente.', 400);
+                } else {
+                    // La reserva no existe
+                    // Procede a guardar la nueva reserva
+                    $reserva->save();
+                }
+                $reserva->save();
+
+                DB::commit();
+                return response()->json($reserva);
+            } catch (\Exception $e) {
+                DB::rollback();
+                Log::error($e);
+                return response()->json('Error al crear la reserva. Por favor, inténtelo de nuevo más tarde.', 500);
+            }
+        }else{
+            return response()->json("No se han aceptado las políticas de privacidad");
         }
-        $reserva = new Reserva();
-        $reserva->fecha_reserva = $fecha;
-        //controlar aqui si el horario es el de las 16 o 23 para que no meta un horario de fin, tambien agregar un nullable a ese campo en la migracion
-        $reserva->horario_inicio = Horario::where('hora', $horario)->first()->id;
-        return response()->json($reserva->horario_inicio);
-        // $reserva->horario_fin = Horario::where('hora', $horario)->first()->id + 1;
-        // $reserva->mesa1_id = $mesa1;
-        // $reserva->num_comensales = $request->input('comensalesSeleccionado');
-        // if($mesa2){
-        //     $reserva->mesa2_id = $mesa2;
-        // }else{
-        //     $reserva->mesa2_id = null;
-        // }
-        // $reserva->cliente()->associate($cliente);
-        // $reserva->save();
-        // return response()->json($reserva);
-      }else{
-        return response()->json("No se han aceptado las políticas de privacidad");
-      }
     }
+    
 }
+
+// el error es que el correo se guarda 0 como valor, por lo que hacer la reserva da error porqie el id no existe en la tabla,
+// posible solucion: cambiar el correo por un id autoincremental en la tabla clientes, en la migracion
 
 // peticion json prueba:
 // {
@@ -148,5 +187,4 @@ class ReservaController extends Controller
 // ('21:30'),
 // ('22:00'),
 // ('22:30'),
-// ('23:00'),
-// ('23:30');
+// ('23:00');
