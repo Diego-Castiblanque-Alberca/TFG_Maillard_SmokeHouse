@@ -77,3 +77,7 @@
 .input-error {
     outline: 2px solid red;
 }
+
+.mensaje-error{
+    color : red;
+}

@@ -74,7 +74,8 @@ class ReservaController extends Controller
     {
         
         // Validación de la entrada
-
+        //si los datos no pasan la validación, Laravel automáticamente retornará una respuesta 
+        //con un código de estado 422 (Unprocessable Entity)  y un JSON con los errores de validación.
         $datosValidados = $request->validate([
             'politicas' => 'required|boolean',
             'fechaSeleccionada' => 'required|date',
@@ -121,7 +122,7 @@ class ReservaController extends Controller
                            ->first();
                 if ($reservaExistente) {
                     // La reserva ya existe
-                    return response()->json('Ya existe una reserva para este cliente en la fecha seleccionada. Por favor, seleccione una fecha diferente.', 400);
+                    return response()->json(['mensaje' => 'Ya existe una reserva para este cliente en la fecha seleccionada. Por favor, seleccione una fecha diferente.'], 400);
                 } else {
                     // La reserva no existe
                     // Procede a guardar la nueva reserva
@@ -134,17 +135,14 @@ class ReservaController extends Controller
             } catch (\Exception $e) {
                 DB::rollback();
                 Log::error($e);
-                return response()->json('Error al crear la reserva. Por favor, inténtelo de nuevo más tarde.', 500);
+                return response()->json(['mensaje'=>'Error al crear la reserva. Por favor, inténtelo de nuevo más tarde.'],500);
             }
         }else{
-            return response()->json("No se han aceptado las políticas de privacidad");
+            return response()->json(['mensaje'=>'No se han aceptado las políticas de privacidad'],400);
         }
     }
     
 }
-
-// el error es que el correo se guarda 0 como valor, por lo que hacer la reserva da error porqie el id no existe en la tabla,
-// posible solucion: cambiar el correo por un id autoincremental en la tabla clientes, en la migracion
 
 // peticion json prueba:
 // {

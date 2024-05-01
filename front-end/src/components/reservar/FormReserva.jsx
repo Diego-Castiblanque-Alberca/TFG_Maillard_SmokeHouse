@@ -7,41 +7,50 @@ export default function FormReserva({ siguientePaso, datos }) {
         nombre: { 
             value: '',
             validate: (value) => validarNombre(value) && validarRequerido(value),
-            error: 'El nombre debe tener al menos 3 caracteres', tocado: false 
+            error: 'El nombre debe tener al menos 3 caracteres',
+            mensajeError: 'El nombre debe tener al menos 3 caracteres', 
+            tocado: false 
         },
         apellidos: { 
             value: '', 
             validate: (value) => validarNombre(value) && validarRequerido(value), 
             error: 'Los apellidos deben tener al menos 3 caracteres', 
+            mensajeError: 'El nombre debe tener al menos 3 caracteres', 
             tocado: false 
         },
         email: { 
             value: '', 
             validate: (value) => validarEmail(value) && validarRequerido(value), 
             error: 'El email no es válido', 
+            mensajeError: 'El email no es válido', 
             tocado: false 
         },
         prefijoTelefono: '+34',
         telefono: { 
             value: '', 
             validate: (value) => validarTelefono(value) && validarRequerido(value), 
-            error: 'El teléfono debe tener 9 dígitos', 
+            error: 'El teléfono debe tener 9 dígitos',
+            mensajeError: 'El teléfono debe tener 9 dígitos', 
             tocado: false 
         },
         politicas: { 
             value: '', 
             validate: validarRequerido, 
-            error: 'Debe aceptar las políticas de privacidad', 
+            error: 'Debe aceptar las políticas de privacidad',
+            mensajeError: 'Debe aceptar las políticas de privacidad', 
             tocado: false 
         },
         comunicaciones: false
     });
+
+    const [errorPeticion, setErrorPeticion] = useState('');
 
     const prefijos = [
         { pais: 'Spain', codigo: '+34' },
         { pais: 'France', codigo: '+33' },
         { pais: 'Germany', codigo: '+49' },
     ];
+    
 
     const esFormularioValido = () => {
         for (let campo in formState) {
@@ -58,7 +67,7 @@ export default function FormReserva({ siguientePaso, datos }) {
         let error = '';
         if (typeof campo === 'object' && campo.validate) {
             const esValido = campo.validate(value);
-            error = esValido ? '' : campo.error;
+            error = esValido ? '' : campo.mensajeError;
             campo= { ...campo, value, error }
         } else {
             campo = value;
@@ -92,9 +101,14 @@ export default function FormReserva({ siguientePaso, datos }) {
                 },
                 body: JSON.stringify(datos),
             })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => {throw err;});
+                    }
+                    return response.json()
+                })
                 .then(data => siguientePaso(datos))
-                .catch(error => console.error('Error:', error));
+                .catch(error =>setErrorPeticion(error.mensaje));
         }else{
             //aqui puede haber un popup de error
             alert('El formulario contiene errores');
@@ -122,6 +136,7 @@ export default function FormReserva({ siguientePaso, datos }) {
                     placeholder="Nombre" 
                     className={formState.nombre.error && formState.nombre.tocado ? 'input-error' : ''} 
                 />
+                {formState.nombre.error && formState.nombre.tocado && <p className="mensaje-error">{formState.nombre.error}</p>}
             </label>
             <label className="label-input">
                 Apellidos
@@ -133,6 +148,7 @@ export default function FormReserva({ siguientePaso, datos }) {
                     onBlur={handleBlur} 
                     placeholder="Apellidos" className={formState.apellidos.error && formState.apellidos.tocado ? 'input-error' : ''} 
                 />
+                {formState.apellidos.error && formState.apellidos.tocado && <p className="mensaje-error">{formState.apellidos.error}</p>}
             </label>
             <label className="label-input">
                 Email
@@ -144,6 +160,7 @@ export default function FormReserva({ siguientePaso, datos }) {
                     placeholder="Email"
                     className={formState.email.error && formState.email.tocado ? 'input-error' : ''} 
                 />
+                {formState.email.error && formState.email.tocado && <p className="mensaje-error">{formState.email.error}</p>}
             </label>
             <div className="contenedor-telefono">
                 <label className="label-prefijo">
@@ -169,6 +186,7 @@ export default function FormReserva({ siguientePaso, datos }) {
                         placeholder="Teléfono"
                         className={formState.telefono.error && formState.telefono.tocado ? 'input-error' : ''} 
                     />
+                    {formState.telefono.error && formState.telefono.tocado && <p className="mensaje-error">{formState.telefono.error}</p>}
                 </label>
             </div>
             <div className="contenedor-checkbox">
@@ -182,7 +200,10 @@ export default function FormReserva({ siguientePaso, datos }) {
                         className={formState.politicas.error && formState.politicas.tocado ? 'input-error' : ''} 
                     />
                     Acepto las condiciones de uso, política de privacidad y aviso legal.
+                    
+
                 </label>
+                {formState.politicas.error && formState.politicas.tocado && <p className="mensaje-error">{formState.politicas.error}</p>}
                 <label className="checkbox-comunicaciones">
                     <input
                         type="checkbox"
@@ -194,6 +215,8 @@ export default function FormReserva({ siguientePaso, datos }) {
                 </label>
             </div>
             <button className="form-boton-reservar" type="submit">RESERVAR</button>
+            {errorPeticion && <p className="mensaje-error">{errorPeticion}</p>}
+            
         </form>
     );
 }
