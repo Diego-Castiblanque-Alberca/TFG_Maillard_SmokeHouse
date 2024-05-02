@@ -29,11 +29,11 @@ const images = {
 };
 
 const mesasContiguas = {
-    1: [4],
-    2: [1, 5],
+    1: [2, 4],
+    2: [1, 5, 3],
     3: [2, 6],
-    4: [1, 7],
-    5: [2, 4, 8],
+    4: [1, 5, 7],
+    5: [2, 4, 6, 8],
     6: [3, 5, 9],
     7: [4, 8],
     8: [5, 7, 9],
@@ -65,7 +65,6 @@ export default function Mesas({ mesas, datos, siguientePaso }) {
 
     const puedeConfirmarReserva = () => {
         const porSentar = comensales - capacidadTotalSeleccionada;
-        // hay que mejorar esta lógica, ya que cuando porSentar es negativo, no se puede confirmar la reserva
         if(porSentar <= 0) return true;
 
     }
