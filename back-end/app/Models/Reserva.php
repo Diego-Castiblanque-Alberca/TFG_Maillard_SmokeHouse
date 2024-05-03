@@ -11,9 +11,7 @@ use App\Models\Fecha;
 class Reserva extends Model
 {
     protected $table = 'reservas';
-    protected $primaryKey = ['cliente_id', 'fecha'];
-
-    public $incrementing = false;
+    protected $primaryKey = 'id';
     
     public function mesa1()
     {

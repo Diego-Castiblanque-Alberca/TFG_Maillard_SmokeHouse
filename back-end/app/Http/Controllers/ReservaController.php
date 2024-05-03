@@ -14,6 +14,9 @@ class ReservaController extends Controller
 {
     const ULTIMO_HORARIO_CENA = "23:00";
     const ULTIMO_HORARIO_COMIDA = "16:00";
+    const HORARIOS_COMIDA = ["12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00"];
+    const HORARIOS_CENA = ["20:00","20:30","21:00","21:30","22:00","22:30","23:00"];
+
 
     public function horariosDisponibles(Request $request)
     {
@@ -79,7 +82,11 @@ class ReservaController extends Controller
         $datosValidados = $request->validate([
             'politicas' => 'required|boolean',
             'fechaSeleccionada' => 'required|date',
-            'horario' => 'required|string|in:12:00,12:30,13:00,13:30,14:00,14:30,15:00,15:30,16:00,20:00,20:30,21:00,21:30,22:00,22:30,23:00',
+            'horario' => [
+              'required',
+                'string',
+                'in:'. implode(',', self::HORARIOS_COMIDA) . ',' . implode(',', self::HORARIOS_CENA)  
+            ],
             'mesasSeleccionadas' => 'required|array|min:1|max:2',
             'nombre' => 'required|string|max:255',
             'apellidos' => 'required|string|max:255',
@@ -141,17 +148,146 @@ class ReservaController extends Controller
             return response()->json(['mensaje'=>'No se han aceptado las políticas de privacidad'],400);
         }
     }
+
+
+    //una funcion que reciba fecha y turno de comida y retorne todas las reservas de ese dia(ordenadas por hora), con id, nombre, hora y mesa
+    public function obtenerReservasDia(Request $request){
+        $fecha = $request->input('fecha');
+        $turno = $request->input('turno');
+        if($turno == 'comida'){
+            $horarios = self::HORARIOS_COMIDA;
+        }else{
+            $horarios = self::HORARIOS_CENA;
+        }
+        $horarioIds = Horario::whereIn('hora', $horarios)->pluck('id');
+        $reservas = Reserva::where('fecha_reserva', $fecha)
+            ->whereIn('horario_inicio', $horarioIds)
+            ->orderBy('horario_inicio')
+            ->get();
+        $reservasDia = [];
     
+        foreach ($reservas as $reserva) {
+            $cliente = Cliente::find($reserva->cliente_id);
+            $mesa1 = Mesa::find($reserva->mesa1_id);
+            $mesa2 = $reserva->mesa2_id ? Mesa::find($reserva->mesa2_id) : null;
+            $reservasDia[] = [
+                'id' => $reserva->id,
+                'nombre' => $cliente->nombre . ' ' . $cliente->apellido,
+                'email' => $cliente->correo,
+                'hora' => Horario::find($reserva->horario_inicio)->hora,
+                'mesa1' => $mesa1->id,
+                'mesa2' => $reserva->mesa2_id ? 'mesa-' . $mesa2->id : null
+            ];
+        }
+        return response()->json($reservasDia);
+    }
+
+    //una funcion que reciba id y retorne todos los datos de esa reserva en concreto
+    public function obtenerReserva(Request $request){
+        $id = $request->input('id');
+        $reserva = Reserva::find($id);
+
+        if($reserva){
+            $cliente = Cliente::find($reserva->cliente_id);
+
+            $reservaCompleta = [
+                'nombre' => $cliente->nombre . ' ' . $cliente->apellido,
+                'telefono' => $cliente->telefono,
+                'email' => $cliente->correo,
+                'fecha' => $reserva->fecha_reserva,
+                'hora' => Horario::find($reserva->horario_inicio)->hora,
+                'mesa1' => $reserva->mesa1_id,
+                'mesa2' => $reserva->mesa2_id ? $reserva->mesa2_id : null,
+                'comensales' => $reserva->num_comensales
+            ];
+            return response()->json($reservaCompleta);
+        }else{
+            return response()->json(['mensaje'=>'No se ha encontrado la reserva'],404);
+        }
+    }
+    
+    //una funcion que elimine una reserva
+    public function cancelarReserva(Request $request){
+        $id = $request->input('id');
+        $reserva = Reserva::find($id);
+
+        if($reserva){
+            $reserva->delete();
+            return response()->json(['mensaje'=>'Reserva eliminada correctamente']);
+        }else{
+            return response()->json(['mensaje'=>'No se ha encontrado la reserva'],404);
+        }
+    }
+
+    //una funcion que actualice una reserva con los datos que se le pasen
+    public function actualizarReserva(Request $request){
+        $id = $request->input('id');
+        $datosValidados = $request->validate([
+            'politicas' => 'required|boolean',
+            'fechaSeleccionada' => 'required|date',
+            'horario' => [
+              'required',
+                'string',
+                'in:'. implode(',', self::HORARIOS_COMIDA) . ',' . implode(',', self::HORARIOS_CENA)  
+            ],
+            'mesasSeleccionadas' => 'required|array|min:1|max:2',
+            'nombre' => 'required|string|max:255',
+            'apellidos' => 'required|string|max:255',
+            'telefono' => 'required|string|min:12|max:12',
+            'email' => 'required|email|max:255',
+            'comunicaciones' => 'required|boolean',
+            'comensalesSeleccionado' => 'required|integer|min:1|max:8',
+        ]);
+        if($datosValidados['politicas']){
+            DB::beginTransaction();
+            try {
+                $cliente = Cliente::firstWhere('correo', $datosValidados['email']);
+                
+                if(!$cliente){
+                    $cliente = new Cliente();
+                } 
+                
+                $cliente->nombre = $datosValidados['nombre'];
+                $cliente->correo = $datosValidados['email'];
+                $cliente->apellido = $datosValidados['apellidos'];
+                $cliente->telefono = $datosValidados['telefono'];
+                $cliente->consiente = $datosValidados['comunicaciones'];
+                $cliente->save();
+
+                $reserva = Reserva::find($id);
+                $reserva->fecha_reserva = $datosValidados['fechaSeleccionada'];
+                $reserva->horario_inicio = Horario::where('hora', $datosValidados['horario'])->first()->id;
+                if($datosValidados['horario'] == self::ULTIMO_HORARIO_CENA || $datosValidados['horario'] == self::ULTIMO_HORARIO_COMIDA){
+                    $reserva->horario_fin = null;
+                }else{
+                    $reserva->horario_fin = Horario::where('hora', $datosValidados['horario'])->first()->id + 1;
+                }
+                $reserva->mesa1_id = Mesa::where('id', $datosValidados['mesasSeleccionadas'][0])->first()->id;
+                $reserva->num_comensales = $datosValidados['comensalesSeleccionado'];
+                $reserva->mesa2_id = count($datosValidados['mesasSeleccionadas'])>1 ? Mesa::where('id', $datosValidados['mesasSeleccionadas'][1])->first()->id : null;
+                $reserva->cliente_id = $cliente->id;
+                $reserva->save();
+                DB::commit();
+                return response()->json($reserva);
+            } catch (\Exception $e) {
+                DB::rollback();
+                Log::error($e);
+                return response()->json(['mensaje'=>'Error al actualizar la reserva. Por favor, inténtelo de nuevo más tarde.'],500);
+            }
+        }else{
+            return response()->json(['mensaje'=>'No se han aceptado las políticas de privacidad'],400);
+        }
+    }
+
 }
 
 
-//una funcion que reciba fecha y turno de comida y retorne todas las reservas de ese dia(ordenadas por hora), con id, nombre, hora y mesa
+    
 
-//una funcion que reciba id y retorne todos los datos de esa reserva en concreto
 
-//una funcion que actualice una reserva con los datos que se le pasen
 
-//una funcion que elimine una reserva
+
+
 
 // peticion json prueba:
 // {
