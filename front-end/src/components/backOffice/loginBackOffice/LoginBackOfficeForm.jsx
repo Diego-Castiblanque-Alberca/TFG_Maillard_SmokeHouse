@@ -18,8 +18,6 @@ export const LoginBackOfficeForm = () => {
             const email = form.elements['email'].value;
             const password = form.elements['password'].value;
             const remember = form.elements['remember'].checked;
-            console.log('Formulario enviado');
-            console.log(email, password, remember);
             //Se envían los datos al servidor  
             fetch('http://localhost:8000/api/login', {
                 method: 'POST',
@@ -78,7 +76,7 @@ export const LoginBackOfficeForm = () => {
                     mensajeError={'*Campo obligatorio. Introduzca una contraseña'}
                 />
                 <CheckBoxForm
-                    label="Recordar usuario y contraseña."
+                    label="Mantener sesión abierta."
                     name="remember"
                 />
                 <ButtonSubmit label="Enviar" />
