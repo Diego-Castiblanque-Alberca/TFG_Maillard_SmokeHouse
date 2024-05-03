@@ -1,12 +1,16 @@
+// Importamos los módulos necesarios
 import React, { useEffect, useState } from "react";
 import paso from "../../imgs/paso2.svg";
 import Leyenda from "../../components/reservar/leyenda";
 import Mesas from "../../components/reservar/Mesas";
 import { CONSTANTS } from "../../utils/consts";
 
+// Definimos el componente ReservaPaso2
 export default function ReservaPaso2({siguientePaso, datos}) {
+    // Definimos el estado para las mesas
     const [mesas, setMesas] = useState({});
 
+    // Usamos useEffect para obtener las mesas disponibles cuando los datos de la reserva cambian
     useEffect(() => {
         fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/reserva/mesas`,{
             method: 'POST',
@@ -20,9 +24,9 @@ export default function ReservaPaso2({siguientePaso, datos}) {
         })
             .then(response => response.json())
             .then(mesas => setMesas(mesas));
- 
     }, [datos]);
 
+    // Renderizamos el componente
     return (
         <>
             <img src={paso} alt=""/>
