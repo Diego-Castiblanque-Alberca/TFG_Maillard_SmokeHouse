@@ -23,7 +23,7 @@ export default function LoginBackOffice() {
     return (
         <>
             <Header />
-            <Container className={"container"}>
+            <Container className={"container-login container"}>
                 <LoginBackOfficeForm />
             </Container>
             <Footer />

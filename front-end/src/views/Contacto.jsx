@@ -13,7 +13,7 @@ export default function Contacto() {
     return (
         <>
             <Header />
-            <Container className={"container"}>
+            <Container className={"container-contacto container"}>
                 <ContactoInfoGroup />
             </Container>
             <Footer />
