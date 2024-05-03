@@ -140,14 +140,25 @@ export default function FormReserva({ siguientePaso, datos }) {
                 })
                 .then(data => {
                     // Si todo ha ido bien, pasamos al siguiente paso con los datos
-                    siguientePaso(data)
+                    siguientePaso(datos)
                 })
                 .catch(error => {
                     // Si ha habido un error, lo guardamos en el estado
                     setErrorPeticion(error.mensaje)
                 });
         }else{
-            // Si el formulario no es válido, no hacemos nada
+        // Actualizamos el estado de los campos que no son válidos
+        let nuevoEstadoFormulario = { ...estadoFormulario };
+        for (let campo in nuevoEstadoFormulario) {
+            if (nuevoEstadoFormulario[campo].hasOwnProperty('validate')) {
+                const esValido = nuevoEstadoFormulario[campo].validate(nuevoEstadoFormulario[campo].value);
+                if (!esValido) {
+                    nuevoEstadoFormulario[campo].error = nuevoEstadoFormulario[campo].mensajeError;
+                    nuevoEstadoFormulario[campo].tocado = true;
+                }
+            }
+        }
+        setEstadoFormulario(nuevoEstadoFormulario);
         }
     };
 

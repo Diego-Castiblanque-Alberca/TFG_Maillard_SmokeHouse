@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('reservas', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('mesa1_id')->constrained('mesas');
             $table->foreignId('mesa2_id')->nullable()->constrained('mesas');
             $table->foreignId('cliente_id')->constrained('clientes');
@@ -20,7 +21,7 @@ return new class extends Migration
             $table->foreignId('horario_fin')->nullable()->constrained('horarios');
             $table->integer('num_comensales');
             $table->timestamps();
-            $table->primary(['cliente_id', 'fecha_reserva']);
+            $table->unique(['cliente_id', 'fecha_reserva']);
         });
     }
 
