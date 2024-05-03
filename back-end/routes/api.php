@@ -16,31 +16,15 @@ use App\Http\Controllers\API\UserController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
-
+// Rutas para autenticación de usuarios y gestión de tokens.
 Route::post('/login',[UserController::class,'loginUser']);
-
-
+// Grupo de rutas protegidas por autenticación de usuario.
 Route::group(['middleware' => 'auth:sanctum'],function(){
-    Route::get('/user',[UserController::class,'userDetails']);
     Route::get('/logout',[UserController::class,'logout']);
     Route::get('/validateToken',[UserController::class,'validateToken']);
 });
 
-
-//Rutas para autenticación de Admin y gestión de tokens
-Route::post('/admin/login', [AdminAuthController::class, 'login']);
-Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->middleware('auth:sanctum');
-Route::get('/admin/user', [AdminAuthController::class, 'user'])->middleware('auth:sanctum');
-
-
-// Estas son las rutas para la autenticación de administradores. 
-// La ruta '/admin/login' llama al método 'login' del controlador 'AdminAuthController' cuando se recibe una solicitud POST.
-// La ruta '/admin/logout' llama al método 'logout' del mismo controlador cuando se recibe una solicitud POST. Esta ruta está protegida por el middleware 'auth:sanctum', lo que significa que el usuario debe estar autenticado para acceder a ella.
-// La ruta '/admin/user' llama al método 'user' del mismo controlador cuando se recibe una solicitud GET. Esta ruta también está protegida por el middleware 'auth:sanctum'.
 
 // Rutas para obtener los datos de la carta
 Route::get('/carta', [CartaController::class,'categorias']);
@@ -54,9 +38,7 @@ Route::get('/carta/{categoriaRuta}/{subcategoriaRuta}', [CartaController::class,
 
 
 Route::post('/reserva', [ReservaController::class,'horariosDisponibles']);
-
 Route::post('/reserva/mesas', [ReservaController::class,'mesasDisponibles']);
-
 Route::post('/reserva/reservar', [ReservaController::class,'guardarReserva']);
 
 
