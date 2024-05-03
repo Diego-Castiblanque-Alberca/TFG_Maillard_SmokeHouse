@@ -6,19 +6,24 @@ import ReservaPaso2 from './ReservaPaso2';
 import ReservaPaso3 from './ReservaPaso3';
 import ReservaPaso4 from './ReservaPaso4';
 
+// Definimos el componente GestionadorReserva
 export function GestionadorReserva() {
+    // Definimos el estado para el paso y los datos
     const [paso, setPaso] = useState(1);
     const [datos, setDatos] = useState({});
 
+    // Definimos la función para avanzar al siguiente paso
     const siguientePaso = (nuevosDatos) => {
         setDatos(datosAnteriores => ({ ...datosAnteriores, ...nuevosDatos}));
         setPaso(pasoAnterior => pasoAnterior + 1);
     };
+    // Definimos la función para resetear al primer paso
     const resetToPaso1 = () => {
         setDatos({});
         setPaso(1);
     };
 
+    // Usamos useEffect para añadir y eliminar el event listener
     useEffect(() => {
         const resetHandler = () => resetToPaso1();
         window.addEventListener('resetToPaso1', resetHandler);
@@ -28,6 +33,7 @@ export function GestionadorReserva() {
         };
     }, []);
 
+    // Definimos la función para renderizar el paso correspondiente
     const pasoARenderizar = () => {
         switch (paso) {
             case 1:
@@ -40,6 +46,7 @@ export function GestionadorReserva() {
                 return <ReservaPaso4 datos={datos} />;
         }
     }
+    // Renderizamos el componente
     return (
         <>
             <h1 className="titulo-reserva">Haz tu Reserva</h1>

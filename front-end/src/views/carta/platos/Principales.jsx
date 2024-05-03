@@ -6,9 +6,12 @@ import { CardOpcionCarta } from "../../../components/carta/CardOpcionCarta.jsx";
 import { TituloCarta } from "../../../components/carta/TituloCarta.jsx";
 import { SUBTITULO } from "../../../utils/consts.js";
 
+// Definimos el componente Principales
 export default function Principales() {
+    // Definimos el estado para los principales
     let [principales, setPrincipales] = useState([]);
     
+    // Usamos useEffect para hacer una petición a la API cuando el componente se monta
     useEffect(() => {
         fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/carta/platos/principales`)
             .then(response => response.json())
@@ -16,13 +19,14 @@ export default function Principales() {
             .catch(error => console.error('Error:', error));
     }, []);
 
-
+    // Renderizamos el componente
     return(
         <>
             <Header/>
             <Container className={"container"}>
                 <TituloCarta texto={SUBTITULO.PRINCIPALES}/>
                 <Container className={"container-carta"}>
+                {/* Mapeamos los principales a componentes CardOpcionCarta */}
                 {principales.map((principal, index) => {
                             return (
                                 <CardOpcionCarta 

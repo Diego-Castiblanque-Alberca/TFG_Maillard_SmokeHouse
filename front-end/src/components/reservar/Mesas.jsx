@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import '../../styles/reservar/Mesas.css';
 import capacidad2 from "../../imgs/mesa2.svg";
 import capacidad2selected from "../../imgs/mesa2selected.svg";
 import capacidad2disabled from "../../imgs/mesa2disabled.svg";
@@ -11,23 +12,32 @@ import capacidad6disabled from "../../imgs/mesa6disabled.svg";
 import capacidad8 from "../../imgs/mesa8.svg";
 import capacidad8selected from "../../imgs/mesa8selected.svg";
 import capacidad8disabled from "../../imgs/mesa8disabled.svg";
-import '../../styles/reservar/Mesas.css';
 
-const images = {
-    capacidad2,
-    capacidad2selected,
-    capacidad2disabled,
-    capacidad4,
-    capacidad4selected,
-    capacidad4disabled,
-    capacidad6,
-    capacidad6selected,
-    capacidad6disabled,
-    capacidad8,
-    capacidad8selected,
-    capacidad8disabled
+// Creamos un objeto para facilitar el acceso a las imágenes de las mesas
+const imagenMesa = {
+    2: {
+        default: capacidad2,
+        selected: capacidad2selected,
+        disabled: capacidad2disabled
+    },
+    4: {
+        default: capacidad4,
+        selected: capacidad4selected,
+        disabled: capacidad4disabled
+    },
+    6: {
+        default: capacidad6,
+        selected: capacidad6selected,
+        disabled: capacidad6disabled
+    },
+    8: {
+        default: capacidad8,
+        selected: capacidad8selected,
+        disabled: capacidad8disabled
+    }
 };
 
+// Creamos un objeto que define qué mesas son contiguas entre sí
 const mesasContiguas = {
     1: [2, 4],
     2: [1, 5, 3],
@@ -40,12 +50,16 @@ const mesasContiguas = {
     9: [6, 8]
 };
 
-
-// Leyenda para informar de que se pueden juntar mesas
+// Definimos el componente Mesas
 export default function Mesas({ mesas, datos, siguientePaso }) {
+    // Definimos el estado para las mesas seleccionadas
     const [mesasSeleccionadas, setMesasSeleccionadas] = useState([]);
+    // Extraemos el número de comensales de los datos
+    const comensales = datos.comensalesSeleccionado;
+    // Calculamos la capacidad total de las mesas seleccionadas
+    const capacidadTotalSeleccionada = mesasSeleccionadas.reduce((total, mesa) => total + mesas[mesa].capacidad, 0);
 
-
+    // Definimos la función para seleccionar/deseleccionar una mesa
     const seleccionarMesa = (nombreMesa) => {
         setMesasSeleccionadas(prevMesas => {
             if (prevMesas.includes(nombreMesa)) {
@@ -58,73 +72,70 @@ export default function Mesas({ mesas, datos, siguientePaso }) {
         });
     };
 
+    // Definimos la función para confirmar la selección de las mesas
     const confirmarSeleccion = () => {
         const nuevosDatos = { ...datos, mesasSeleccionadas };
         siguientePaso(nuevosDatos);
     };
 
+    // Definimos la función para comprobar si se puede confirmar la reserva
     const puedeConfirmarReserva = () => {
         const porSentar = comensales - capacidadTotalSeleccionada;
-        if(porSentar <= 0) return true;
-
+        return porSentar <= 0;
     }
 
-    const isDisabled = (nombreMesa, detallesMesa, indice) => {
-        // Si la mesa está reservada, la deshabilitamos, a evaluar lo seguido del OR
+    // Definimos la función para comprobar si una mesa está deshabilitada
+    const isDisabled = (nombreMesa, detallesMesa) => {
+        // Si la mesa no está disponible o ya se han seleccionado dos mesas y esta no es una de ellas, la deshabilitamos
         if(!detallesMesa.disponibilidad || (mesasSeleccionadas.length==2 && !mesasSeleccionadas.includes(nombreMesa))) return true;
 
-        // evaluar si la capacidad de esta mesa en cuestion mas la de las continuas son suficientes para los comensales
-
-        // Si la mesa no está seleccionada, se sigue evaluando
+        // Si la mesa no está seleccionada, comprobamos si su capacidad es suficiente para los comensales que quedan por sentar
         if(!mesasSeleccionadas.includes(nombreMesa)) {
-
             const porSentar = comensales - capacidadTotalSeleccionada;
+            // Si no quedan comensales por sentar o la mesa no tiene capacidad suficiente para los comensales que quedan por sentar, la deshabilitamos
+            if(porSentar === 0 || detallesMesa.capacidad - porSentar > 2) return true;
 
-            // si no quedan comensales por sentar y la mesa no está seleccionada, la deshabilitamos
-            if(porSentar === 0) return true;
-
-            // si la mesa no tiene capacidad suficiente para los comensales que quedan por sentar, la deshabilitamos
-            // solo se podrán dejar dos asientos libres
-            if(detallesMesa.capacidad - porSentar > 2) return true;
-    
+            // Si la mesa no es contigua a la última mesa seleccionada, la deshabilitamos
             const mesaSeleccionada = mesasSeleccionadas[0];
             const numeroMesa = parseInt(nombreMesa.replace('mesa-', ''));
             const numeroMesaSeleccionada = parseInt(mesaSeleccionada?.replace('mesa-', ''));
-    
-            // si la mesa no es la siguiente o la anterior a la última mesa seleccionada, la deshabilitamos
             if (mesaSeleccionada && !mesasContiguas[numeroMesaSeleccionada].includes(numeroMesa)) return true;
         }
-        // si la mesa está seleccionada, no la deshabilitamos
+        // Si la mesa está seleccionada, no la deshabilitamos
         return false;
     };
 
-    const comensales = datos.comensalesSeleccionado;
-    const capacidadTotalSeleccionada = mesasSeleccionadas.reduce((total, mesa) => total + mesas[mesa].capacidad, 0);
-
+    // Renderizamos el componente
     return (
         <>
+            {/* Mapeamos las mesas y creamos un botón para cada una */}
             <div className="mesas">
-                {Object.entries(mesas).map(([nombreMesa, detallesMesa], indice) => (
-                    <button
-                        key={nombreMesa}
-                        className={`${nombreMesa} ${mesasSeleccionadas.includes(nombreMesa) ? "seleccionada" : ""} ${detallesMesa.disponibilidad ? "disponible" : "no-disponible"}`}
-                        disabled={isDisabled(nombreMesa, detallesMesa, indice)}
-                        onClick={(e) => {
-                            e.preventDefault();
-                            seleccionarMesa(nombreMesa)
-                        }
-                        }
-                    >
-                        <img 
-                        src={
-                            isDisabled(nombreMesa, detallesMesa) ? images[`capacidad${detallesMesa.capacidad}disabled`] :
-                            mesasSeleccionadas.includes(nombreMesa) ? images[`capacidad${detallesMesa.capacidad}selected`] : 
-                            images[`capacidad${detallesMesa.capacidad}`]
-                            } 
-                        alt="" />
-                    </button>
-                ))}
+                {Object.entries(mesas).map(([nombreMesa, detallesMesa]) => {
+                    // Comprobamos si la mesa está deshabilitada
+                    const disabled = isDisabled(nombreMesa, detallesMesa);
+                    // Comprobamos si la mesa está seleccionada
+                    const selected = mesasSeleccionadas.includes(nombreMesa);
+                    // Elegimos la imagen de la mesa en función de su estado
+                    const image = imagenMesa[detallesMesa.capacidad][disabled ? 'disabled' : selected ? 'selected' : 'default'];
+    
+                    return (
+                        // Creamos el botón de la mesa
+                        <button
+                            key={nombreMesa}
+                            className={`${nombreMesa} ${selected ? "seleccionada" : ""} ${detallesMesa.disponibilidad ? "disponible" : "no-disponible"}`}
+                            disabled={disabled}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                seleccionarMesa(nombreMesa)
+                            }}
+                        >
+                            {/* Mostramos la imagen de la mesa */}
+                            <img src={image} alt="" />
+                        </button>
+                    )
+                })}
             </div>
+            {/* Si se puede confirmar la reserva, mostramos el botón de confirmación */}
             {puedeConfirmarReserva() && <button className="boton-confirmar" onClick={confirmarSeleccion}>Confirmar selección</button>}
         </>
     );

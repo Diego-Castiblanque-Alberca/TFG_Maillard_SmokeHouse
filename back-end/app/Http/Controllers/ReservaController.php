@@ -144,6 +144,15 @@ class ReservaController extends Controller
     
 }
 
+
+//una funcion que reciba fecha y turno de comida y retorne todas las reservas de ese dia(ordenadas por hora), con id, nombre, hora y mesa
+
+//una funcion que reciba id y retorne todos los datos de esa reserva en concreto
+
+//una funcion que actualice una reserva con los datos que se le pasen
+
+//una funcion que elimine una reserva
+
 // peticion json prueba:
 // {
 //     "apellidos": "cachafeiro silva",

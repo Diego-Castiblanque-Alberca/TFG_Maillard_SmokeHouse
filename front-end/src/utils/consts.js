@@ -54,6 +54,9 @@ export const EVENTS = {
     PUSHSTATE: 'pushstate',
     POPSTATE: 'popstate'
 }
+
+export const COMENSALES = 8;
+
 export const CONSTANTS = {
     COMENSALES: 8,
     HORARIOS_DISPONIBLES: {
