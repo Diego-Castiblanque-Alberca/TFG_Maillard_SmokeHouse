@@ -1,13 +1,14 @@
 import '../../../styles/loginbackOffice/LoginBackOfficeForm.css';
 
 import { useNavigate } from 'react-router-dom';
-import { ButtonSubmit } from './ButtonSubmitForm';
 import { InputForm } from './InputForm';
-import { CheckBoxForm } from './CheckBoxForm';
+import {useState} from 'react';
 
-
+//Componente formulario de login de backoffice
 export const LoginBackOfficeForm = () => {
-    const navigate = useNavigate();
+    const navigate = useNavigate();//Hook para redireccionar a otra página
+    const [errorPeticion, setErrorPeticion] = useState('');//Hook para mostrar errores en la petición
+
     //Función que se ejecuta cuando se envía el formulario
     const handleSubmit = (e) => {
         const form = e.target;
@@ -18,37 +19,40 @@ export const LoginBackOfficeForm = () => {
             const email = form.elements['email'].value;
             const password = form.elements['password'].value;
             const remember = form.elements['remember'].checked;
-            //Se envían los datos al servidor  
-            fetch('http://localhost:8000/api/login', {
+            //Se envían los datos al servidor para hacer login
+            fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                //credentials: 'include',
                 body: JSON.stringify({
                     email: email,
                     password: password,
                     remember: remember
                 })
             })
-                //Se podría comprobar si es un codigo 200 para mas seguridad
+                //Si la respuesta es correcta se guarda el token en el local storage o en session storage
                 .then(response => {
+                    //Solo se guarda el token si la respuesta es correcta y el status es 200.
                     if (response.status !== 200) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
+                        return response.json().then(error => {throw error;})
                     }
                     return response.json();
                 })
                 .then(data => {
+                    //Si el usuario ha marcado la casilla de mantener sesión abierta se guarda el token en el local storage
                     if (data.token && remember) {
                         localStorage.setItem('authToken', data.token);
-                        navigate('/backOffice',{ state: { from: location.pathname } });
+                        navigate('/backOffice', { state: { from: location.pathname } });
                     } else {
+                        //Si no, se guarda en el session storage
                         sessionStorage.setItem('authToken', data.token);
-                        navigate('/backOffice',{ state: { from: location.pathname } });
+                        navigate('/backOffice', { state: { from: location.pathname } });
                     }
                 })
                 .catch(error => {
-                    console.error('There was an error!', error);
+                    //Si hay un error en la petición se muestra el mensaje de error
+                    setErrorPeticion(error.mensaje);
                 });
         }
 
@@ -63,7 +67,7 @@ export const LoginBackOfficeForm = () => {
                     name="email"
                     placeholder="Introduzca su email"
                     required={true}
-                    autocomplete="username"
+                    autocomplete="email"
                     mensajeError={'*Campo obligatorio. Introduzca un email válido.'}
                 />
                 <InputForm
@@ -75,11 +79,22 @@ export const LoginBackOfficeForm = () => {
                     autocomplete="current-password"
                     mensajeError={'*Campo obligatorio. Introduzca una contraseña'}
                 />
-                <CheckBoxForm
-                    label="Mantener sesión abierta."
-                    name="remember"
-                />
-                <ButtonSubmit label="Enviar" />
+                <div className="container-checkbox">
+                    <input
+                        className='input-checkbox'
+                        type='checkbox'
+                        name='remember'
+                        id='remember'
+                    />
+                    <label
+                        className='label-checkbox'
+                        htmlFor='remember'
+                    >
+                        Mantener sesión abierta.
+                    </label>
+                </div>
+                <button className="button-submit">Enviar</button>
+                {errorPeticion && <p style={{color: 'red', textAlign: 'center'}}>{errorPeticion}</p>}
             </form>
         </>
     )
