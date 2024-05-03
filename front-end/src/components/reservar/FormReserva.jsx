@@ -3,7 +3,7 @@ import { validarNombre, validarEmail, validarTelefono, validarRequerido } from "
 import '../../styles/reservar/FormReserva.css';
 
 export default function FormReserva({ siguientePaso, datos }) {
-    const [formState, setFormState] = useState({
+    const [estadoFormulario, setEstadoFormulario] = useState({
         nombre: { 
             value: '',
             validate: (value) => validarNombre(value) && validarRequerido(value),
@@ -53,17 +53,17 @@ export default function FormReserva({ siguientePaso, datos }) {
     
 
     const esFormularioValido = () => {
-        for (let campo in formState) {
-            if (formState[campo].hasOwnProperty('error') && formState[campo].error) {
+        for (let campo in estadoFormulario) {
+            if (estadoFormulario[campo].hasOwnProperty('error') && estadoFormulario[campo].error) {
                 return false;
             }
         }
         return true;
     };
 
-    const handleChange = (event) => {
+    const manejarChange = (event) => {
         const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
-        let campo = formState[event.target.name];
+        let campo = estadoFormulario[event.target.name];
         let error = '';
         if (typeof campo === 'object' && campo.validate) {
             const esValido = campo.validate(value);
@@ -75,24 +75,24 @@ export default function FormReserva({ siguientePaso, datos }) {
                 error = 'Este campo es obligatorio.';
             }
         }
-        setFormState({
-            ...formState,
+        setEstadoFormulario({
+            ...estadoFormulario,
             [event.target.name]: campo 
         });
     };
 
-    const handleSubmit = (event) => {
+    const manejarSubmit = (event) => {
         event.preventDefault();
         if (esFormularioValido()) {
             
             datos = {
                 ...datos,
-                nombre: formState.nombre.value,
-                apellidos: formState.apellidos.value,
-                email: formState.email.value,
-                telefono: formState.prefijoTelefono + formState.telefono.value,
-                politicas: formState.politicas.value,
-                comunicaciones: formState.comunicaciones
+                nombre: estadoFormulario.nombre.value,
+                apellidos: estadoFormulario.apellidos.value,
+                email: estadoFormulario.email.value,
+                telefono: estadoFormulario.prefijoTelefono + estadoFormulario.telefono.value,
+                politicas: estadoFormulario.politicas.value,
+                comunicaciones: estadoFormulario.comunicaciones
             };
             fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/reserva/reservar`,{
                 method: 'POST',
@@ -110,65 +110,64 @@ export default function FormReserva({ siguientePaso, datos }) {
                 .then(data => siguientePaso(datos))
                 .catch(error =>setErrorPeticion(error.mensaje));
         }else{
-            //aqui puede haber un popup de error
-            alert('El formulario contiene errores');
+            
         }
     };
 
-    const handleBlur = (event) => {
-        const campo = formState[event.target.name];
-        setFormState({
-            ...formState,
+    const manejarBlur = (event) => {
+        const campo = estadoFormulario[event.target.name];
+        setEstadoFormulario({
+            ...estadoFormulario,
             [event.target.name]: { ...campo, tocado: true }
         });
     };
 
     return (
-        <form className="form-reservar1" onSubmit={handleSubmit}>
+        <form className="form-reservar1" onSubmit={manejarSubmit}>
             <label className="label-input">
                 Nombre
                 <input 
                     type="text" 
                     name="nombre" 
-                    value={formState.nombre.value} 
-                    onChange={handleChange} 
-                    onBlur={handleBlur} 
+                    value={estadoFormulario.nombre.value} 
+                    onChange={manejarChange} 
+                    onBlur={manejarBlur} 
                     placeholder="Nombre" 
-                    className={formState.nombre.error && formState.nombre.tocado ? 'input-error' : ''} 
+                    className={estadoFormulario.nombre.error && estadoFormulario.nombre.tocado ? 'input-error' : ''} 
                 />
-                {formState.nombre.error && formState.nombre.tocado && <p className="mensaje-error">{formState.nombre.error}</p>}
+                {estadoFormulario.nombre.error && estadoFormulario.nombre.tocado && <p className="mensaje-error">{estadoFormulario.nombre.error}</p>}
             </label>
             <label className="label-input">
                 Apellidos
                 <input 
                     type="text" 
                     name="apellidos" 
-                    value={formState.apellidos.value} 
-                    onChange={handleChange} 
-                    onBlur={handleBlur} 
-                    placeholder="Apellidos" className={formState.apellidos.error && formState.apellidos.tocado ? 'input-error' : ''} 
+                    value={estadoFormulario.apellidos.value} 
+                    onChange={manejarChange} 
+                    onBlur={manejarBlur} 
+                    placeholder="Apellidos" className={estadoFormulario.apellidos.error && estadoFormulario.apellidos.tocado ? 'input-error' : ''} 
                 />
-                {formState.apellidos.error && formState.apellidos.tocado && <p className="mensaje-error">{formState.apellidos.error}</p>}
+                {estadoFormulario.apellidos.error && estadoFormulario.apellidos.tocado && <p className="mensaje-error">{estadoFormulario.apellidos.error}</p>}
             </label>
             <label className="label-input">
                 Email
                 <input type="text"
                     name="email"
-                    value={formState.email.value}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
+                    value={estadoFormulario.email.value}
+                    onChange={manejarChange}
+                    onBlur={manejarBlur}
                     placeholder="Email"
-                    className={formState.email.error && formState.email.tocado ? 'input-error' : ''} 
+                    className={estadoFormulario.email.error && estadoFormulario.email.tocado ? 'input-error' : ''} 
                 />
-                {formState.email.error && formState.email.tocado && <p className="mensaje-error">{formState.email.error}</p>}
+                {estadoFormulario.email.error && estadoFormulario.email.tocado && <p className="mensaje-error">{estadoFormulario.email.error}</p>}
             </label>
             <div className="contenedor-telefono">
                 <label className="label-prefijo">
                     Prefijo
                     <select
                         name="prefijoTelefono"
-                        value={formState.prefijoTelefono}
-                        onChange={handleChange}
+                        value={estadoFormulario.prefijoTelefono}
+                        onChange={manejarChange}
                     >
                         {prefijos.map(({ pais, codigo }) => (
                             <option key={codigo} value={codigo}>{`${pais} (${codigo})`}</option>
@@ -180,13 +179,13 @@ export default function FormReserva({ siguientePaso, datos }) {
                     <input
                         type="number"
                         name="telefono"
-                        value={formState.telefono.value}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
+                        value={estadoFormulario.telefono.value}
+                        onChange={manejarChange}
+                        onBlur={manejarBlur}
                         placeholder="Teléfono"
-                        className={formState.telefono.error && formState.telefono.tocado ? 'input-error' : ''} 
+                        className={estadoFormulario.telefono.error && estadoFormulario.telefono.tocado ? 'input-error' : ''} 
                     />
-                    {formState.telefono.error && formState.telefono.tocado && <p className="mensaje-error">{formState.telefono.error}</p>}
+                    {estadoFormulario.telefono.error && estadoFormulario.telefono.tocado && <p className="mensaje-error">{estadoFormulario.telefono.error}</p>}
                 </label>
             </div>
             <div className="contenedor-checkbox">
@@ -194,22 +193,22 @@ export default function FormReserva({ siguientePaso, datos }) {
                     <input
                         type="checkbox"
                         name="politicas"
-                        checked={formState.politicas.value}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        className={formState.politicas.error && formState.politicas.tocado ? 'input-error' : ''} 
+                        checked={estadoFormulario.politicas.value}
+                        onChange={manejarChange}
+                        onBlur={manejarBlur}
+                        className={estadoFormulario.politicas.error && estadoFormulario.politicas.tocado ? 'input-error' : ''} 
                     />
                     Acepto las condiciones de uso, política de privacidad y aviso legal.
                     
 
                 </label>
-                {formState.politicas.error && formState.politicas.tocado && <p className="mensaje-error">{formState.politicas.error}</p>}
+                {estadoFormulario.politicas.error && estadoFormulario.politicas.tocado && <p className="mensaje-error">{estadoFormulario.politicas.error}</p>}
                 <label className="checkbox-comunicaciones">
                     <input
                         type="checkbox"
                         name="comunicaciones"
-                        checked={formState.comunicaciones}
-                        onChange={handleChange} 
+                        checked={estadoFormulario.comunicaciones}
+                        onChange={manejarChange} 
                     />
                     Consiento la recepción de comunicaciones del restaurante por e-mail y/o SMS comerciales.
                 </label>

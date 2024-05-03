@@ -8,8 +8,6 @@
     width: 200px;
 }
 
-.select-comensales:focus {border: 2px solid var(--color-5);}
-
 .option-comensales{
     padding: 8px 20px;
     font-size: 16px;
