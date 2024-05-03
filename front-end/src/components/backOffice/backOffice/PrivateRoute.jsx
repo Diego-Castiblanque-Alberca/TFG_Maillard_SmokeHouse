@@ -10,9 +10,7 @@ export function PrivateRoute({ children }) {
     const from = location.state?.from || '/'; // Aquí se almacena la ruta anterior o '/' si no hay una ruta anterior
     const navigate = useNavigate();
     const [user, loading] = useAuth();// Se obtiene el usuario y el estado de carga
-    console.log('PrivateRoute');
-    console.log(user);
-    console.log(loading);
+
     useEffect(() => {
         if (user) {
             navigate('/backOffice',{ state: { from: location.pathname } });
