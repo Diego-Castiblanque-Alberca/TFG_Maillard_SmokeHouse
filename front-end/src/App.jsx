@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Home from './views/Home';
 import Carta from './views/Carta';
 import Reservar from './views/Reservar';
@@ -47,6 +47,7 @@ export function App() {
             element={route.isPrivate ? <PrivateRoute>{route.element}</PrivateRoute> : route.element}
           />
         ))}
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );
