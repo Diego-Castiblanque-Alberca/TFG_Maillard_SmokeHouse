@@ -5,8 +5,10 @@
 }
 
 .boton-volver{
+    padding: 0 10px;
     color: var(--color-4);
-    width: 100%;
+    width: 90%;
+    max-width: 300px;
     text-align: left;
     background-color: transparent;
     text-decoration: underline;
