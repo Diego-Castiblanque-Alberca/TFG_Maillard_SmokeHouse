@@ -34,6 +34,7 @@ const routes = [
   { path: 'carta/platos/postres', element: <Postres /> },
   { path: 'login/backOffice', element: <LoginBackOffice /> },
   { path: 'backOffice', element: <BackOffice />, isPrivate: true }
+  // { path: 'backOffice', element: <BackOffice />}
 ]; 
 
 export function App() {

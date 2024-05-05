@@ -5,7 +5,6 @@ import HeaderBO from './HeaderBO';
 import { Container } from '../../Container';
 import {Calendario} from '../../reservar/Calendario';
 import { SUBTITULO } from '../../../utils/consts';
-import {TituloCarta} from '../../carta/TituloCarta';
 import MostrarReservas from './MostrarReservas';
 
 function MainBackOffice() {
@@ -17,7 +16,7 @@ function MainBackOffice() {
         <>
             <HeaderBO />
             <Container className={"container"}>
-                <TituloCarta texto={SUBTITULO.MAIN_BO}/>
+                <h1 className="titulo-reserva">{SUBTITULO.MAIN_BO}</h1>
                 <Calendario fechaSeleccionada={fechaSeleccionada} setFechaSeleccionada={setFechaSeleccionada}/>
                 <MostrarReservas fechaSeleccionada={fechaSeleccionada}/>
             </Container>

@@ -16,32 +16,37 @@ class UserController extends Controller
    // Esta función se utiliza para iniciar sesión de un usuario y devolver un token de acceso.
    public function loginUser(Request $request)
    {
-       // Validar los datos de la solicitud entrante
-       $validator = Validator::make($request->all(), [
-           'email' => 'required|email', // El correo electrónico es obligatorio y debe ser una dirección de correo válida
-           'password' => 'required', // La contraseña es obligatoria
-       ]);
+        // Validar los datos de la solicitud entrante
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email', // El correo electrónico es obligatorio y debe ser una dirección de correo válida
+            'password' => 'required', // La contraseña es obligatoria
+        ]);
 
-       // Si la validación falla, devuelve una respuesta 401 con los errores de validación
-       if ($validator->fails()) {
-           return response()->json(['message' => $validator->errors()], 401);
-       }
+        // Si la validación falla, devuelve una respuesta 401 con los errores de validación
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()], 401);
+        }
 
-       // Obtener el correo electrónico y la contraseña de la solicitud
-       $credentials = $request->only('email', 'password');
-       // Obtener la opción de recordar de la solicitud, por defecto a falso si no está presente
-       $remember = $request->input('remember', false);
+        // Obtener el correo electrónico y la contraseña de la solicitud
+        $credentials = $request->only('email', 'password');
+        // Obtener la opción de recordar de la solicitud, por defecto a falso si no está presente
+        $remember = $request->input('remember', false);
 
-       // Intentar autenticar al usuario con las credenciales proporcionadas y la opción de recordar
-       // Si la autenticación es exitosa, crea un nuevo token para el usuario y lo devuelve
-       if (Auth::attempt($credentials, $remember)) {
-           $user = Auth::user();
-           $success = $user->createToken('')->plainTextToken;
-           return response()->json(['token' => $success], 200);
-       }
+        // Intentar autenticar al usuario con las credenciales proporcionadas y la opción de recordar
+        // Si la autenticación es exitosa, crea un nuevo token para el usuario y lo devuelve
+        if (Auth::attempt($credentials, $remember)) {
+            $user = Auth::user();
+            try {
+                $success = $user->createToken('')->plainTextToken;
+            } catch (\Exception $e) {
+                \Log::error($e);
+                throw $e;
+            }
+            return response()->json(['token' => $success], 200);
+        }
 
-       // Si la autenticación falla, devuelve una respuesta 401
-       return response()->json(['mensaje' => 'Usuario no autorizado, pruebe de nuevo.'], 401);
+        // Si la autenticación falla, devuelve una respuesta 401
+        return response()->json(['mensaje' => 'Usuario no autorizado, pruebe de nuevo.'], 401);
    }
 
    // Esta función se utiliza para eliminar los tokens de acceso de un usuario y cerrar la sesión

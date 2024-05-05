@@ -176,7 +176,8 @@ class ReservaController extends Controller
                 'email' => $cliente->correo,
                 'hora' => Horario::find($reserva->horario_inicio)->hora,
                 'mesa1' => $mesa1->id,
-                'mesa2' => $reserva->mesa2_id ? 'mesa-' . $mesa2->id : null
+                'mesa2' => $reserva->mesa2_id ? 'mesa-' . $mesa2->id : null,
+                'comensales' => $reserva->num_comensales
             ];
         }
         return response()->json($reservasDia);

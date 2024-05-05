@@ -1,0 +1,36 @@
+.titulo-turnos{
+    font-size: 16px;
+    color: var(--color-5);
+}
+
+.titulo-mostrar-reservas{
+    font-size: 24px;
+    color: var(--color-5);
+    text-decoration: underline;
+    margin-bottom: 10px;
+}
+.botones-turno{
+    display: flex;
+    justify-content: space-between;
+    gap: 100px;
+}
+
+.boton-turno{
+    background-color: transparent;
+    color: var(--color-3);
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.turno-selected{
+    border-bottom: 2px solid var(--color-3);
+}
+
+.mostrar-reservas{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap:20px;
+}

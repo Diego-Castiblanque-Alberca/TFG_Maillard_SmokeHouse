@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import "../../../styles/backOffice/MostrarReservas.css";
+import {ReservaTurno} from './ReservaTurno';
 
-export default function MostrarReservas(fechaSeleccionada) {
+export default function MostrarReservas({fechaSeleccionada}) {
 
     const [reservas, setReservas] = useState([]);
     const [errorPeticion, setErrorPeticion] = useState(null);
@@ -34,7 +36,7 @@ export default function MostrarReservas(fechaSeleccionada) {
             })
             .then(reservas => {
                 // Si todo ha ido bien, guardamos las reservas en el estado
-                setReservas(datos)
+                setReservas(reservas)
             })
             .catch(error => {
                 // Si ha habido un error, lo guardamos en el estado
@@ -44,14 +46,18 @@ export default function MostrarReservas(fechaSeleccionada) {
 
     return(
         <>
-            <h3>Seleccione un turno</h3>
-            <button onClick={()=>setTurno('comida')} className='buton-turno'> Comida </button>
-            <button onClick={()=>setTurno('cena')} className='buton-turno'> Cena </button>
-            <h2>Listado de Reservas</h2>
-            {/*aqui un mapeo de las reservas en un nuevo componente*/}
-            {reservas.map(reserva => (
-                <ReservaTurno key={reserva.id} reserva={reserva}/>
-            ))}
+            <h3 className='titulo-turnos'>Seleccione un turno</h3>
+            <div className="botones-turno">
+                <button onClick={()=>setTurno('comida')} className={turno=="comida"?'boton-turno turno-selected':'boton-turno'}> Comida </button>
+                <button onClick={()=>setTurno('cena')} className={turno=="cena"?'boton-turno turno-selected':'boton-turno'}> Cena </button>
+            </div>
+            <div className="mostrar-reservas">
+                <h2 className='titulo-mostrar-reservas'>Listado de Reservas</h2>
+                {/*aqui un mapeo de las reservas en un nuevo componente*/}
+                {reservas.map(reserva => (
+                    <ReservaTurno key={reserva.id} reserva={reserva}/>
+                ))}
+            </div>
         </>
     )
 }

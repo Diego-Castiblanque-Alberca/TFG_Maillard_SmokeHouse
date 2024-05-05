@@ -5,14 +5,17 @@ import '../../../styles/backOffice/ReservaTurno.css';
 
 export function ReservaTurno({reserva}) {
     return (
-        <div>
-            <p>{reserva.nombre}</p>
-            <p>{reserva.apellidos}</p>
-            <p>Mesa {reserva.mesa1}{reserva.mesa2 ? `,${reserva.mesa2}`:''}</p>
-            <p>{reserva.comensales} PAX</p>
-            <img src={puntos} alt="" />
-            <img src={editar} alt="" />
-            <img src={basura} alt="" />
+        <div className='turno-reserva'>
+            <div className="datos-turno-reserva">
+                <p className='primera-mayus'>{reserva.nombre}</p>
+                <p>Mesa {reserva.mesa1}{reserva.mesa2 ? `,${reserva.mesa2}`:''}</p>
+                <p>{reserva.comensales} PAX</p>
+            </div>
+            <div className="btnes-reserva">
+                <img src={puntos} alt="" />
+                <img src={editar} alt="" />
+                <img src={basura} alt="" />
+            </div>
         </div>
     )
 }
