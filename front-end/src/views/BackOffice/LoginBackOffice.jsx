@@ -5,6 +5,7 @@ import { LoginBackOfficeForm } from "../../components/backOffice/loginBackOffice
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth.js";
+import HeaderBO from "../../components/backOffice/backOffice/HeaderBO.jsx";
 
 
 
@@ -22,7 +23,7 @@ export default function LoginBackOffice() {
 
     return (
         <>
-            <Header />
+            <HeaderBO />
             <Container className={"container"}>
                 <LoginBackOfficeForm />
             </Container>

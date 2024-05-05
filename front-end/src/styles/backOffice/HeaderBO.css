@@ -1,0 +1,9 @@
+.headerBO{
+    width: 100%;
+    position: fixed;
+    top: 0;
+    background-color: var(--color-1);
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 25px 5px 20px;
+}
