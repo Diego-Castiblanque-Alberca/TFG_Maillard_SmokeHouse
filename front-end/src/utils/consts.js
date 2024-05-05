@@ -48,7 +48,9 @@ export const SUBTITULO = {
     ENTRANTES: "ENTRANTES",
     PRINCIPALES: "PRINCIPALES",
     ACOMPANANTES: "ACOMPAÑANTES",
-    POSTRES: "POSTRES"
+    POSTRES: "POSTRES",
+    MAIN_BO: "Gestión de Reservas",
+    LOGIN: "Iniciar Sesión",
 }
 export const EVENTS = {
     PUSHSTATE: 'pushstate',
