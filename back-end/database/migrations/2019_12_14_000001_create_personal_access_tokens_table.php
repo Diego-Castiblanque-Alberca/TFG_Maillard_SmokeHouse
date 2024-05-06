@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('personal_access_tokens', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
             $table->morphs('tokenable');
             $table->string('name');
             $table->string('token', 64)->unique();
@@ -21,7 +20,6 @@ return new class extends Migration
             $table->timestamp('last_used_at')->nullable();
             $table->timestamp('expires_at')->nullable();
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -30,13 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('personal_access_tokens', function (Blueprint $table) {
-            // Elimina la clave foránea
-            $table->dropForeign(['user_id']);
-
-            // Elimina la columna user_id
-            $table->dropColumn('user_id');
-        });
         Schema::dropIfExists('personal_access_tokens');
         
     }
