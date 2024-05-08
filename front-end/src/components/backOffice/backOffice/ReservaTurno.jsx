@@ -5,8 +5,10 @@ import { Modal } from './Modal';
 import '../../../styles/backOffice/ReservaTurno.css';
 
 export function ReservaTurno({reserva}) {
-    const [mostrar, setMostrar] = useState(false);
+    const [mostrarEliminar, setMostrarEliminar] = useState(false);
+    const [mostrarVisualizar, setMostrarVisualizar] = useState(false);
 
+    console.log(reserva);
     const handleConfirm = () => {
         // Aquí puedes hacer la petición a la API
         // Por ejemplo:
@@ -17,25 +19,44 @@ export function ReservaTurno({reserva}) {
         console.log('Reserva eliminada');
     }
 
-    const handleClose = () => {
-        setMostrar(false);
+    const handleCloseEliminar = () => {
+        setMostrarEliminar(false);
     }
-    
+    const handleCloseVisualizar = () => {
+        setMostrarVisualizar(false);
+    }
     return (
         <div className='turno-reserva'>
             <div className="datos-turno-reserva">
-                <p className='primera-mayus'>{reserva.nombre}</p>
+                <p className='primera-mayus nombre-turno-reserva'>{reserva.nombre}</p>
                 <p>Mesa {reserva.mesa1}{reserva.mesa2 ? `,${reserva.mesa2}`:''}</p>
                 <p>{reserva.comensales} PAX</p>
+                <p>{reserva.hora}</p>
             </div>
             <div className="btnes-reserva">
-                <img src={puntos} alt="visualizar" />
-                <img src={basura} alt="eliminar" onClick={() => setMostrar(true)}/>
+                <img src={puntos} alt="visualizar" onClick={() => setMostrarVisualizar(true)}/>
                 <Modal 
-                    mostrarInicial={mostrar}
+                    mostrarInicial={mostrarVisualizar}
+                    titulo='Informacion de la reserva'
+                    botones={['Continuar']}
+                    handleClose={handleCloseVisualizar}
+                >
+                    <div className="info-reserva-modal">
+                        <p style={{textTransform:"capitalize"}}>Nombre: {reserva.nombre}.</p>
+                        <p>Fecha: {reserva.fecha}.</p>
+                        <p>Mesa(s) reservada(s): {reserva.mesa1}{reserva.mesa2 ? `,${reserva.mesa2}`:''}.</p>
+                        <p>Hora de inicio: {reserva.hora}.</p>
+                        <p>Numero de comensales: {reserva.comensales} PAX.</p>
+                        <p>E-mail: {reserva.email}.</p>
+                        <p>Telefono: {reserva.telefono}</p>
+                    </div>
+                </Modal>
+                <img src={basura} alt="eliminar" onClick={() => setMostrarEliminar(true)}/>
+                <Modal 
+                    mostrarInicial={mostrarEliminar}
                     titulo='Eliminar reserva'
                     botones={['CANCELAR','CONFIRMAR']}
-                    handleClose={handleClose}
+                    handleClose={handleCloseEliminar}
                     handleConfirm={handleConfirm}
                 >
                     <p style={{textAlign:"center", fontSize:"18px"}}>¿Está seguro de querer eliminar definitivamente la reserva?</p>

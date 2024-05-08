@@ -19,13 +19,15 @@
 .datos-turno-reserva > :not(:first-child){
     flex: 0 0 auto;
 }
-.primera-mayus{
-    text-transform: capitalize;
+.nombre-turno-reserva{
     max-width: 120px;
     flex:1 0 150px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+}
+.primera-mayus{
+    text-transform: capitalize;
 }
 
 .btnes-reserva{
@@ -35,6 +37,23 @@
 }
 
 
+.info-reserva-modal{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-5);
+    border-radius: 5px;
+    color: var(--color-5);
+    font-size: 18px;
+
+}
+
+.info-reserva-modal>p{
+    padding: 10px 15px;
+}
+
+.info-reserva-modal>p:not(:first-child){
+    border-top: 1px solid var(--color-5);
+}
 @media screen and (min-width: 768px) {
     .turno-reserva{
         max-width: 400px;
