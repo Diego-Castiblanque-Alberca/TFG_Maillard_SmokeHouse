@@ -15,7 +15,15 @@ export default function MostrarReservas({fechaSeleccionada}) {
         return `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
     };
 
-    useEffect(() => {
+    const handleConfirm = async (id) => {
+        await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/reserva/cancelar/${id}`,{
+            method: 'DELETE' 
+        });
+        // Actualiza las reservas después de eliminar una
+        fetchReservas();
+    }
+
+    const fetchReservas = () => {
         fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/reserva/reservasDia`,{
             method: 'POST',
             headers: {
@@ -42,6 +50,10 @@ export default function MostrarReservas({fechaSeleccionada}) {
                 // Si ha habido un error, lo guardamos en el estado
                 setErrorPeticion(error.mensaje)
             });
+    }
+    
+    useEffect(() => {
+        fetchReservas();
     }, [fechaSeleccionada, turno]);
 
     return(
@@ -55,7 +67,7 @@ export default function MostrarReservas({fechaSeleccionada}) {
                 <h2 className='titulo-mostrar-reservas'>Listado de Reservas</h2>
                 {/*aqui un mapeo de las reservas en un nuevo componente*/}
                 {reservas.map(reserva => (
-                    <ReservaTurno key={reserva.id} reserva={reserva}/>
+                    <ReservaTurno key={reserva.id} reserva={reserva} handleConfirm={handleConfirm}/>
                 ))}
             </div>
         </>

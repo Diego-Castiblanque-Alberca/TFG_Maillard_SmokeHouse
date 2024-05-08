@@ -20,7 +20,7 @@
     font-size: 18px;
 } 
 
-span{
+.nombre-reserva >span{
     color: var(--color-5);
     font-size: 20px;
     text-transform: capitalize;
