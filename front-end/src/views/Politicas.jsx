@@ -5,6 +5,7 @@ import { AvisoLegal } from "../components/politicas/AvisoLegal";
 import { Cookies } from "../components/politicas/Cookies";
 import { Privacidad } from "../components/politicas/Privacidad";
 import { useEffect } from "react";
+import { CondicionesReserva } from "../components/politicas/CondicionesReserva";
 export function Politicas() {
     useEffect(() => {
         const hash = window.location.hash.slice(1); // Remove the '#' character from the hash
@@ -23,6 +24,7 @@ export function Politicas() {
                 <AvisoLegal />
                 <Privacidad />
                 <Cookies />
+                <CondicionesReserva />
             </Container>
         </>
     );
