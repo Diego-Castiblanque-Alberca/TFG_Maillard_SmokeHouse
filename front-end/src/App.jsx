@@ -16,6 +16,7 @@ import Postres from './views/carta/platos/Postres.jsx';
 import LoginBackOffice from './views/BackOffice/LoginBackOffice.jsx';
 import BackOffice from './views/BackOffice/BackOffice.jsx';
 import PrivateRoute from './components/backOffice/backOffice/PrivateRoute.jsx';
+import Politicas from './views/Politicas.jsx';
 
 const routes = [
   { path: '/', element: <Home />, index: true },
@@ -33,7 +34,8 @@ const routes = [
   { path: 'carta/platos/principales', element: <Principales /> },
   { path: 'carta/platos/postres', element: <Postres /> },
   { path: 'login/backOffice', element: <LoginBackOffice /> },
-  { path: 'backOffice', element: <BackOffice />, isPrivate: true }
+  { path: 'backOffice', element: <BackOffice />, isPrivate: true },
+  { path: 'politicas', element: <Politicas /> }
   // { path: 'backOffice', element: <BackOffice />}
 ]; 
 

@@ -15,10 +15,10 @@ export function Footer() {
                     <a href="https://www.instagram.com/" className="redes_sociales__enlace"><img src={instagram} alt="" /></a>
                 </div>
                 <div className="footer__contacto">
-                    <a href="" className="footer__contacto__enlace">Aviso Legal</a>
-                    <a href="" className="footer__contacto__enlace">Política de Cookies</a>
-                    <a href="" className="footer__contacto__enlace">Política de privacidad</a>
-                    <a href="" className="footer__contacto__enlace">Condiciones de reserva</a>
+                    <a href="/politicas#aviso-legal" target="_blank" className="footer__contacto__enlace">Aviso Legal</a>
+                    <a href="/politicas#cookies" target="_blank"  className="footer__contacto__enlace">Política de Cookies</a>
+                    <a href="/politicas#privacidad" target="_blank"  className="footer__contacto__enlace">Política de privacidad</a>
+                    <a href="#" target="_blank"  className="footer__contacto__enlace">Condiciones de reserva</a>
                 </div>
             </div>
         </footer>

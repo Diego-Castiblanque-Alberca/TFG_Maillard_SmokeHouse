@@ -1,0 +1,108 @@
+
+.subcontainer-politicas{
+    color: var(--color-5);
+    font-family: 'Lora', fallback, sans-serif;
+    font-size: 0.8rem;
+    width: 95%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px;
+    
+}
+.titulo-principal{
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--color-3);
+    width: 100%;
+    text-align: center;
+}
+.section-politicas{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+}
+
+.link{
+    color: rgb(102, 102, 196);
+    text-decoration: underline;
+}
+.section-politicas table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.section-politicas td {
+    border: 1px solid var(--color-5);
+    padding: 8px;
+}
+
+.section-politicas th {
+    padding: 12px 8px;
+    text-align: left;
+    background-color: var(--color-5);
+    color:var(--color-2);
+    border: 1px solid var(--color-2);
+}
+.lista{
+    list-style: initial;
+    list-style-type: initial;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.lista-numerica{
+    list-style-type: decimal !important;
+}
+.subtitulo{
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: underline;
+
+}
+.p-indent{
+    text-indent: 2em;
+}
+@media screen and (min-width: 768px){
+    .subcontainer-politicas{
+        font-size: 1rem;
+    }
+    .titulo-principal{
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--color-3);
+        width: 100%;
+        text-align: center;
+    }
+    .subtitulo{
+        font-size: 1rem;
+       
+    
+    }
+    
+}
+
+@media screen and (min-width: 1024px){
+    .subcontainer-politicas{
+        max-width: 1024px;
+        font-size: 1.2rem;
+
+    }
+    .subtitulo{
+        font-size: 1.2rem;
+       
+    
+    }
+    .titulo-principal{
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--color-3);
+        width: 100%;
+        text-align: center;
+    }
+    
+}
