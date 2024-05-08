@@ -16,8 +16,14 @@
 
 .container{
     gap: 40px;
-    padding: 80px 20px 50px;
+    padding: 60px 20px 50px;
     min-height: calc(100vh - 250px);
+}
+.container-politicas{
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 60px 20px 50px;
 }
 
 .container-carta{

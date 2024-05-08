@@ -260,7 +260,7 @@ export default function FormReserva({ siguientePaso, datos }) {
                         onBlur={manejarBlur}
                         className={estadoFormulario.politicas.error && estadoFormulario.politicas.tocado ? 'input-error' : ''} 
                     />
-                    Acepto las condiciones de uso, política de privacidad y aviso legal.
+                    <a href="/politicas" target="_blank">Acepto las condiciones de uso, política de privacidad y aviso legal.</a>
                 </label>
                 {estadoFormulario.politicas.error && estadoFormulario.politicas.tocado && <p className="mensaje-error">{estadoFormulario.politicas.error}</p>}
                 <label className="checkbox-comunicaciones">
