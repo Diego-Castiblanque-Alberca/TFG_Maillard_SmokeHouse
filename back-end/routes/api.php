@@ -45,6 +45,7 @@ Route::post('/reserva/reservasDia', [ReservaController::class,'obtenerReservasDi
 
 Route::post('/reserva/obtener', [ReservaController::class,'obtenerReserva']);
 
-Route::post('/reserva/cancelar', [ReservaController::class,'cancelarReserva']);
+
+Route::delete('/reserva/cancelar/{id}', [ReservaController::class,'cancelarReserva']);
 
 Route::post('/reserva/actualizar', [ReservaController::class,'actualizarReserva']);

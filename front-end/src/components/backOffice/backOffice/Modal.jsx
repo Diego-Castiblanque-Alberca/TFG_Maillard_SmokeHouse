@@ -2,7 +2,7 @@ import React, { useState , useEffect } from "react";
 import "../../../styles/backOffice/Modal.css";
 import info from "../../../imgs/info.svg";
 
-export function Modal({ mostrarInicial, children, titulo , botones, handleClose,handleConfirm}) {
+export function Modal({ mostrarInicial, children, titulo , botones, handleClose,handleConfirm, id}) {
     const [mostrar, setMostrar] = useState(mostrarInicial);
 
     useEffect(() => {
@@ -11,7 +11,7 @@ export function Modal({ mostrarInicial, children, titulo , botones, handleClose,
 
     const handleClick = (index) => {
         if(index == 1){
-            handleConfirm();
+            handleConfirm(id);
         }
         handleClose();
     }
