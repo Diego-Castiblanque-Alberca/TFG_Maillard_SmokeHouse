@@ -54,7 +54,7 @@ class UserController extends Controller
    {
        // Obtener el usuario autenticado
        $user = Auth::user();
-   
+
        // Eliminar el token de acceso actual del usuario
        $user->currentAccessToken()->delete();
    

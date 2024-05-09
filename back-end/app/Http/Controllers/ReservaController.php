@@ -26,7 +26,11 @@ class ReservaController extends Controller
         $reservas = Reserva::where('fecha_reserva', $fecha)->get();
         $horariosDisponibles = [];
         
+        // Obtenemos la hora y minutos actuales en formato 24h
+        $horaActual = now()->timezone('Europe/Madrid')->format('H:i');
+
         foreach ($horarios as $horario) {
+
             $mesasDisponibles = [];
             foreach ($mesas as $mesa) {
                 $mesaDisponible = true;
@@ -40,7 +44,10 @@ class ReservaController extends Controller
                     $mesasDisponibles[] = $mesa;
                 }
             }
-            $horariosDisponibles[] = ['horario' => $horario->hora, 'disponible' => count($mesasDisponibles) > 0];
+            // Comprueba si el horario es posterior a la hora actual
+            $disponible = $horario->hora > $horaActual && count($mesasDisponibles) > 0;
+            $horariosDisponibles[] = ['horario' => $horario->hora, 'disponible' => $disponible];
+            
         }
         for($i = 1; $i < count($horariosDisponibles); $i++){
             if(!$horariosDisponibles[$i]['disponible']){
@@ -75,7 +82,6 @@ class ReservaController extends Controller
 
     public function guardarReserva(Request $request)
     {
-        
         // Validación de la entrada
         //si los datos no pasan la validación, Laravel automáticamente retornará una respuesta 
         //con un código de estado 422 (Unprocessable Entity)  y un JSON con los errores de validación.

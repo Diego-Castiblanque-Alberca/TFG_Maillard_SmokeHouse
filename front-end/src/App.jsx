@@ -33,10 +33,9 @@ const routes = [
   { path: 'carta/platos/entrantes', element: <Entrantes /> },
   { path: 'carta/platos/principales', element: <Principales /> },
   { path: 'carta/platos/postres', element: <Postres /> },
-  { path: 'login/backOffice', element: <LoginBackOffice /> },
+  { path: 'backOffice/login', element: <LoginBackOffice /> },
   { path: 'backOffice', element: <BackOffice />, isPrivate: true },
   { path: 'politicas', element: <Politicas /> }
-  // { path: 'backOffice', element: <BackOffice />}
 ]; 
 
 export function App() {
