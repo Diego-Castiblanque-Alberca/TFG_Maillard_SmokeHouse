@@ -14,14 +14,16 @@
 
 .datos-turno-reserva{
     display: flex;
+    flex:1;
     gap: 10px;
+    cursor: pointer;
 }
 .datos-turno-reserva > :not(:first-child){
     flex: 0 0 auto;
 }
 .nombre-turno-reserva{
-    max-width: 120px;
-    flex:1 0 150px;
+    max-width: 150px;
+    flex:1 0 120px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -34,6 +36,9 @@
     display: flex;
     align-items: center;
     gap: 5px;
+}
+.btnes-reserva> img{
+    cursor: pointer;
 }
 
 

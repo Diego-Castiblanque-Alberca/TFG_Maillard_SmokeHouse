@@ -21,14 +21,14 @@ export function ReservaTurno({reserva, handleConfirm}) {
     }
     return (
         <div className='turno-reserva'>
-            <div className="datos-turno-reserva">
+            <div className="datos-turno-reserva" onClick={() => setMostrarVisualizar(true)}>
                 <p className='primera-mayus nombre-turno-reserva'>{reserva.nombre}</p>
-                <p>Mesa {reserva.mesa1}{reserva.mesa2 ? `,${reserva.mesa2}`:''}</p>
                 <p>{reserva.comensales} PAX</p>
                 <p>{reserva.hora}</p>
+                <p>Mesa {reserva.mesa1}{reserva.mesa2 ? `,${reserva.mesa2}`:''}</p>
             </div>
             <div className="btnes-reserva">
-                <img src={puntos} alt="visualizar" onClick={() => setMostrarVisualizar(true)}/>
+                {/* <img src={puntos} alt="visualizar" onClick={() => setMostrarVisualizar(true)}/> */}
                 <Modal 
                     mostrarInicial={mostrarVisualizar}
                     titulo='Informacion de la reserva'

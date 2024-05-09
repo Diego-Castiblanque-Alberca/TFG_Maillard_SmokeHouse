@@ -69,6 +69,7 @@ export default function MostrarReservas({fechaSeleccionada}) {
                 {reservas.map(reserva => (
                     <ReservaTurno key={reserva.id} reserva={reserva} handleConfirm={handleConfirm}/>
                 ))}
+                {reservas.length==0 && <p style={{color:"var(--color-5)"}}>Aun no hay reservas para este turno.</p>}
             </div>
         </>
     )

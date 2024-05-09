@@ -45,6 +45,13 @@
     gap: 14px;
     max-width: 500px;
 }
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type=number] { -moz-appearance:textfield; }
+
 .checkbox-politicas,.checkbox-comunicaciones{
     width: 100%;
     display: flex;
@@ -55,10 +62,16 @@
 .checkbox-politicas> input,.checkbox-comunicaciones>input{
     height: 15px;
     flex: 0 0 15px;
+    cursor: pointer;
 }
 .checkbox-politicas{
     color: var(--color-3);
 }
+
+.checkbox-politicas > a:hover{
+    text-decoration: underline;    
+}
+
 .checkbox-comunicaciones{
     color: var(--color-4);
 }
