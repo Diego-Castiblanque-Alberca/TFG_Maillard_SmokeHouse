@@ -15,3 +15,17 @@
     width: 24px;
     height: 24px;
 }
+
+@media screen and (min-width: 768px){
+    .datos-reserva{
+        gap: 20px;
+    }
+    .dato-reserva{
+        font-size: 18px;
+    }
+    .dato-reserva img{
+        width: 30px;
+        height: 30px;
+    }
+    
+}

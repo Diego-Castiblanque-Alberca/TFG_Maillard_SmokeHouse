@@ -27,7 +27,9 @@ class ReservaController extends Controller
         $horariosDisponibles = [];
         
         // Obtenemos la hora y minutos actuales en formato 24h
-        $horaActual = now()->timezone('Europe/Madrid')->format('H:i');
+        date_default_timezone_set('Europe/Madrid');
+        $horaActual = date("H:i");
+        $fechaActual = date("Y-m-d");
 
         foreach ($horarios as $horario) {
 
@@ -35,7 +37,8 @@ class ReservaController extends Controller
             foreach ($mesas as $mesa) {
                 $mesaDisponible = true;
                 foreach ($reservas as $reserva) {
-                    if (($reserva->horario_inicio == $horario->id || $reserva->horario_fin == $horario->id ) && ($reserva->mesa1_id == $mesa->id || $reserva->mesa2_id == $mesa->id)) {
+                    if (($reserva->horario_inicio == $horario->id || $reserva->horario_fin == $horario->id ) 
+                        && ($reserva->mesa1_id == $mesa->id || $reserva->mesa2_id == $mesa->id)) {
                         $mesaDisponible = false;
                         break;
                     }
@@ -44,8 +47,8 @@ class ReservaController extends Controller
                     $mesasDisponibles[] = $mesa;
                 }
             }
-            // Comprueba si el horario es posterior a la hora actual
-            $disponible = $horario->hora > $horaActual && count($mesasDisponibles) > 0;
+            // Si la reserva es en la fecha actual comprueba si el horario es posterior a la hora actual
+            $disponible = ($fecha != $fechaActual|| $horario->hora > $horaActual) && count($mesasDisponibles) > 0;
             $horariosDisponibles[] = ['horario' => $horario->hora, 'disponible' => $disponible];
             
         }
