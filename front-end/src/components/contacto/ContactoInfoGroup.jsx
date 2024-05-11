@@ -7,7 +7,7 @@ export function ContactoInfoGroup() {
     const [infoTitulo, ...arrInfo] = CONTACTO;
 
     return (
-        <section className='contacto-group'>
+        <section className='contacto-group' id="contacto">
             <div>
             <h1 className="titulo-contacto">{infoTitulo.h1}</h1>
             </div>

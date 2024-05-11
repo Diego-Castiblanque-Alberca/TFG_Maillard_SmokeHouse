@@ -23,7 +23,7 @@
     border-top: 1px solid var(--color-3);
 }
 .desplegable.open{
-    top: 56px;
+    top: 40px;
 }
 @media screen and (min-width: 768px){
     .desplegable.desplegable.open{

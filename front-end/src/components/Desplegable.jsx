@@ -12,10 +12,10 @@ export function Desplegable({isOpen}) {
                 <Link to="/reservar">Reservar mesa</Link>
             </li>
             <li>
-                <Link to="/">Sobre Maillard</Link>
+                <Link to="/contacto">Sobre Maillard</Link>
             </li>
             <li>
-                <Link to="/contacto">Contacto</Link>
+                <Link to="/contacto#contacto">Contacto</Link>
             </li>
         </ul>
     )
