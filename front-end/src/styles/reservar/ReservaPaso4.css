@@ -25,6 +25,7 @@
 .nombre-reserva >span{
     color: var(--color-5);
     font-size: 30px;
+    line-height: 60px;
     text-transform: capitalize;
     display: block;
 }

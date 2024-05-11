@@ -38,7 +38,7 @@ export function ReservaTurno({reserva, handleConfirm}) {
                     <div className="info-reserva-modal">
                         <p style={{textTransform:"capitalize"}}><span>Nombre:</span> {reserva.nombre.charAt(0).toUpperCase() + reserva.nombre.slice(1)}.</p>
                         <p><span>Fecha:</span> {reserva.fecha}.</p>
-                        <p><span>Mesa(s) reservada(s):</span> {reserva.mesa1}{reserva.mesa2 ? `,${reserva.mesa2}`:''}.</p>
+                        <p><span>Mesa(s) reservada(s):</span> {reserva.mesa1}{reserva.mesa2 ? `, ${reserva.mesa2}`:''}.</p>
                         <p><span>Hora de inicio:</span> {reserva.hora}.</p>
                         <p><span>Numero de comensales:</span> {reserva.comensales} PAX.</p>
                         <p><span>E-mail:</span> {reserva.email}.</p>

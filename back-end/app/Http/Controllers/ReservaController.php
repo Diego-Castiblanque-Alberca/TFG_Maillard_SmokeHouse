@@ -187,7 +187,7 @@ class ReservaController extends Controller
                 'email' => $cliente->correo,
                 'hora' => Horario::find($reserva->horario_inicio)->hora,
                 'mesa1' => $mesa1->id,
-                'mesa2' => $reserva->mesa2_id ? 'mesa-' . $mesa2->id : null,
+                'mesa2' => $reserva->mesa2_id ? $mesa2->id : null,
                 'comensales' => $reserva->num_comensales
             ];
         }
@@ -212,7 +212,7 @@ class ReservaController extends Controller
                 'mesa2' => $reserva->mesa2_id ? $reserva->mesa2_id : null,
                 'comensales' => $reserva->num_comensales
             ];
-            return response()->json($reservaCompleta);
+            return response()->json($reserva->mesa2_id);
         }else{
             return response()->json(['mensaje'=>'No se ha encontrado la reserva'],404);
         }
@@ -230,68 +230,6 @@ class ReservaController extends Controller
             return response()->json(['mensaje'=>'No se ha encontrado la reserva'],404);
         }
     }
-    
-
-    //una funcion que actualice una reserva con los datos que se le pasen
-    // public function actualizarReserva(Request $request){
-    //     $id = $request->input('id');
-    //     $datosValidados = $request->validate([
-    //         'politicas' => 'required|boolean',
-    //         'fechaSeleccionada' => 'required|date',
-    //         'horario' => [
-    //           'required',
-    //             'string',
-    //             'in:'. implode(',', self::HORARIOS_COMIDA) . ',' . implode(',', self::HORARIOS_CENA)  
-    //         ],
-    //         'mesasSeleccionadas' => 'required|array|min:1|max:2',
-    //         'nombre' => 'required|string|max:255',
-    //         'apellidos' => 'required|string|max:255',
-    //         'telefono' => 'required|string|min:12|max:12',
-    //         'email' => 'required|email|max:255',
-    //         'comunicaciones' => 'required|boolean',
-    //         'comensalesSeleccionado' => 'required|integer|min:1|max:8',
-    //     ]);
-    //     if($datosValidados['politicas']){
-    //         DB::beginTransaction();
-    //         try {
-    //             $cliente = Cliente::firstWhere('correo', $datosValidados['email']);
-                
-    //             if(!$cliente){
-    //                 $cliente = new Cliente();
-    //             } 
-                
-    //             $cliente->nombre = $datosValidados['nombre'];
-    //             $cliente->correo = $datosValidados['email'];
-    //             $cliente->apellido = $datosValidados['apellidos'];
-    //             $cliente->telefono = $datosValidados['telefono'];
-    //             $cliente->consiente = $datosValidados['comunicaciones'];
-    //             $cliente->save();
-
-    //             $reserva = Reserva::find($id);
-    //             $reserva->fecha_reserva = $datosValidados['fechaSeleccionada'];
-    //             $reserva->horario_inicio = Horario::where('hora', $datosValidados['horario'])->first()->id;
-    //             if($datosValidados['horario'] == self::ULTIMO_HORARIO_CENA || $datosValidados['horario'] == self::ULTIMO_HORARIO_COMIDA){
-    //                 $reserva->horario_fin = null;
-    //             }else{
-    //                 $reserva->horario_fin = Horario::where('hora', $datosValidados['horario'])->first()->id + 1;
-    //             }
-    //             $reserva->mesa1_id = Mesa::where('id', $datosValidados['mesasSeleccionadas'][0])->first()->id;
-    //             $reserva->num_comensales = $datosValidados['comensalesSeleccionado'];
-    //             $reserva->mesa2_id = count($datosValidados['mesasSeleccionadas'])>1 ? Mesa::where('id', $datosValidados['mesasSeleccionadas'][1])->first()->id : null;
-    //             $reserva->cliente_id = $cliente->id;
-    //             $reserva->save();
-    //             DB::commit();
-    //             return response()->json($reserva);
-    //         } catch (\Exception $e) {
-    //             DB::rollback();
-    //             Log::error($e);
-    //             return response()->json(['mensaje'=>'Error al actualizar la reserva. Por favor, inténtelo de nuevo más tarde.'],500);
-    //         }
-    //     }else{
-    //         return response()->json(['mensaje'=>'No se han aceptado las políticas de privacidad'],400);
-    //     }
-    // }
-
 }
 
 
