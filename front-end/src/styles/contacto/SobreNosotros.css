@@ -1,0 +1,56 @@
+.sobre-nosotros {
+    background: url('../../imgs/restaurant-2623071_1920.jpg') no-repeat center center fixed; 
+    background-size: cover;
+    position: relative;
+    
+}
+.sobre-nosotros::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); 
+}
+.sobre-nosotros-content {
+    font-family: 'Lora', sans-serif;
+    font-size: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 30px ;
+    position: relative;
+    z-index: 1;
+    color: var(--color-5); 
+   
+}
+.titulo-sobre{
+    font-size: 1.5rem;
+    text-align: center;
+    color: var(--color-3);
+}
+.p-indent{
+    text-indent: 2em;
+}
+@media screen and (min-width: 768px){
+    .sobre-nosotros{
+        max-width: 850px; 
+    }
+    .sobre-nosotros-content{
+        font-size: 1.1rem;
+    }
+    .titulo-sobre{
+        font-size: 1.6rem;
+    }
+    
+}
+@media screen and (min-width: 1024px){
+    .sobre-nosotros-content{
+        font-size: 1.2rem;
+    }
+    .titulo-sobre{
+        font-size: 2.5rem;
+    }
+}
+

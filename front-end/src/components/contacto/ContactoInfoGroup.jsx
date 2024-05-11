@@ -1,22 +1,29 @@
-import { ContactoInfo } from "./ContactoInfo"
+
 import { CONTACTO } from "../../utils/consts.js"
-import "../../styles/contacto/ContactoInfoGroup.css"
+import '../../styles/contacto/ContactoInfo.css'
 
 export function ContactoInfoGroup() {
 
-    const [ infoTitulo, ...arrInfo ] = CONTACTO;
-    
+    const [infoTitulo, ...arrInfo] = CONTACTO;
+
     return (
-        <section className='contacto-info-group'>
-           <h1 className="titulo">{infoTitulo.h1}</h1>
-            {
+        <section className='contacto-group'>
+            <div>
+            <h1 className="titulo-contacto">{infoTitulo.h1}</h1>
+            </div>
+           <div className="contacto-info-group">
+           {
                 arrInfo.map((info, index) => {
-                    const {titulo, descripcion} = info;
+                    const { titulo, descripcion } = info;
                     return (
-                        <ContactoInfo key={index} titulo={titulo} descripcion={descripcion} />
+                        <article className='contacto-info'>
+                            <h2 className='titulo-contacto-info'>{titulo}</h2>
+                            <p className='descripcion-contacto-info'>{descripcion}</p>
+                        </article>
                     )
                 })
             }
+           </div>
         </section>
     )
 }

@@ -2,6 +2,7 @@ import { HeaderPo } from "../components/politicas/HeaderPo.jsx";
 import { Footer } from "../components/Footer.jsx";
 import { Container } from "../components/Container.jsx";
 import { ContactoInfoGroup } from "../components/contacto/ContactoInfoGroup.jsx";
+import SobreNosotros from "../components/contacto/SobreNosotros.jsx";
 
 export default function Contacto() {
 
@@ -11,8 +12,8 @@ export default function Contacto() {
         <>
             <HeaderPo />
             <Container className={"container-contacto container"}>
+                <SobreNosotros />
                 <ContactoInfoGroup />
-                {/*sobre maillard*/}
             </Container>
             <Footer />
         </>

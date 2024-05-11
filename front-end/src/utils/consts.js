@@ -367,11 +367,11 @@ export const POSTRES = [
 export const CONTACTO = [
     
     {
-        h1: "Contacto"
+        h1: "Información de contacto"
     },
     {
         titulo: "Dirección",
-        descripcion: "Calle de Lagasca, 98, 28001 Madrid."
+        descripcion: "Calle Villablanca, 79, 28032, Madrid"
     },
     {
         titulo: "Teléfono de información",
