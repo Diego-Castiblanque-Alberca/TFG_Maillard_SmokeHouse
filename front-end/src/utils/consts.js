@@ -364,25 +364,3 @@ export const POSTRES = [
     }
 ];
 
-export const CONTACTO = [
-    
-    {
-        h1: "Información de contacto"
-    },
-    {
-        titulo: "Dirección",
-        descripcion: "Calle Villablanca, 79, 28032, Madrid"
-    },
-    {
-        titulo: "Teléfono de información",
-        descripcion: "+34 914 000 000"
-    },
-    {
-        titulo: "E-mail",
-        descripcion: "maillard@smokehouse.es"
-    },
-    {
-        titulo: "Horarios",
-        descripcion: "L-D 12:00 - 15:30h | 20:00 - 00:00h"
-    }
-]

@@ -1,4 +1,4 @@
-import { HeaderPo } from "../components/politicas/HeaderPo.jsx";
+import { Header } from "../components/HeaderNav"; 
 import { Footer } from "../components/Footer.jsx";
 import { Container } from "../components/Container.jsx";
 import { ContactoInfoGroup } from "../components/contacto/ContactoInfoGroup.jsx";
@@ -16,7 +16,7 @@ export default function Contacto() {
       }, []);
     return (
         <>
-            <HeaderPo />
+            <Header />
             <Container className={"container-contacto container"}>
                 <SobreNosotros />
                 <ContactoInfoGroup />
