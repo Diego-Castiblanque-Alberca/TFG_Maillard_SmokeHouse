@@ -43,6 +43,7 @@
     }
     .contacto-info-group{
         flex-direction: row;
+        padding: 0 40px;
     }
    
 
