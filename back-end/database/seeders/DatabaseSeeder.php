@@ -8,16 +8,15 @@ use Illuminate\Database\Seeder;
 class DatabaseSeeder extends Seeder
 {
     /**
-        * Seed the application's database.
+        * Cada vez que se ejecute la migración con php artisan migrate, 
+        *se puede poblar la tabla mesas con los datos iniciales ejecutando 
+        *php artisan db:seed. Se puede hacer ambas cosas a la vez, 
+        *utilizando el comando php artisan migrate:fresh --seed.
         */
     public function run(): void
     {
-        //\App\Models\User::factory(10)->create();
-
-        \App\Models\User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'asd@asd.com',
-            'password' => bcrypt(123)
-        ]);
+        $this->call(MesasTableSeeder::class);
+        $this->call(HorariosTableSeeder::class);
+        $this->call(UsersTableSeeder::class);
     }
 }
