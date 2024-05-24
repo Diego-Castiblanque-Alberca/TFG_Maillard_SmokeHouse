@@ -43,8 +43,9 @@ Route::post('/reserva/mesas', [ReservaController::class,'mesasDisponibles']);
 
 Route::post('/reserva/reservar', [ReservaController::class,'guardarReserva']);
 
-
-Route::post('/reserva/reservasDia', [ReservaController::class,'obtenerReservasDia']);
+Route::group(['middleware' => 'auth:sanctum'],function(){
+    Route::post('/reserva/reservasDia', [ReservaController::class,'obtenerReservasDia']);
+});
 
 Route::group(['middleware' => 'auth:sanctum'],function(){
     Route::delete('/reserva/cancelar/{id}', [ReservaController::class,'cancelarReserva']);

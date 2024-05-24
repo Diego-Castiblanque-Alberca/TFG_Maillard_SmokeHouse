@@ -160,39 +160,49 @@ class ReservaController extends Controller
 
 
     //una funcion que reciba fecha y turno de comida y retorne todas las reservas de ese dia(ordenadas por hora), con id, nombre, hora y mesa
+
     public function obtenerReservasDia(Request $request){
-        $fecha = $request->input('fecha');
-        $turno = $request->input('turno');
-        if($turno == 'comida'){
-            $horarios = self::HORARIOS_COMIDA;
-        }else{
-            $horarios = self::HORARIOS_CENA;
+        // Comprueba si el usuario está autenticado
+        if ($request->user()) {
+            $fecha = $request->input('fecha');
+            $turno = $request->input('turno');
+            if($turno == 'comida'){
+                $horarios = self::HORARIOS_COMIDA;
+            }elseif($turno == 'cena'){
+                $horarios = self::HORARIOS_CENA;
+            }else{
+                return response()->json(['mensaje'=>'El turno seleccionado no es válido'],400);
+            }
+
+            $horarioIds = Horario::whereIn('hora', $horarios)->pluck('id');
+            $reservas = Reserva::where('fecha_reserva', $fecha)
+                ->whereIn('horario_inicio', $horarioIds)
+                ->orderBy('horario_inicio')
+                ->get();
+            $reservasDia = [];
+        
+            foreach ($reservas as $reserva) {
+                $cliente = Cliente::find($reserva->cliente_id);
+                $mesa1 = Mesa::find($reserva->mesa1_id);
+                $mesa2 = $reserva->mesa2_id ? Mesa::find($reserva->mesa2_id) : null;
+                $reservasDia[] = [
+                    'id' => $reserva->id,
+                    'nombre' => $cliente->nombre . ' ' . $cliente->apellido,
+                    'telefono' => $cliente->telefono,
+                    'fecha' => $reserva->fecha_reserva,
+                    'email' => $cliente->correo,
+                    'hora' => Horario::find($reserva->horario_inicio)->hora,
+                    'mesa1' => $mesa1->id,
+                    'mesa2' => $reserva->mesa2_id ? $mesa2->id : null,
+                    'comensales' => $reserva->num_comensales
+                ];
+            }
+            return response()->json($reservasDia);
+        } else {
+            return response()->json(['mensaje'=>'No estás autenticado'],401);
         }
-        $horarioIds = Horario::whereIn('hora', $horarios)->pluck('id');
-        $reservas = Reserva::where('fecha_reserva', $fecha)
-            ->whereIn('horario_inicio', $horarioIds)
-            ->orderBy('horario_inicio')
-            ->get();
-        $reservasDia = [];
-    
-        foreach ($reservas as $reserva) {
-            $cliente = Cliente::find($reserva->cliente_id);
-            $mesa1 = Mesa::find($reserva->mesa1_id);
-            $mesa2 = $reserva->mesa2_id ? Mesa::find($reserva->mesa2_id) : null;
-            $reservasDia[] = [
-                'id' => $reserva->id,
-                'nombre' => $cliente->nombre . ' ' . $cliente->apellido,
-                'telefono' => $cliente->telefono,
-                'fecha' => $reserva->fecha_reserva,
-                'email' => $cliente->correo,
-                'hora' => Horario::find($reserva->horario_inicio)->hora,
-                'mesa1' => $mesa1->id,
-                'mesa2' => $reserva->mesa2_id ? $mesa2->id : null,
-                'comensales' => $reserva->num_comensales
-            ];
-        }
-        return response()->json($reservasDia);
     }
+    
 
     //una funcion que reciba id y retorne todos los datos de esa reserva en concreto
     public function obtenerReserva(Request $request){
@@ -220,16 +230,23 @@ class ReservaController extends Controller
     
     //una funcion que elimine una reserva
 
-    public function cancelarReserva($id){
-        $reserva = Reserva::find($id);
+    public function cancelarReserva(Request $request, $id){
+        // Comprueba si el usuario está autenticado
+        if ($request->user()) {
+            $reserva = Reserva::find($id);
     
-        if($reserva){
-            $reserva->delete();
-            return response()->json(['mensaje'=>'Reserva eliminada correctamente']);
-        }else{
-            return response()->json(['mensaje'=>'No se ha encontrado la reserva'],404);
+            // Comprueba si la reserva existe
+            if($reserva){
+                $reserva->delete();
+                return response()->json(['mensaje'=>'Reserva eliminada correctamente']);
+            }else{
+                return response()->json(['mensaje'=>'No se ha encontrado la reserva'],404);
+            }
+        } else {
+            return response()->json(['mensaje'=>'No estás autenticado'],401);
         }
     }
+    
 }
 
 
