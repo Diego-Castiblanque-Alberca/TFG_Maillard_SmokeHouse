@@ -38,14 +38,14 @@ Route::get('/carta/{categoriaRuta}/{subcategoriaRuta}', [CartaController::class,
 
 
 Route::post('/reserva', [ReservaController::class,'horariosDisponibles']);
+
 Route::post('/reserva/mesas', [ReservaController::class,'mesasDisponibles']);
+
 Route::post('/reserva/reservar', [ReservaController::class,'guardarReserva']);
+
 
 Route::post('/reserva/reservasDia', [ReservaController::class,'obtenerReservasDia']);
 
-Route::post('/reserva/obtener', [ReservaController::class,'obtenerReserva']);
-
-
-Route::delete('/reserva/cancelar/{id}', [ReservaController::class,'cancelarReserva']);
-
-Route::post('/reserva/actualizar', [ReservaController::class,'actualizarReserva']);
+Route::group(['middleware' => 'auth:sanctum'],function(){
+    Route::delete('/reserva/cancelar/{id}', [ReservaController::class,'cancelarReserva']);
+});

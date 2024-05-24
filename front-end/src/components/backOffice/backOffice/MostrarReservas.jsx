@@ -16,8 +16,14 @@ export default function MostrarReservas({fechaSeleccionada}) {
     };
 
     const handleConfirm = async (id) => {
+        const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');  
         await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/reserva/cancelar/${id}`,{
-            method: 'DELETE' 
+            method: 'DELETE',
+            headers: {
+                'Authorization': 'Bearer ' + token, // token es tu token de autenticación
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
         });
         // Actualiza las reservas después de eliminar una
         fetchReservas();
