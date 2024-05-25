@@ -5,7 +5,6 @@ import {ReservaTurno} from './ReservaTurno';
 export default function MostrarReservas({fechaSeleccionada}) {
 
     const [reservas, setReservas] = useState([]);
-    const [errorPeticion, setErrorPeticion] = useState(null);
     const [turno, setTurno] = useState('comida');
 
     const formatearFecha = (date) => {
@@ -56,8 +55,8 @@ export default function MostrarReservas({fechaSeleccionada}) {
                 setReservas(reservas)
             })
             .catch(error => {
-                // Si ha habido un error, lo guardamos en el estado
-                setErrorPeticion(error.mensaje)
+                // Si ha habido un error, lo mostramos por consola
+                console.log(error);
             });
     }
     
