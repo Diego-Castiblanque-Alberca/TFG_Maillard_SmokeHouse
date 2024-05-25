@@ -1,14 +1,15 @@
 <?php
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Models\Cliente; 
 use App\Models\Horario;
 use App\Models\Mesa;
 use App\Models\Reserva;
-
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Mail; 
+use App\Mail\NotificacionReserva;
 
 class ReservaController extends Controller
 {
@@ -152,10 +153,21 @@ class ReservaController extends Controller
                     $reserva->save();
                 }
 
+                  // Enviar correo de confirmación de reserva
+                  //agregado
+                  $detalles = [
+                    'nombre' => $cliente->nombre,
+                    'fecha' => $reserva->fecha_reserva,
+                    'hora' => Horario::find($reserva->horario_inicio)->hora,
+                    'comensales' => $reserva->num_comensales
+                ];
+                Mail::to($cliente->correo)->send(new NotificacionReserva($detalles));
+
                 DB::commit();
                 return response()->json($reserva);
             } catch (\Exception $e) {
                 DB::rollback();
+                Log::error('Error: ' . $e->getMessage());
                 Log::error($e);
                 return response()->json(['mensaje'=>'Error al crear la reserva. Por favor, inténtelo de nuevo más tarde.'],500);
             }
