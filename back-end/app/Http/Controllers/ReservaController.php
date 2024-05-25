@@ -52,7 +52,7 @@ class ReservaController extends Controller
             }
             // Comprueba si el horario es válido en la fecha actual y si hay mesas disponibles
             $disponible = ($fecha != $fechaActual|| $horario->hora > $horaActual) && count($mesasDisponibles) > 0;
-            $horariosDisponibles[] = ['horario' => $horario->hora, 'diPsponible' => $disponible];
+            $horariosDisponibles[] = ['horario' => $horario->hora, 'disponible' => $disponible];
             
         }
         // Ajusta la disponibilidad de horarios consecutivos si un horario no está disponible
