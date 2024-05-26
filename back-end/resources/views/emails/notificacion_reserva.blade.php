@@ -5,7 +5,7 @@
 </head>
 <body>
     <h1>Confirmación de Reserva</h1>
-    <p>Hola {{ $detalles['nombre'] }},</p>
+    <p>Hola {{ ucwords($detalles['nombre']) }},</p>
     <p>Tu reserva para {{ $detalles['comensales'] }} persona/s ha sido confirmada.</p>
     <p><strong>Fecha:</strong> {{ $detalles['fecha'] }}</p>
     <p><strong>Hora:</strong> {{ $detalles['hora'] }}</p>
