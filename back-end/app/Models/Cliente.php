@@ -14,4 +14,3 @@ class Cliente extends Model
         return $this->hasMany(Reserva::class, 'cliente_id');
     }
 }
-?>
