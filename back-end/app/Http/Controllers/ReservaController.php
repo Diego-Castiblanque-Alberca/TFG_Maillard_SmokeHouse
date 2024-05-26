@@ -80,7 +80,7 @@ class ReservaController extends Controller
                 $horarioInicio = Horario::find($reserva->horario_inicio);
                 $horarioFin = Horario::find($reserva->horario_fin);
                 // Comprueba si la mesa ya está reservada en el horario especificado
-                if (($horarioInicio->hora == $horario || $horarioFin->hora == $horario ) && ($reserva->mesa1_id == $mesa->id || $reserva->mesa2_id == $mesa->id)) {
+                if (($horarioInicio->hora == $horario || ($horarioFin!=null && $horarioFin->hora == $horario) ) && ($reserva->mesa1_id == $mesa->id || $reserva->mesa2_id == $mesa->id)) {
                     $mesaDisponible = false;
                     break;
                 }
