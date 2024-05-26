@@ -26,30 +26,32 @@ class ReservaConfirmada extends Mailable
 
     public function build(){
         //Construir el correo electrónico con los datos pasados
+        $logo = public_path('imagenes/logo.jpg'); // Lee los datos del archivo
 
         return $this
+                    ->from('no-reply@maillardsmokehouse.com')//Correo electrónico del remitente
                     ->subject('Confirmación de reserva')//Asunto del correo electrónico
-                    ->view('mails.welcome', ['cliente' => $this->cliente, 'reserva' => $this->reserva]); //Vista del correo electrónico y los datos que se pasan a la vista
+                    ->view('mails.correoConfirmacionReserva', ['cliente' => $this->cliente, 'reserva' => $this->reserva, 'logo' => $logo]); //Vista del correo electrónico y los datos que se pasan a la vista;
     }
     /**
      * Get the message envelope.
      */
-    public function envelope(): Envelope
+   /*  public function envelope(): Envelope
     {
         return new Envelope(
             subject: 'Email',
         );
-    }
+    } */
 
     /**
      * Get the message content definition.
      */
-    public function content(): Content
+    /* public function content(): Content
     {
         return new Content(
             view: 'mails.welcome',
         );
-    }
+    } */
 
     /**
      * Get the attachments for the message.

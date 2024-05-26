@@ -4,6 +4,7 @@
     <title>Confirmación de reserva</title>
 </head>
 <body>
+    <img style="background-color: #F6F3F7; padding: 10px;border: 1px solid #a77c4a;border-radius: 5%;" src="{{ $message->embed($logo) }}" alt="Logo">
     <h2>Hola, {{ $cliente['nombre'] }} {{ $cliente['apellido'] }}!</h2>
 
     <p>Gracias por tu reserva en Maillard Smoke House. Aquí están los detalles:</p>
