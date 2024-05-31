@@ -35,9 +35,15 @@ class UserController extends Controller
         // Intentar autenticar al usuario con las credenciales proporcionadas y la opción de recordar
         // Si la autenticación es exitosa, crea un nuevo token para el usuario y lo devuelve
         if (Auth::attempt($credentials, $remember)) {
-            $user = Auth::user();
+            $tokenExpiration = now()->addDays(1);//Por defecto, el token expira en 1 día
+            $user = Auth::user();//Obtener el usuario autenticado
             try {
                 $success = $user->createToken('')->plainTextToken;
+                if($remember == false){
+                    $success = $user->createToken('', [], $tokenExpiration)->plainTextToken;//Si no se selecciona recordar, el token expira en 1 día
+                }else{
+                    $success = $user->createToken('', )->plainTextToken;//Si se selecciona recordar, el token no expira
+                }
             } catch (\Exception $e) {
                 \Log::error($e);
                 throw $e;
