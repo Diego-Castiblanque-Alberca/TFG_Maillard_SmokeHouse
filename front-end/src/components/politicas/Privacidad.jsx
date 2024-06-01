@@ -12,11 +12,11 @@ export function Privacidad() {
             </section>
             <section className='section-politicas'>
                 <h3 className='subtitulo'>2. CONTACTO</h3>
-                <p>Denominación social: <b>Maillard S.L.</b><br />
-                    Nombre comercial: <b>Maillard Smoke House</b><br />
-                    CIF: <b>795834968-C</b> <br />
-                    Domicilio: <b>Calle Villablanca, 78 Madrid</b><br />
-                    e-mail: <a href="mailto:tuemail@tudominio.com"><b>maillardsmokehouse@maillard.me</b></a>
+                <p>Denominación social: <strong className='strong'>Maillard S.L.</strong><br />
+                    Nombre comercial: <strong className='strong'>Maillard Smoke House</strong><br />
+                    CIF: <strong className='strong'>795834968-C</strong> <br />
+                    Domicilio: <strong className='strong'>Calle Villablanca, 79 Madrid</strong><br />
+                    e-mail: <a href="mailto:tuemail@tudominio.com"><strong className='strong'>maillardsmokehouse@gmail.com</strong></a>
                 </p>
 
             </section>
@@ -24,21 +24,21 @@ export function Privacidad() {
                 <h3 className='subtitulo'>3. PRINCIPIOS CLAVE</h3>
                 <p className='p-indent'>Siempre hemos estado comprometidos con prestar nuestros servicios con el más alto grado de calidad, lo que incluye tratar sus datos con seguridad y transparencia. Nuestros principios son:</p>
                 <ul className='lista'>
-                    <li><b>Legalidad</b>: Solo recopilaremos sus Datos personales para fines específicos, explícitos y legítimos.</li>
-                    <li><b>Minimización de datos</b>: Limitamos la recogida de datos de carácter personal a lo que es estrictamente relevante y necesario para los fines para los que se han recopilado.</li>
-                    <li><b>Limitación de la Finalidad</b>: Solo recogeremos sus datos personales para los fines declarados y solo según sus deseos.</li>
-                    <li>Precisión: Mantendremos sus datos personales exactos y actualizados.</li>
-                    <li>Seguridad de los Datos: Aplicamos las medidas técnicas y organizativas adecuadas y proporcionales a los riesgos para garantizar que sus datos no sufran daños, tales como divulgación o acceso no autorizado, la destrucción accidental o ilícita o su pérdida accidental o alteración y cualquier otra forma de tratamiento ilícito.</li>
-                    <li>Acceso y Rectificación: Disponemos de medios para que acceda o rectifique sus datos cuando lo considere oportuno.</li>
-                    <li>Conservación: Conservamos sus datos personales de manera legal y apropiada y solo mientras es necesario para los fines para los que se han recopilado.</li>
-                    <li>Las transferencias internacionales: cuando se dé el caso de que sus datos vayan a ser transferidos fuera de la UE/EEE se protegerán adecuadamente.</li>
-                    <li>Terceros: El acceso y transferencia de datos personales a terceros se llevan a cabo de acuerdo con las leyes y reglamentos aplicables y con las garantías contractuales adecuadas.</li>
-                    <li>Marketing Directo y cookies: Cumplimos con la legislación aplicable en materia de publicidad y cookies.</li>
+                    <li><strong className='strong'>Legalidad</strong>: Solo recopilaremos sus Datos personales para fines específicos, explícitos y legítimos.</li>
+                    <li><strong className='strong'>Minimización de datos</strong>: Limitamos la recogida de datos de carácter personal a lo que es estrictamente relevante y necesario para los fines para los que se han recopilado.</li>
+                    <li><strong className='strong'>Limitación de la Finalidad</strong>: Solo recogeremos sus datos personales para los fines declarados y solo según sus deseos.</li>
+                    <li><strong className='strong'>Precisión:</strong> Mantendremos sus datos personales exactos y actualizados.</li>
+                    <li><strong className='strong'>Seguridad de los Datos:</strong> Aplicamos las medidas técnicas y organizativas adecuadas y proporcionales a los riesgos para garantizar que sus datos no sufran daños, tales como divulgación o acceso no autorizado, la destrucción accidental o ilícita o su pérdida accidental o alteración y cualquier otra forma de tratamiento ilícito.</li>
+                    <li><strong className='strong'>Acceso y Rectificación:</strong> Disponemos de medios para que acceda o rectifique sus datos cuando lo considere oportuno.</li>
+                    <li><strong className='strong'>Conservación:</strong> Conservamos sus datos personales de manera legal y apropiada y solo mientras es necesario para los fines para los que se han recopilado.</li>
+                    <li><strong className='strong'>Las transferencias internacionales:</strong> cuando se dé el caso de que sus datos vayan a ser transferidos fuera de la UE/EEE se protegerán adecuadamente.</li>
+                    <li><strong className='strong'>Terceros:</strong> El acceso y transferencia de datos personales a terceros se llevan a cabo de acuerdo con las leyes y reglamentos aplicables y con las garantías contractuales adecuadas.</li>
+                    <li><strong className='strong'>Marketing Directo y cookies:</strong> Cumplimos con la legislación aplicable en materia de publicidad y cookies.</li>
                 </ul>
             </section>
             <section className='section-politicas'>
                 <h3 className='subtitulo'>4. RECOGIDA Y TRATAMIENTO DE SUS DATOS PERSONALES</h3>
-                <p >Las tipos de datos que se pueden solicitar y tratar son: Datos de carácter identificativo.</p>
+                <p className='p-indent'>Las tipos de datos que se pueden solicitar y tratar son: Datos de carácter identificativo.</p>
                 <p>También recogemos de forma automática datos sobre su visita a nuestro sitio web según se describe en la política de cookies.</p>
                 <p>Siempre que solicitemos sus Datos personales, le informaremos con claridad de qué datos personales recogemos y con qué fin. En general, recogemos y tratamos sus datos personales con el propósito de:</p>
                 <ul className='lista'>

@@ -35,6 +35,10 @@
     border-collapse: collapse;
 }
 
+.strong{
+    font-weight: 900;
+}
+
 .section-politicas td {
     border: 1px solid var(--color-5);
     padding: 8px;
@@ -89,16 +93,16 @@
 @media screen and (min-width: 1024px){
     .subcontainer-politicas{
         max-width: 1024px;
-        font-size: 1.2rem;
+        font-size: 1rem;
 
     }
     .subtitulo{
-        font-size: 1.2rem;
+        font-size: 1rem;
        
     
     }
     .titulo-principal{
-        font-size: 1.8rem;
+        font-size: 1.5rem;
         font-weight: 700;
         color: var(--color-3);
         width: 100%;

@@ -5,7 +5,6 @@ import {ReservaTurno} from './ReservaTurno';
 export default function MostrarReservas({fechaSeleccionada}) {
 
     const [reservas, setReservas] = useState([]);
-    const [errorPeticion, setErrorPeticion] = useState(null);
     const [turno, setTurno] = useState('comida');
 
     const formatearFecha = (date) => {
@@ -15,18 +14,27 @@ export default function MostrarReservas({fechaSeleccionada}) {
         return `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
     };
 
-    const handleConfirm = async (id) => {
+    const eliminarReserva = async (id) => {
+        const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');  
         await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/reserva/cancelar/${id}`,{
-            method: 'DELETE' 
+            method: 'DELETE',
+            headers: {
+                'Authorization': 'Bearer ' + token, 
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
         });
         // Actualiza las reservas después de eliminar una
         fetchReservas();
     }
 
     const fetchReservas = () => {
+        const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');  
         fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/reserva/reservasDia`,{
             method: 'POST',
             headers: {
+                'Authorization': 'Bearer ' + token, 
+                'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
@@ -47,8 +55,8 @@ export default function MostrarReservas({fechaSeleccionada}) {
                 setReservas(reservas)
             })
             .catch(error => {
-                // Si ha habido un error, lo guardamos en el estado
-                setErrorPeticion(error.mensaje)
+                // Si ha habido un error, lo mostramos por consola
+                console.log(error);
             });
     }
     
@@ -67,9 +75,9 @@ export default function MostrarReservas({fechaSeleccionada}) {
                 <h2 className='titulo-mostrar-reservas'>Listado de Reservas</h2>
                 {/*aqui un mapeo de las reservas en un nuevo componente*/}
                 {reservas.map(reserva => (
-                    <ReservaTurno key={reserva.id} reserva={reserva} handleConfirm={handleConfirm}/>
+                    <ReservaTurno key={reserva.id} reserva={reserva} handleConfirm={eliminarReserva}/>
                 ))}
-                {reservas.length==0 && <p style={{color:"var(--color-5)"}}>Aun no hay reservas para este turno.</p>}
+                {reservas.length==0 && <p style={{color:"var(--color-5)"}}>Aún no hay reservas para este turno.</p>}
             </div>
         </>
     )

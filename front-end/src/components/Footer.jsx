@@ -9,7 +9,7 @@ export function Footer() {
         <footer className="footer">
             <div className="footer__container">
                 <div className="redes__sociales">
-                    <p>Siguenos: </p>
+                    <p>Síguenos: </p>
                     <a href="https://twitter.com/" className="redes_sociales__enlace"><img src={twitter} alt="" /></a>
                     <a href="https://www.facebook.com/" className="redes_sociales__enlace"><img src={facebook} alt="" /></a>
                     <a href="https://www.instagram.com/" className="redes_sociales__enlace"><img src={instagram} alt="" /></a>

@@ -6,18 +6,18 @@ export function AvisoLegal() {
             <h2 className='titulo-principal'>AVISO LEGAL</h2>
             <section className='section-politicas'>
             <h3 className='subtitulo'>LEY DE LOS SERVICIOS DE LA SOCIEDAD DE LA INFORMACIÓN (LSSI)</h3>
-                <p className='p-indent'><strong>Maillard S.L.</strong>, responsable del sitio web, en adelante RESPONSABLE, pone a disposición de los usuarios el presente documento, con el que pretende dar cumplimiento a las obligaciones dispuestas en la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y del Comercio Electrónico (LSSICE), así como informar a todos los usuarios del sitio web respecto a cuáles son las condiciones de uso.</p>
+                <p className='p-indent'><strong className='strong'>Maillard S.L.</strong>, responsable del sitio web, en adelante RESPONSABLE, pone a disposición de los usuarios el presente documento, con el que pretende dar cumplimiento a las obligaciones dispuestas en la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y del Comercio Electrónico (LSSICE), así como informar a todos los usuarios del sitio web respecto a cuáles son las condiciones de uso.</p>
                 <p>Toda persona que acceda a este sitio web asume el papel de usuario, comprometiéndose a la observancia y cumplimiento riguroso de las disposiciones aquí dispuestas, así como a cualquier otra disposición legal que fuera de aplicación. </p>
-                <p><strong>Maillard S.L.</strong>se reserva el derecho de modificar cualquier tipo de información que pudiera aparecer en el sitio web, sin que exista obligación de preavisar o poner en conocimiento de los usuarios dichas obligaciones, entendiéndose como suficiente con la publicación en el sitio web de <strong>Maillard S.L.</strong></p>
+                <p><strong className='strong'>Maillard S.L.</strong>se reserva el derecho de modificar cualquier tipo de información que pudiera aparecer en el sitio web, sin que exista obligación de preavisar o poner en conocimiento de los usuarios dichas obligaciones, entendiéndose como suficiente con la publicación en el sitio web de <strong>Maillard S.L.</strong></p>
             </section>
 
             <section className='section-politicas'>
                 <h3 className='subtitulo'>1. DATOS IDENTIFICATIVOS</h3>
-                <p>Denominación social: <strong>Maillard S.L.</strong><br />
-                    Nombre comercial: <strong>Maillard Smoke House</strong><br />
-                    CIF: <strong>795834968-C</strong> <br />
-                    Domicilio: <strong>Calle Villablanca, 78 Madrid</strong><br />
-                    e-mail: <a href="mailto:tuemail@tudominio.com"><strong>maillardsmokehouse@maillard.me</strong></a>
+                <p>Denominación social: <strong className='strong'>Maillard S.L.</strong><br />
+                    Nombre comercial: <strong className='strong'>Maillard SmokeHouse</strong><br />
+                    CIF: <strong className='strong'>795834968-C</strong> <br />
+                    Domicilio: <strong className='strong'>Calle Villablanca, 78 Madrid</strong><br />
+                    e-mail: <a href="mailto:maillardsteakhouse@gmail.com"><strong className='strong'>maillardsteakhouse@gmail.com</strong></a>
                 </p>
             </section>
 

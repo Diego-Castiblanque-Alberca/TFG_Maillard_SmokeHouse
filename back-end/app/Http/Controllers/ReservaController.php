@@ -6,21 +6,20 @@ use App\Models\Cliente;
 use App\Models\Horario;
 use App\Models\Mesa;
 use App\Models\Reserva;
-use App\Mail\ReservaConfirmada;
-
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Mail; 
+use App\Mail\NotificacionReserva;
 
 class ReservaController extends Controller
 {
+    // Constantes que definen los horarios límite para la comida y la cena, así como los horarios disponibles
     const ULTIMO_HORARIO_CENA = "23:00";
     const ULTIMO_HORARIO_COMIDA = "16:00";
     const HORARIOS_COMIDA = ["12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00"];
     const HORARIOS_CENA = ["20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00"];
 
-
+    // Función para obtener los horarios disponibles en una fecha determinada
     public function horariosDisponibles(Request $request)
     {
         $fecha = $request->input('fecha');
@@ -28,8 +27,8 @@ class ReservaController extends Controller
         $mesas = Mesa::all();
         $reservas = Reserva::where('fecha_reserva', $fecha)->get();
         $horariosDisponibles = [];
-
-        // Obtenemos la hora y minutos actuales en formato 24h
+        
+        // Establece la zona horaria y obtiene la hora y fecha actuales
         date_default_timezone_set('Europe/Madrid');
         $horaActual = date("H:i");
         $fechaActual = date("Y-m-d");
@@ -40,31 +39,33 @@ class ReservaController extends Controller
             foreach ($mesas as $mesa) {
                 $mesaDisponible = true;
                 foreach ($reservas as $reserva) {
-                    if (
-                        ($reserva->horario_inicio == $horario->id || $reserva->horario_fin == $horario->id)
-                        && ($reserva->mesa1_id == $mesa->id || $reserva->mesa2_id == $mesa->id)
-                    ) {
+                    // Comprueba si la mesa ya está reservada en el horario actual
+                    if (($reserva->horario_inicio == $horario->id || $reserva->horario_fin == $horario->id ) 
+                        && ($reserva->mesa1_id == $mesa->id || $reserva->mesa2_id == $mesa->id)) {
                         $mesaDisponible = false;
                         break;
                     }
                 }
+                // Si la mesa está disponible, la añade a la lista de mesas disponibles
                 if ($mesaDisponible) {
                     $mesasDisponibles[] = $mesa;
                 }
             }
-            // Si la reserva es en la fecha actual comprueba si el horario es posterior a la hora actual
-            $disponible = ($fecha != $fechaActual || $horario->hora > $horaActual) && count($mesasDisponibles) > 0;
+            // Comprueba si el horario es válido en la fecha actual y si hay mesas disponibles
+            $disponible = ($fecha != $fechaActual|| $horario->hora > $horaActual) && count($mesasDisponibles) > 0;
             $horariosDisponibles[] = ['horario' => $horario->hora, 'disponible' => $disponible];
 
         }
-        for ($i = 1; $i < count($horariosDisponibles); $i++) {
-            if (!$horariosDisponibles[$i]['disponible']) {
-                $horariosDisponibles[$i - 1]['disponible'] = false;
+        // Ajusta la disponibilidad de horarios consecutivos si un horario no está disponible
+        for($i = 1; $i < count($horariosDisponibles); $i++){
+            if(!$horariosDisponibles[$i]['disponible']){
+                $horariosDisponibles[$i-1]['disponible'] = false;
             }
         }
         return response()->json($horariosDisponibles);
     }
 
+    // Función para obtener las mesas disponibles en una fecha y horario específicos
     public function mesasDisponibles(Request $request)
     {
         $fecha = $request->input('fecha');
@@ -78,12 +79,14 @@ class ReservaController extends Controller
             foreach ($reservas as $reserva) {
                 $horarioInicio = Horario::find($reserva->horario_inicio);
                 $horarioFin = Horario::find($reserva->horario_fin);
-                if (($horarioInicio->hora == $horario || $horarioFin->hora == $horario) && ($reserva->mesa1_id == $mesa->id || $reserva->mesa2_id == $mesa->id)) {
+                // Comprueba si la mesa ya está reservada en el horario especificado
+                if (($horarioInicio->hora == $horario || ($horarioFin!=null && $horarioFin->hora == $horario) ) && ($reserva->mesa1_id == $mesa->id || $reserva->mesa2_id == $mesa->id)) {
                     $mesaDisponible = false;
                     break;
                 }
             }
-            $mesasDisponibles["mesa-" . $mesa->id] = ["capacidad" => $mesa->capacidad, "disponibilidad" => $mesaDisponible];
+            // Añade la mesa a la lista de mesas disponibles con su capacidad y disponibilidad
+            $mesasDisponibles["mesa-" . $mesa->id] = ["capacidad" => $mesa->capacidad,"disponibilidad"=>$mesaDisponible];
         }
         return response()->json($mesasDisponibles);
     }
@@ -91,8 +94,6 @@ class ReservaController extends Controller
     public function guardarReserva(Request $request)
     {
         // Validación de la entrada
-        //si los datos no pasan la validación, Laravel automáticamente retornará una respuesta 
-        //con un código de estado 422 (Unprocessable Entity)  y un JSON con los errores de validación.
         $datosValidados = $request->validate([
             'politicas' => 'required|boolean',
             'fechaSeleccionada' => 'required|date',
@@ -112,6 +113,7 @@ class ReservaController extends Controller
         if ($datosValidados['politicas']) {
             DB::beginTransaction();
             try {
+                // Busca o crea un nuevo cliente
                 $cliente = Cliente::firstWhere('correo', $datosValidados['email']);
 
                 if (!$cliente) {
@@ -125,6 +127,7 @@ class ReservaController extends Controller
                 $cliente->consiente = $datosValidados['comunicaciones'];
                 $cliente->save();
 
+                // Crea una nueva reserva
                 $reserva = new Reserva();
                 $reserva->fecha_reserva = $datosValidados['fechaSeleccionada'];
                 $reserva->horario_inicio = Horario::where('hora', $datosValidados['horario'])->first()->id;
@@ -138,6 +141,7 @@ class ReservaController extends Controller
                 $reserva->mesa2_id = count($datosValidados['mesasSeleccionadas']) > 1 ? Mesa::where('id', explode("-", $datosValidados['mesasSeleccionadas'][1])[1])->first()->id : null;
                 $reserva->cliente_id = $cliente->id;
 
+                // Comprueba si ya existe una reserva para el cliente en la fecha seleccionada
                 $reservaExistente = Reserva::where('cliente_id', $cliente->id)
                     ->where('fecha_reserva', $datosValidados['fechaSeleccionada'])
                     ->first();
@@ -145,22 +149,25 @@ class ReservaController extends Controller
                     // La reserva ya existe
                     return response()->json(['mensaje' => 'Ya existe una reserva para este cliente en la fecha seleccionada. Por favor, seleccione una fecha diferente.'], 400);
                 } else {
-                    // La reserva no existe
-                    // Procede a guardar la nueva reserva
-                    $confirmacion = $reserva->save();
-                    if ($confirmacion) {
-                        //Envio de correo de confirmación al cliente.
-                        Mail::to($cliente->correo)->send(new ReservaConfirmada($cliente,$reserva));
-                        $reserva->correoEnviado = $confirmacion;
-                        //Añadimos un campo al objeto reserva para saber si se ha enviado el correo
-                        //Podríamos añadir si fuese necesario un campo en la tabla de reservas para saber si se ha enviado el correo
-                    }
+                    // La reserva no existe, procede a guardar la nueva reserva
+                    $reserva->save();
                 }
-                //$reserva->save();
+
+                  // Enviar correo de confirmación de reserva
+                  //agregado
+                  $detalles = [
+                    'nombre' => $cliente->nombre,
+                    'fecha' => $reserva->fecha_reserva,
+                    'hora' => Horario::find($reserva->horario_inicio)->hora,
+                    'comensales' => $reserva->num_comensales
+                ];
+                Mail::to($cliente->correo)->send(new NotificacionReserva($detalles));
+
                 DB::commit();
                 return response()->json($reserva);
             } catch (\Exception $e) {
                 DB::rollback();
+                Log::error('Error: ' . $e->getMessage());
                 Log::error($e);
                 return response()->json(['mensaje' => 'Error al crear la reserva. Por favor, inténtelo de nuevo más tarde.'], 500);
             }
@@ -169,104 +176,72 @@ class ReservaController extends Controller
         }
     }
 
+    // Función para obtener todas las reservas de un día específico, ordenadas por hora
+    public function obtenerReservasDia(Request $request){
+        // Comprueba si el usuario está autenticado
+        if ($request->user()) {
+            $fecha = $request->input('fecha');
+            $turno = $request->input('turno');
+            // Determina los horarios según el turno (comida o cena)
+            if($turno == 'comida'){
+                $horarios = self::HORARIOS_COMIDA;
+            }elseif($turno == 'cena'){
+                $horarios = self::HORARIOS_CENA;
+            }else{
+                return response()->json(['mensaje'=>'El turno seleccionado no es válido'],400);
+            }
 
-    //una funcion que reciba fecha y turno de comida y retorne todas las reservas de ese dia(ordenadas por hora), con id, nombre, hora y mesa
-    public function obtenerReservasDia(Request $request)
-    {
-        $fecha = $request->input('fecha');
-        $turno = $request->input('turno');
-        if ($turno == 'comida') {
-            $horarios = self::HORARIOS_COMIDA;
+            $horarioIds = Horario::whereIn('hora', $horarios)->pluck('id');
+            $reservas = Reserva::where('fecha_reserva', $fecha)
+                ->whereIn('horario_inicio', $horarioIds)
+                ->orderBy('horario_inicio')
+                ->get();
+            $reservasDia = [];
+        
+            foreach ($reservas as $reserva) {
+                $cliente = Cliente::find($reserva->cliente_id);
+                $mesa1 = Mesa::find($reserva->mesa1_id);
+                $mesa2 = $reserva->mesa2_id ? Mesa::find($reserva->mesa2_id) : null;
+                // Construye un arreglo con la información de la reserva
+                $reservasDia[] = [
+                    'id' => $reserva->id,
+                    'nombre' => $cliente->nombre . ' ' . $cliente->apellido,
+                    'telefono' => $cliente->telefono,
+                    'fecha' => $reserva->fecha_reserva,
+                    'email' => $cliente->correo,
+                    'hora' => Horario::find($reserva->horario_inicio)->hora,
+                    'mesa1' => $mesa1->id,
+                    'mesa2' => $reserva->mesa2_id ? $mesa2->id : null,
+                    'comensales' => $reserva->num_comensales
+                ];
+            }
+            return response()->json($reservasDia);
         } else {
-            $horarios = self::HORARIOS_CENA;
-        }
-        $horarioIds = Horario::whereIn('hora', $horarios)->pluck('id');
-        $reservas = Reserva::where('fecha_reserva', $fecha)
-            ->whereIn('horario_inicio', $horarioIds)
-            ->orderBy('horario_inicio')
-            ->get();
-        $reservasDia = [];
-
-        foreach ($reservas as $reserva) {
-            $cliente = Cliente::find($reserva->cliente_id);
-            $mesa1 = Mesa::find($reserva->mesa1_id);
-            $mesa2 = $reserva->mesa2_id ? Mesa::find($reserva->mesa2_id) : null;
-            $reservasDia[] = [
-                'id' => $reserva->id,
-                'nombre' => $cliente->nombre . ' ' . $cliente->apellido,
-                'telefono' => $cliente->telefono,
-                'fecha' => $reserva->fecha_reserva,
-                'email' => $cliente->correo,
-                'hora' => Horario::find($reserva->horario_inicio)->hora,
-                'mesa1' => $mesa1->id,
-                'mesa2' => $reserva->mesa2_id ? $mesa2->id : null,
-                'comensales' => $reserva->num_comensales
-            ];
-        }
-        return response()->json($reservasDia);
-    }
-
-    //una funcion que reciba id y retorne todos los datos de esa reserva en concreto
-    public function obtenerReserva(Request $request)
-    {
-        $id = $request->input('id');
-        $reserva = Reserva::find($id);
-
-        if ($reserva) {
-            $cliente = Cliente::find($reserva->cliente_id);
-
-            $reservaCompleta = [
-                'nombre' => $cliente->nombre . ' ' . $cliente->apellido,
-                'telefono' => $cliente->telefono,
-                'email' => $cliente->correo,
-                'fecha' => $reserva->fecha_reserva,
-                'hora' => Horario::find($reserva->horario_inicio)->hora,
-                'mesa1' => $reserva->mesa1_id,
-                'mesa2' => $reserva->mesa2_id ? $reserva->mesa2_id : null,
-                'comensales' => $reserva->num_comensales
-            ];
-            return response()->json($reserva->mesa2_id);
-        } else {
-            return response()->json(['mensaje' => 'No se ha encontrado la reserva'], 404);
+            return response()->json(['mensaje'=>'No estás autenticado'],401);
         }
     }
-
-    //una funcion que elimine una reserva
-
-    public function cancelarReserva($id)
-    {
-        $reserva = Reserva::find($id);
-
-        if ($reserva) {
-            $reserva->delete();
-            return response()->json(['mensaje' => 'Reserva eliminada correctamente']);
+    
+    // Función para cancelar una reserva
+    public function cancelarReserva(Request $request, $id){
+        // Comprueba si el usuario está autenticado
+        if ($request->user()) {
+            $reserva = Reserva::find($id);
+    
+            // Comprueba si la reserva existe
+            if($reserva){
+                $reserva->delete();
+                return response()->json(['mensaje'=>'Reserva eliminada correctamente']);
+            }else{
+                return response()->json(['mensaje'=>'No se ha encontrado la reserva'],404);
+            }
         } else {
-            return response()->json(['mensaje' => 'No se ha encontrado la reserva'], 404);
+            return response()->json(['mensaje'=>'No estás autenticado'],401);
         }
     }
+    
 }
 
 
-
-
-
-
-
-
-
-// peticion json prueba:
-// {
-//     "apellidos": "cachafeiro silva",
-//     "comensalesSeleccionado": 2,
-//     "comunicaciones": false,
-//     "email": "daniel.cachafeiro@educa.madrid.org",
-//     "fechaSeleccionada": "2024-04-29",
-//     "horario": "13:00",
-//     "mesasSeleccionadas": ["mesa-7"],
-//     "nombre": "marcos",
-//     "politicas": true,
-//     "telefono": "+34064483309"
-// }
 // insert de mesas
 // INSERT INTO `mesas` (`capacidad`) VALUES
 // (2),  -- mesa-1

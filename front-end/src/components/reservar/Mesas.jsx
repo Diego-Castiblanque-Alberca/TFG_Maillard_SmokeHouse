@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import '../../styles/reservar/Mesas.css';
 import capacidad2 from "../../imgs/mesa2.svg";
 import capacidad2selected from "../../imgs/mesa2selected.svg";
@@ -58,6 +58,9 @@ export default function Mesas({ mesas, datos, siguientePaso }) {
     const comensales = datos.comensalesSeleccionado;
     // Calculamos la capacidad total de las mesas seleccionadas
     const capacidadTotalSeleccionada = mesasSeleccionadas.reduce((total, mesa) => total + mesas[mesa].capacidad, 0);
+    // Definimos el estado para el mensaje de error
+    const [mensajeError, setMensajeError] = useState("");
+
 
     // Definimos la función para seleccionar/deseleccionar una mesa
     const seleccionarMesa = (nombreMesa) => {
@@ -77,6 +80,15 @@ export default function Mesas({ mesas, datos, siguientePaso }) {
         const nuevosDatos = { ...datos, mesasSeleccionadas };
         siguientePaso(nuevosDatos);
     };
+
+    // Definimos un efecto para comprobar si al seleccionar dos mesas quedan personas por sentar
+    useEffect(() => {
+        if(mesasSeleccionadas.length === 2 && comensales > capacidadTotalSeleccionada) {
+            setMensajeError("Quedan personas por sentar y no puedes seleccionar más de dos mesas");
+        } else {
+            setMensajeError("");
+        }
+    }, [mesasSeleccionadas, comensales, capacidadTotalSeleccionada]);
 
     // Definimos la función para comprobar si se puede confirmar la reserva
     const puedeConfirmarReserva = () => {
@@ -135,6 +147,8 @@ export default function Mesas({ mesas, datos, siguientePaso }) {
                     )
                 })}
             </div>
+            {/* Si existe algun error, lo mostramos */}
+            {mensajeError&&<p className="mensaje-error">{mensajeError}</p>}
             {/* Si se puede confirmar la reserva, mostramos el botón de confirmación */}
             {puedeConfirmarReserva() && <button className="boton-confirmar" onClick={confirmarSeleccion}>Confirmar selección</button>}
         </>
