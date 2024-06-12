@@ -8,7 +8,7 @@ use App\Models\Mesa;
 use App\Models\Reserva;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail; 
+use Illuminate\Support\Facades\Mail;
 use App\Mail\NotificacionReserva;
 
 class ReservaController extends Controller
@@ -27,7 +27,7 @@ class ReservaController extends Controller
         $mesas = Mesa::all();
         $reservas = Reserva::where('fecha_reserva', $fecha)->get();
         $horariosDisponibles = [];
-        
+
         // Establece la zona horaria y obtiene la hora y fecha actuales
         date_default_timezone_set('Europe/Madrid');
         $horaActual = date("H:i");
@@ -40,8 +40,10 @@ class ReservaController extends Controller
                 $mesaDisponible = true;
                 foreach ($reservas as $reserva) {
                     // Comprueba si la mesa ya está reservada en el horario actual
-                    if (($reserva->horario_inicio == $horario->id || $reserva->horario_fin == $horario->id ) 
-                        && ($reserva->mesa1_id == $mesa->id || $reserva->mesa2_id == $mesa->id)) {
+                    if (
+                        ($reserva->horario_inicio == $horario->id || $reserva->horario_fin == $horario->id)
+                        && ($reserva->mesa1_id == $mesa->id || $reserva->mesa2_id == $mesa->id)
+                    ) {
                         $mesaDisponible = false;
                         break;
                     }
@@ -52,14 +54,14 @@ class ReservaController extends Controller
                 }
             }
             // Comprueba si el horario es válido en la fecha actual y si hay mesas disponibles
-            $disponible = ($fecha != $fechaActual|| $horario->hora > $horaActual) && count($mesasDisponibles) > 0;
+            $disponible = ($fecha != $fechaActual || $horario->hora > $horaActual) && count($mesasDisponibles) > 0;
             $horariosDisponibles[] = ['horario' => $horario->hora, 'disponible' => $disponible];
 
         }
         // Ajusta la disponibilidad de horarios consecutivos si un horario no está disponible
-        for($i = 1; $i < count($horariosDisponibles); $i++){
-            if(!$horariosDisponibles[$i]['disponible']){
-                $horariosDisponibles[$i-1]['disponible'] = false;
+        for ($i = 1; $i < count($horariosDisponibles); $i++) {
+            if (!$horariosDisponibles[$i]['disponible']) {
+                $horariosDisponibles[$i - 1]['disponible'] = false;
             }
         }
         return response()->json($horariosDisponibles);
@@ -80,13 +82,13 @@ class ReservaController extends Controller
                 $horarioInicio = Horario::find($reserva->horario_inicio);
                 $horarioFin = Horario::find($reserva->horario_fin);
                 // Comprueba si la mesa ya está reservada en el horario especificado
-                if (($horarioInicio->hora == $horario || ($horarioFin!=null && $horarioFin->hora == $horario) ) && ($reserva->mesa1_id == $mesa->id || $reserva->mesa2_id == $mesa->id)) {
+                if (($horarioInicio->hora == $horario || ($horarioFin != null && $horarioFin->hora == $horario)) && ($reserva->mesa1_id == $mesa->id || $reserva->mesa2_id == $mesa->id)) {
                     $mesaDisponible = false;
                     break;
                 }
             }
             // Añade la mesa a la lista de mesas disponibles con su capacidad y disponibilidad
-            $mesasDisponibles["mesa-" . $mesa->id] = ["capacidad" => $mesa->capacidad,"disponibilidad"=>$mesaDisponible];
+            $mesasDisponibles["mesa-" . $mesa->id] = ["capacidad" => $mesa->capacidad, "disponibilidad" => $mesaDisponible];
         }
         return response()->json($mesasDisponibles);
     }
@@ -148,14 +150,46 @@ class ReservaController extends Controller
                 if ($reservaExistente) {
                     // La reserva ya existe
                     return response()->json(['mensaje' => 'Ya existe una reserva para este cliente en la fecha seleccionada. Por favor, seleccione una fecha diferente.'], 400);
-                } else {
-                    // La reserva no existe, procede a guardar la nueva reserva
-                    $reserva->save();
+                }
+                // Comprueba si ya existe una reserva con la misma fecha, mesas y horario
+                $reservaExistente2 = Reserva::where('fecha_reserva', $datosValidados['fechaSeleccionada'])
+                ->where(function ($query) use ($reserva) {
+                    $query->where(function ($query) use ($reserva) {
+                        $query->where('horario_inicio', $reserva->horario_inicio)
+                            ->orWhere('horario_fin', $reserva->horario_inicio);
+                    })
+                    ->orWhere(function ($query) use ($reserva) {
+                        if ($reserva->horario_fin) {
+                            $query->where('horario_inicio', $reserva->horario_fin)
+                                ->orWhere('horario_fin', $reserva->horario_fin);
+                        }
+                    });
+                })
+                ->where(function ($query) use ($reserva) {
+                    $query->where(function ($query) use ($reserva) {
+                        $query->where('mesa1_id', $reserva->mesa1_id)
+                            ->orWhere('mesa2_id', $reserva->mesa1_id);
+                    })
+                    ->orWhere(function ($query) use ($reserva) {
+                        if ($reserva->mesa2_id) {
+                            $query->where('mesa1_id', $reserva->mesa2_id)
+                                ->orWhere('mesa2_id', $reserva->mesa2_id);
+                        }
+                    });
+                })
+                ->first();
+                
+                if($reservaExistente2){
+                    return response()->json(['mensaje' => 'Ya existe una reserva con las mismas características. Por favor, seleccione diferentes opciones.'], 400);
                 }
 
-                  // Enviar correo de confirmación de reserva
-                  //agregado
-                  $detalles = [
+                // La reserva no existe, procede a guardar la nueva reserva
+                $reserva->save();
+
+
+                // Enviar correo de confirmación de reserva
+                //agregado
+                $detalles = [
                     'nombre' => $cliente->nombre,
                     'fecha' => $reserva->fecha_reserva,
                     'hora' => Horario::find($reserva->horario_inicio)->hora,
@@ -177,18 +211,19 @@ class ReservaController extends Controller
     }
 
     // Función para obtener todas las reservas de un día específico, ordenadas por hora
-    public function obtenerReservasDia(Request $request){
+    public function obtenerReservasDia(Request $request)
+    {
         // Comprueba si el usuario está autenticado
         if ($request->user()) {
             $fecha = $request->input('fecha');
             $turno = $request->input('turno');
             // Determina los horarios según el turno (comida o cena)
-            if($turno == 'comida'){
+            if ($turno == 'comida') {
                 $horarios = self::HORARIOS_COMIDA;
-            }elseif($turno == 'cena'){
+            } elseif ($turno == 'cena') {
                 $horarios = self::HORARIOS_CENA;
-            }else{
-                return response()->json(['mensaje'=>'El turno seleccionado no es válido'],400);
+            } else {
+                return response()->json(['mensaje' => 'El turno seleccionado no es válido'], 400);
             }
 
             $horarioIds = Horario::whereIn('hora', $horarios)->pluck('id');
@@ -197,7 +232,7 @@ class ReservaController extends Controller
                 ->orderBy('horario_inicio')
                 ->get();
             $reservasDia = [];
-        
+
             foreach ($reservas as $reserva) {
                 $cliente = Cliente::find($reserva->cliente_id);
                 $mesa1 = Mesa::find($reserva->mesa1_id);
@@ -217,57 +252,29 @@ class ReservaController extends Controller
             }
             return response()->json($reservasDia);
         } else {
-            return response()->json(['mensaje'=>'No estás autenticado'],401);
+            return response()->json(['mensaje' => 'No estás autenticado'], 401);
         }
     }
-    
+
     // Función para cancelar una reserva
-    public function cancelarReserva(Request $request, $id){
+    public function cancelarReserva(Request $request, $id)
+    {
         // Comprueba si el usuario está autenticado
         if ($request->user()) {
             $reserva = Reserva::find($id);
-    
+
             // Comprueba si la reserva existe
-            if($reserva){
+            if ($reserva) {
                 $reserva->delete();
-                return response()->json(['mensaje'=>'Reserva eliminada correctamente']);
-            }else{
-                return response()->json(['mensaje'=>'No se ha encontrado la reserva'],404);
+                return response()->json(['mensaje' => 'Reserva eliminada correctamente']);
+            } else {
+                return response()->json(['mensaje' => 'No se ha encontrado la reserva'], 404);
             }
         } else {
-            return response()->json(['mensaje'=>'No estás autenticado'],401);
+            return response()->json(['mensaje' => 'No estás autenticado'], 401);
         }
     }
-    
+
 }
 
 
-// insert de mesas
-// INSERT INTO `mesas` (`capacidad`) VALUES
-// (2),  -- mesa-1
-// (2),  -- mesa-2
-// (2),  -- mesa-3
-// (6),  -- mesa-4
-// (8),  -- mesa-5
-// (4),  -- mesa-6
-// (4),  -- mesa-7
-// (2),  -- mesa-8
-// (2);  -- mesa-9
-// insert de horarios
-// INSERT INTO `horarios` (`hora`) VALUES
-// ('12:00'),
-// ('12:30'),
-// ('13:00'),
-// ('13:30'),
-// ('14:00'),
-// ('14:30'),
-// ('15:00'),
-// ('15:30'),
-// ('16:00'),
-// ('20:00'),
-// ('20:30'),
-// ('21:00'),
-// ('21:30'),
-// ('22:00'),
-// ('22:30'),
-// ('23:00');
