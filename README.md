@@ -1,6 +1,6 @@
 # Application for restaurant business
 
-&nbsp;&nbsp;&nbsp;&nbsp;Here I present the application that we have developed as a final degree project (TFG), specifically the higher degree of web application development. The development of the project has been carried out in group, formed by 2 members. My partner **Marcos Cachafeiro Silva** and my person **Diego Castiblanque Alberca** have formed the group. 
+&nbsp;&nbsp;&nbsp;&nbsp;Here I present the application that we have developed as a final degree project (TFG), specifically the higher degree of web application development. The development of the project has been carried out in group, formed by 2 members. My partner **Marcos Cachafeiro Silva https://github.com/mcachafeiro/TFG** and my person **Diego Castiblanque Alberca** have formed the group. 
 
 The project has been developed with technologies like:
 - **React 18 + Vite** 
