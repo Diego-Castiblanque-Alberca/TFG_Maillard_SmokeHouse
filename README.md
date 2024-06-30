@@ -26,9 +26,7 @@ Below I offer a gallery of images as a visual tour to see the work we have done:
 
 
 ## Mobile version
-
 ### Landingpage
-
 <p align="center">
   <img src="https://github.com/Diego-Castiblanque-Alberca/TFG_Maillard_SmokeHouse/assets/145365163/b8a1ce42-a3ef-4d37-8c4e-8f6936fe459a">
   <img src="https://github.com/Diego-Castiblanque-Alberca/TFG_Maillard_SmokeHouse/assets/145365163/d4cc57db-6a6a-4528-95c1-47bcf5640f5e">
@@ -36,9 +34,7 @@ Below I offer a gallery of images as a visual tour to see the work we have done:
 </p>
 
 ## Desktop version
-
 ### Table reservations
-
 <p align="center">
   <ul>
     <li>
@@ -58,6 +54,20 @@ Below I offer a gallery of images as a visual tour to see the work we have done:
       </p>
     </li>
   </ul>
+</p>
+
+### Interactive menu of gastronomic products
+<p align="center">
+  <img src="https://github.com/Diego-Castiblanque-Alberca/TFG_Maillard_SmokeHouse/assets/145365163/a142585a-4d4b-465f-9c37-c79211bfa3d6">
+  <img src="https://github.com/Diego-Castiblanque-Alberca/TFG_Maillard_SmokeHouse/assets/145365163/cfba06ae-d8eb-45c7-92e0-e8b832b3b94c">
+  <img src="https://github.com/Diego-Castiblanque-Alberca/TFG_Maillard_SmokeHouse/assets/145365163/f5f5856c-af3d-46fe-bcca-120f12b0df6a">
+</p>
+
+### Back-office reservation management
+<p align="center">
+  <img src="">
+  <img src="">
+  <img src="">
 </p>
 
 
